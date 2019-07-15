@@ -1,0 +1,665 @@
+#+TITLE: Full System Configuration
+
+* Introduction
+* Table of Contents
+:PROPERTIES:
+:TOC: all
+:END:
+  -  [[#introduction][Introduction]]
+  -  [[#table-of-contents][Table of Contents]]
+  -  [[#installation][Installation]]
+  -  [[#post-installation-setup][Post-Installation Setup]]
+    -  [[#users--groups][Users & Groups]]
+    -  [[#mirrors][Mirrors]]
+    -  [[#aur-package-manager][AUR Package Manager]]
+    -  [[#display-drivers][Display Drivers]]
+    -  [[#xorg-server][Xorg Server]]
+    -  [[#gnome--gdm][Gnome & GDM]]
+    -  [[#themes][Themes]]
+      -  [[#gnome-tweaks][Gnome Tweaks]]
+      -  [[#gnome-theme][Gnome Theme]]
+      -  [[#gdm-theme][GDM Theme]]
+    -  [[#fonts][Fonts]]
+    -  [[#extensions][Extensions]]
+      -  [[#gsconnect][GSConnect]]
+  -  [[#applications][Applications]]
+    -  [[#zsh][Zsh]]
+    -  [[#firefox][Firefox]]
+    -  [[#thunderbird][Thunderbird]]
+    -  [[#protonmail-bridge][ProtonMail Bridge]]
+    -  [[#megasync][MEGASync]]
+    -  [[#franz][Franz]]
+    -  [[#keepassxc][KeePassXC]]
+    -  [[#emacs][Emacs]]
+    -  [[#ranger][Ranger]]
+    -  [[#spotify][Spotify]]
+    -  [[#vlc][Vlc]]
+    -  [[#gnome-logs][Gnome Logs]]
+  -  [[#programming-languages][Programming Languages]]
+    -  [[#python][Python]]
+      -  [[#flake8][flake8]]
+      -  [[#jedi][jedi]]
+      -  [[#numpy][numpy]]
+      -  [[#nltk][nltk]]
+      -  [[#elpy][elpy]]
+      -  [[#autopep8][autopep8]]
+      -  [[#rope][rope]]
+      -  [[#yapf][yapf]]
+      -  [[#virtualenv][virtualenv]]
+      -  [[#jupyter][jupyter]]
+      -  [[#ipython][ipython]]
+      -  [[#matplotlib][matplotlib]]
+    -  [[#c][C++]]
+      -  [[#gcc][gcc]]
+      -  [[#g][g++]]
+      -  [[#make][make]]
+      -  [[#cmake][cmake]]
+      -  [[#clang][clang]]
+      -  [[#irony][irony]]
+      -  [[#silver-searcher-for-definition-jumps][silver searcher (for definition jumps)]]
+      -  [[#cling][cling]]
+    -  [[#javascript][JavaScript]]
+      -  [[#npm][npm]]
+      -  [[#typescript][typescript]]
+      -  [[#tern][tern]]
+      -  [[#yarn][yarn]]
+      -  [[#meteor][meteor]]
+      -  [[#mongodb][mongodb]]
+      -  [[#revealjs][revealjs]]
+      -  [[#prettier][prettier]]
+    -  [[#java][Java]]
+    -  [[#haskell][Haskell]]
+    -  [[#mysql][MySQL]]
+    -  [[#go][Go]]
+    -  [[#latex][LaTeX]]
+    -  [[#markdown][MarkDOWN]]
+    -  [[#latex][Latex]]
+  -  [[#optimizations][Optimizations]]
+    -  [[#ssh-key][SSH Key]]
+    -  [[#microcode][Microcode]]
+    -  [[#silent-boot][Silent Boot]]
+    -  [[#power-management][Power Management]]
+      -  [[#battery-life][Battery Life]]
+      -  [[#fan][Fan]]
+      -  [[#cpu][CPU]]
+    -  [[#printer][Printer]]
+    -  [[#firewall][Firewall]]
+    -  [[#vpn][VPN]]
+  -  [[#extras][Extras]]
+    -  [[#python-cprofiler][Python cProfiler]]
+    -  [[#markdown-template][Markdown Template]]
+  -  [[#dropwizardhttpwwwdropwizardio102docs---the-web-framework-used][{Dropwizard}(http://www.dropwizard.io/1.0.2/docs/) - The web framework used]]
+  -  [[#mavenhttpsmavenapacheorg---dependency-management][{Maven}(https://maven.apache.org/) - Dependency Management]]
+  -  [[#romehttpsrometoolsgithubiorome---used-to-generate-rss-feeds][{ROME}(https://rometools.github.io/rome/) - Used to generate RSS Feeds]]
+  -  [[#billie-thompson---initial-work---purpleboothhttpsgithubcompurplebooth][**Billie Thompson** - *Initial work* - {PurpleBooth}(https://github.com/PurpleBooth)]]
+  -  [[#hat-tip-to-anyone-whose-code-was-used][Hat tip to anyone whose code was used]]
+  -  [[#inspiration][Inspiration]]
+  -  [[#etc][etc]]
+
+* Installation
+
+This section contains all the details for a basic arch linux installation
+with windows 10 dual boot and general suggestions and links to either the
+arch linux wiki or other sources.
+
+1. Check your internet connection
+#+BEGIN_SRC shell
+ping 8.8.8.8
+#+END_SRC
+If no ping can be send go [[https://wiki.archlinux.org/index.php/Network_configuration#Network_interfaces][here]].
+
+2. Load keyboard layout
+#+BEGIN_SRC shell
+loadkeys de-latin1
+#+END_SRC
+
+3. Verify boot mode
+#+BEGIN_SRC shell
+ls /sys/firmware/efi/efivars
+#+END_SRC
+If directory exists, the system was booted via UEFI mode, otherwise via BIOS.
+
+4. Update system clock
+#+BEGIN_SRC shell
+timedatectl set-ntl true
+#+END_SRC
+
+5. Partition the disks
+6. Format the partitions
+7. Mount the file systems
+8. Install base packages
+#+BEGIN_SRC shell
+pacstrap /mnt base base-devel
+#+END_SRC
+
+9. Generate an fstab file
+#+BEGIN_SRC shell
+genfstab -U /mnt >> /mnt/etc/fstab
+#+END_SRC
+
+10. Enter new system
+#+BEGIN_SRC shell
+arch-chroot /mnt
+#+END_SRC
+
+11. Setup timezone
+#+BEGIN_SRC shell
+ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+hwclock --systohc
+#+END_SRC
+
+12. Localization
+1. Uncomment en_US.UTF-8 UTF-8 in /etc/locale.gen
+2. Generate it with:
+#+BEGIN_SRC shell
+locale-gen
+#+END_SRC
+3. Create /etc/locale.conf and set LANG variable
+LANG=en_US.UTF-8
+4. Set keyboard layout in /etc/vconsole.conf
+KEYMAP=de-latin1
+
+13. Network configuration
+1. Edit /etc/hostname with "arch"
+2. Edit /etc/hosts
+127.0.0.1    localhost
+::1          localhost
+127.0.1.1    arch.localdomain    arch
+
+14. Initramfs
+#+BEGIN_SRC shell
+mkinitcpio -p linux
+#+END_SRC
+
+15. Set root password
+#+BEGIN_SRC shell
+passwd
+#+END_SRC
+
+16. Install bootloader
+
+17. Reboot
+
+* Post-Installation Setup
+** Users & Groups
+Add user:
+#+BEGIN_SRC shell
+useradd -m -G wheel,storage,power -s icm
+passwd icm
+#+END_SRC
+** Mirrors
+** AUR Package Manager
+Yay is the latest most well written package manager in go that builds and
+ installs packages from the AUR.
+** Display Drivers
+[[https://wiki.archlinux.org/index.php/NVIDIA][here]]
+** Xorg Server
+#+BEGIN_SRC shell
+sudo pacman -S xorg xorg-server xorg-xinit xorg-server-utils
+sudo pacman -S xorg-twm xorg-xclock xterm
+#+END_SRC
+** Gnome & GDM
+#+BEGIN_SRC shell
+sudo pacman -S gnome gnome-extra
+sudo systemctl start gdm.service
+sudo systemctl enable gdm.service
+#+END_SRC
+** Themes
+*** Gnome Tweaks
+#+BEGIN_SRC shell
+sudo pacman -S gnome-tweaks
+#+END_SRC
+*** Gnome Theme
+
+Setup the major gnome icon, shell and applications theme from one of the
+following:
+
+1. EvoPop
+#+BEGIN_SRC shell
+
+#+END_SRC
+2. Arc-Theme
+#+BEGIN_SRC shell
+
+#+END_SRC
+3. Paper
+#+BEGIN_SRC shell
+
+#+END_SRC
+4. Ant
+#+BEGIN_SRC shell
+
+#+END_SRC
+
+*** GDM Theme
+#+BEGIN_SRC shell
+yay -S gdm-themes
+#+END_SRC
+
+** Fonts
+
+Installing fonts is a very important step in an arch linux configuration.
+Here are a couple of suggestions:
+#+BEGIN_SRC shell
+sudo pacman -S ttf-dejavu
+sudo pacman -S ttf-anonymous-pro
+sudo pacman -S ttf-liberation 
+sudo pacman -S noto-fonts
+#+END_SRC
+** Extensions
+*** GSConnect
+
+* Applications
+** Zsh
+1. Oh-my-zsh
+2. Addons
+3. Base 16 Theme
+** Firefox
+1. Install firefox
+#+BEGIN_SRC shell
+sudo pacman -S firefox
+#+END_SRC
+2. Add extensions:
+2.1. vimiumfx
+2.2. keepassxc
+2.3. ublock origin
+3. Setup Search Engines
+3.1. DuckDuckGo -> d
+3.2. Wikipedia -> w
+3.3. Github -> g
+3.4. Youtube -> y
+3.5. Google Maps -> gm
+3.6. Google Translate -> gt
+3.7. Leo PT -> l
+3.8. Leo EN -> le
+3.9. Leo RU -> Lambda
+3.10. Wiktionary -> Vê
+3.11. imdb -> i
+3.12. ProxyBay -> p
+4. Furthuer customizations
+4.1. Remove title bar
+4.2. Disable password completion
+4.3. Customize history and cookie saving
+** Thunderbird
+** ProtonMail Bridge
+** MEGASync
+** Franz
+** KeePassXC
+** Emacs
+** Ranger
+#+BEGIN_SRC shell
+sudo pacman -S ranger
+#+END_SRC
+Create gnome keybinding:
+gnome-terminal -r "ranger"
+** Spotify
+#+BEGIN_SRC sh
+yay -S spotify
+#+END_SRC
+** Vlc
+#+BEGIN_SRC sh
+sudo pacman -S vlc
+#+END_SRC
+** Gnome Logs
+#+BEGIN_SRC shell
+sudo pacman -S gnome-logs
+#+END_SRC
+
+* Programming Languages
+** Python
+1. Install pip, update it and upgrade (python2 version can always be installed as well)
+#+BEGIN_SRC sh
+sudo pacman -S python-pip
+pip install --upgrade pip
+#+END_SRC
+2. Install each of the packages. (root permission might be needed)
+*** flake8
+#+BEGIN_SRC sh
+sudo pacman -S flake8
+#+END_SRC
+
+*** jedi
+#+BEGIN_SRC sh
+sudo pacman -S python-jedi
+#+END_SRC
+
+*** numpy
+#+BEGIN_SRC sh
+sudo pacman -S python-numpy
+#+END_SRC
+
+*** nltk
+#+BEGIN_SRC sh
+sudo pacman -S python-nltk
+#+END_SRC
+
+*** elpy
+Ubuntu elpy package might be available
+#+BEGIN_SRC sh
+sudo pacman -S emacs-elpy
+#+END_SRC
+
+*** autopep8
+#+BEGIN_SRC sh
+sudo pacman -S autopep8
+#+END_SRC
+
+*** rope
+#+BEGIN_SRC sh
+sudo pacman -S python-rope
+#+END_SRC
+
+*** yapf
+#+BEGIN_SRC sh
+sudo pacman -S yapf
+#+END_SRC
+
+*** virtualenv
+#+BEGIN_SRC sh
+sudo pacman -S python-virtualenv
+#+END_SRC
+
+*** jupyter
+#+BEGIN_SRC sh
+sudo pacman -S jupyter-notebook
+#+END_SRC
+
+*** ipython
+#+BEGIN_SRC sh
+sudo pacman -S ipython
+#+END_SRC
+
+*** matplotlib
+#+BEGIN_SRC sh
+sudo pacman -S python-matplotlib
+#+END_SRC
+
+** C++
+*** gcc
+#+BEGIN_SRC sh
+sudo pacman -S gcc
+#+END_SRC
+
+*** g++
+#+BEGIN_SRC sh
+sudo pacman -S g++
+#+END_SRC
+
+*** make
+#+BEGIN_SRC sh
+sudo pacman -S make
+#+END_SRC
+
+*** cmake
+#+BEGIN_SRC sh
+sudo pacman -S cmake
+#+END_SRC
+
+*** clang
+Install clang across your system
+#+BEGIN_SRC sh
+sudo pacman -S clang
+#+END_SRC
+*** irony
+This might not work according to your system
+#+BEGIN_SRC sh
+yay pacman -S emacs-company-irony-git
+#+END_SRC
+
+*** silver searcher (for definition jumps)
+#+BEGIN_SRC sh
+sudo pacman -S the_silver_searcher
+#+END_SRC
+
+*** cling
+Cling is REPL for C++. Very usefull!
+#+BEGIN_SRC sh
+yay -S cling-git
+#+END_SRC
+
+** JavaScript
+*** npm
+#+BEGIN_SRC sh
+sudo pacman -S nodejs
+sudo pacman -S npm
+#+END_SRC
+*** typescript
+#+BEGIN_SRC sh
+sudo npm install -g typescript
+#+END_SRC
+*** tern
+#+BEGIN_SRC sh
+sudo npm install -g tern
+#+END_SRC
+*** yarn
+#+BEGIN_SRC sh
+sudo npm install -g yarn
+#+END_SRC
+*** meteor
+#+BEGIN_SRC sh
+curl https://install.meteor.com/ | sh
+#+END_SRC
+
+*** mongodb
+1. Install mongodb
+#+BEGIN_SRC sh
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo service mongod start
+#+END_SRC
+2. Setup emacs for mongo
+
+*** revealjs
+#+BEGIN_SRC sh
+git clone https://github.com/hakimel/reveal.js/
+cd reveal.js
+npm install
+#+END_SRC
+
+*** prettier
+#+BEGIN_SRC sh
+sudo pacman -S prettier
+#+END_SRC
+** Java
+#+BEGIN_SRC sh
+sudo pacman -S jdk-openjdk openjdk-doc openjdk-src
+#+END_SRC
+
+** Haskell
+   #+BEGIN_SRC sh
+sudo pacman -S ghc
+   #+END_SRC
+
+** MySQL
+1. Arch Linux official SQL package is [[https://wiki.archlinux.org/index.php/MariaDB][mariadb]]
+2. Set root password and create users
+3. Setup emacs for MySQL
+   
+** Go
+#+BEGIN_SRC sh
+sudo pacman -S go
+#+END_SRC
+
+** LaTeX
+** MarkDOWN
+#+BEGIN_SRC sh
+git clone --recursive git://github.com/fletcher/peg-multimarkdown.git
+make
+#+END_SRC
+
+** Latex
+Get all Maths-fonts
+#+BEGIN_SRC shell
+sudo pacman -S texlive-core texlive-fontsextra
+#+END_SRC
+#+BEGIN_SRC sh
+sudo pacman -S texlive-most texlive-lang biber
+#+END_SRC
+
+* Optimizations
+** SSH Key
+** Microcode
+1. Depending on the processor architecture:
+#+BEGIN_SRC shell
+sudo pacman -S amd-ucode
+sudo pacman -S intel-ucode
+#+END_SRC
+2. Update the bootloader
+#+BEGIN_SRC shell
+grub-mkconfig -o /boot/grub/grub.cfg
+#+END_SRC
+3. Detecting available microcode updates
+#+BEGIN_SRC shell
+sudo pacman -S intel-ucode iucode-tool
+modprobe cpuid
+bsdtar -Oxf /boot/intel-ucode.img | iucode_tool -tb -lS -
+#+END_SRC
+** Silent Boot
+** Power Management
+*** Battery Life
+*** Fan
+*** CPU
+** Printer
+** Firewall
+1. Change /etc/default/ufw 
+IPV6=yes 
+2. Setup default policies
+#+BEGIN_SRC sh
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+#+END_SRC
+3. Allow ssh & gsconnect
+#+BEGIN_SRC sh
+sudo ufw allow ssh
+sudo ufw allow 1176
+#+END_SRC
+4. Enable UFW on boot
+#+BEGIN_SRC sh
+sudo ufw enable
+#+END_SRC
+
+** VPN
+#+BEGIN_SRC shell
+sudo pacman -S openvpn networkmanager-openvpn
+#+END_SRC
+
+* Extras
+** Python cProfiler
+#+BEGIN_SRC python
+import cProfile
+import pstats
+import io
+
+
+def profile(fnc):
+
+    """A decorator that uses cProfile to profile a function"""
+
+    def inner(*args, **kwargs):
+
+        pr = cProfile.Profile()
+        pr.enable()
+        retval = fnc(*args, **kwargs)
+        pr.disable()
+        s = io.StringIO()
+        sortby = 'cumulative'
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        print(s.getvalue())
+        return retval
+
+    return inner
+#+END_SRC
+** Markdown Template
+#+BEGIN_SRC markdown
+# Project Title
+
+One Paragraph of project description goes here
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+
+```
+Give examples
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
+#+END_SRC
+
