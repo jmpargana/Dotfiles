@@ -85,6 +85,12 @@
     -  [[#printer][Printer]]
     -  [[#firewall][Firewall]]
     -  [[#vpn][VPN]]
+    -  [[#startup-applications][Startup Applications]]
+      -  [[#keepassxc][KeePassXc]]
+      -  [[#franz][Franz]]
+      -  [[#protonmail-bridge][ProtonMail Bridge]]
+      -  [[#thunderbird][ThunderBird]]
+      -  [[#emacs][Emacs]]
   -  [[#extras][Extras]]
     -  [[#python-cprofiler][Python cProfiler]]
     -  [[#markdown-template][Markdown Template]]
@@ -125,8 +131,35 @@ timedatectl set-ntl true
 #+END_SRC
 
 5. Partition the disks
+Create the following partitions considering /dev/sda1 and /dev/sda2 
+already were created by the windows 10 system
+
+|-----------+------+-------------------------|
+| Device    | Size | Type                    |
+|-----------+------+-------------------------|
+| /dev/sda1 | 512M | EFI                     |
+| /dev/sda2 | 250G | Microsoft               |
+| /dev/sda3 | 50G  | Root (linux filesystem) |
+| /dev/sda4 | 16G  | Swap (linux swap)       |
+| /dev/sda5 | 250G | Home (linux filesystem) |
+|-----------+------+-------------------------|
+
+
 6. Format the partitions
+#+BEGIN_SRC sh
+mkfs.ext4 /dev/sda3
+mkfs.ext4 /dev/sda5
+mkswap /dev/sda4
+swapon /dev/sda4
+#+END_SRC
 7. Mount the file systems
+#+BEGIN_SRC sh
+mount /dev/sda3 /mnt
+mkdir /mnt/home
+mount /dev/sda5 /mnt/home
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+#+END_SRC
 8. Install base packages
 #+BEGIN_SRC shell
 pacstrap /mnt base base-devel
@@ -162,9 +195,11 @@ KEYMAP=de-latin1
 13. Network configuration
 1. Edit /etc/hostname with "arch"
 2. Edit /etc/hosts
+#+BEGIN_SRC txt
 127.0.0.1    localhost
 ::1          localhost
 127.0.1.1    arch.localdomain    arch
+#+END_SRC
 
 14. Initramfs
 #+BEGIN_SRC shell
@@ -177,7 +212,20 @@ passwd
 #+END_SRC
 
 16. Install bootloader
+#+BEGIN_SRC sh
+pacman -S grub efibootmgr
+mount /dev/sda1 /boot
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+pacman -S os-prober
+mkdir /mnt/windows10
+mount /dev/sda2 /mnt/windows10
+grub-mkconfig -o /boot/grub/grub.cfg
+#+END_SRC
 
+16. Network
+#+BEGIN_SRC sh
+pacman -S iw wpa_supplicant dialog wpa_actiond
+#+END_SRC
 17. Reboot
 
 * Post-Installation Setup
@@ -186,11 +234,28 @@ Add user:
 #+BEGIN_SRC shell
 useradd -m -G wheel,storage,power -s icm
 passwd icm
+EDITOR=nano visudo
 #+END_SRC
+Uncomment whell ALL=(ALL) ALL
+#+BEGIN_SRC sh
+pacman -S bash-completion
+pacman -S mesa
+pacman -S xf86-video-intel intel-dri
+pacman -S xf86-input-synaptics
+pacman -S NetworkManager
+pacman -S alsa-utils pulseaudio pavucontrol
+#+END_SRC
+
 ** Mirrors
+Follow [[these pro][these]] procedures.
 ** AUR Package Manager
 Yay is the latest most well written package manager in go that builds and
  installs packages from the AUR.
+#+BEGIN_SRC shell
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+#+END_SRC
 ** Display Drivers
 [[https://wiki.archlinux.org/index.php/NVIDIA][here]]
 ** Xorg Server
@@ -254,8 +319,29 @@ sudo pacman -S noto-fonts
 * Applications
 ** Zsh
 1. Oh-my-zsh
-2. Addons
-3. Base 16 Theme
+#+BEGIN_SRC sh
+sudo pacman -S zsh git wget curl vim
+sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+#+END_SRC
+2. Theme
+#+BEGIN_SRC sh
+git clone https://github.com/ergenekonyigit/lambda-gitster.git
+cd lambda-gitster
+cp lambda-gitster.zsh-theme ~/.oh-my-zsh/custom/themes
+#+END_SRC
+Change ZSH_THEME to "lambda-gitster" in .zshrc.
+3. Addons
+Install autosuggestions
+#+BEGIN_SRC sh
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+#+END_SRC
+Add zsh-autosuggestions to plugins
+Install zsh-syntax-highlighting
+#+BEGIN_SRC sh
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+#+END_SRC
+Also add it to your plugins list.
+4. Base 16 Theme
 Clone the main repository:
 #+BEGIN_SRC shell
 git clone https://github.com/aaron-williamson/base16-gnome-terminal.git ~/.config/base16-gnome-terminal
@@ -271,32 +357,62 @@ And execute the file containing your selected theme:
 sudo pacman -S firefox
 #+END_SRC
 2. Add extensions:
-2.1. vimiumfx
-2.2. keepassxc
-2.3. ublock origin
-3. Setup Search Engines
-3.1. DuckDuckGo -> d
-3.2. Wikipedia -> w
-3.3. Github -> g
-3.4. Youtube -> y
-3.5. Google Maps -> gm
-3.6. Google Translate -> gt
-3.7. Leo PT -> l
-3.8. Leo EN -> le
-3.9. Leo RU -> Lambda
-3.10. Wiktionary -> Vê
-3.11. imdb -> i
-3.12. ProxyBay -> p
+- vimiumfx
+- keepassxc
+- ublock origin
+- Setup Search Engines
+|---------------------+--------|
+| DuckDuckGo          | d      |
+| Wikipedia           | w      |
+| GitHub              | g      |
+| YouTube             | y      |
+| Google Maps         | gm     |
+| Google Translate    | gt     |
+| Leo PT              | l      |
+| Leo EN              | l      |
+| Leo RU              | Lambda |
+| Wiktionary          | ve     |
+| imdb                | i      |
+| ProxyBay            | p      |
+| ArchWiki            | a      |
+| Arch Linux Packages | ap     |
+| Amazon              | am     |
+|---------------------+--------|
+
 4. Furthuer customizations
-4.1. Remove title bar
-4.2. Disable password completion
-4.3. Customize history and cookie saving
+- Remove title bar
+- Disable password completion
+- Customize history and cookie saving
 ** Thunderbird
+#+BEGIN_SRC shell
+sudo pacman -S thunderbird
+#+END_SRC
 ** ProtonMail Bridge
+Needs to be build from scratch. Donwload .pkg from mail.
 ** MEGASync
+Install package with:
+#+BEGIN_SRC shell
+yay -S megasync
+#+END_SRC
+And connect Documents/ folder in /home/icm.
 ** Franz
+#+BEGIN_SRC sh
+yay -S franz
+#+END_SRC
 ** KeePassXC
+#+BEGIN_SRC sh
+sudo pacman -S keepassxc
+#+END_SRC
 ** Emacs
+#+BEGIN_SRC sh
+sudo pacman -S emacs
+#+END_SRC
+Download emacs and pull the Dot Files repository from github. By typing:
+#+BEGIN_SRC sh
+git init
+git add remote git@github.com:jmpargana/Dot-Files.git
+git pull --rebase
+#+END_SRC
 ** Ranger
 #+BEGIN_SRC shell
 sudo pacman -S ranger
@@ -511,6 +627,21 @@ sudo pacman -S texlive-most texlive-lang biber
 
 * Optimizations
 ** SSH Key
+0. Install openssh
+#+BEGIN_SRC sh
+sudo pacman -S openssh
+#+END_SRC
+1. Generate key 
+#+BEGIN_SRC sh
+ssh-keygen -t rsa -b 4096 -C "icmjmp@protonmail.ch"
+#+END_SRC
+2. Add key to ssh-agent
+#+BEGIN_SRC sh
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+#+END_SRC
+3. Copy id_rsa.pub to your github account
+4. Add ssh key to keepassxc
 ** Microcode
 1. Depending on the processor architecture:
 #+BEGIN_SRC shell
@@ -552,10 +683,59 @@ sudo ufw enable
 #+END_SRC
 
 ** VPN
+1. Get openvpn
 #+BEGIN_SRC shell
 sudo pacman -S openvpn networkmanager-openvpn
 #+END_SRC
+2. Get openconnect
+#+BEGIN_SRC sh
+sudo pacman -S openconnect networkmanager-openconnect
+#+END_SRC
+3. Download nordvpn config files
+#+BEGIN_SRC sh
+mkdir ~/Documents/.nordvpn
+sudo wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+sudo pacman -S ca-certificates unzip
+unzip ovpn.zip ~/Documents/.nordvpn
+#+END_SRC
+4. Find best server
+[[https://nordvpn.com/de/servers/tools/][here]]
+5. Set Goethe Uni Frankfurt VPN
+vpn-einwahl.uni-frankfurt.de with CiscoAnyConnect.
 
+** Startup Applications
+*** KeePassXc
+*** Franz
+*** ProtonMail Bridge
+*** ThunderBird
+*** Emacs
+To do so, you need to add an entry in ~/.config/systemd/user/emacs.service
+containing:
+#+BEGIN_SRC txt
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/emacs --daemon
+ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+#+END_SRC
+And start and enable the systemd process with:
+#+BEGIN_SRC shell
+systemctl enable --user emacs
+systemctl start --user emacs
+#+END_SRC
+Last but not least, create both a keybinding with
+#+BEGIN_SRC sh
+emacsclient -c
+#+END_SRC
+And an alias to launch emacsclient -t in terminal with "ec".
 * Extras
 ** Python cProfiler
 #+BEGIN_SRC python
