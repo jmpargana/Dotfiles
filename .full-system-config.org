@@ -212,24 +212,26 @@ sudo pacman -S gnome-tweaks
 *** Gnome Theme
 
 Setup the major gnome icon, shell and applications theme from one of the
-following:
+following: (currently I use Paper Icons with Ant Shell and Applications)
 
 1. EvoPop
 #+BEGIN_SRC shell
-
+yay -S evopop-gtk-theme
 #+END_SRC
 2. Arc-Theme
 #+BEGIN_SRC shell
-
+yay -S arc-gtk-theme
 #+END_SRC
 3. Paper
 #+BEGIN_SRC shell
-
+yay -S paper-icon-theme-git
 #+END_SRC
 4. Ant
+Clone github repository to /usr/share/themes directory by running:
 #+BEGIN_SRC shell
-
+git clone https://github.com/EliverLara/Ant
 #+END_SRC
+And change the appearence settings with the gnome-tweak-tool.
 
 *** GDM Theme
 #+BEGIN_SRC shell
@@ -254,6 +256,15 @@ sudo pacman -S noto-fonts
 1. Oh-my-zsh
 2. Addons
 3. Base 16 Theme
+Clone the main repository:
+#+BEGIN_SRC shell
+git clone https://github.com/aaron-williamson/base16-gnome-terminal.git ~/.config/base16-gnome-terminal
+#+END_SRC
+And execute the file containing your selected theme:
+#+BEGIN_SRC shell
+.config/base16-gnome-terminal/color-scripts/base16-bright.sh
+#+END_SRC
+
 ** Firefox
 1. Install firefox
 #+BEGIN_SRC shell
