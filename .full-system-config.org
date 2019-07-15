@@ -137,11 +137,13 @@ already were created by the windows 10 system
 |-----------+------+-------------------------|
 | Device    | Size | Type                    |
 |-----------+------+-------------------------|
-| /dev/sda1 | 512M | EFI                     |
-| /dev/sda2 | 250G | Microsoft               |
-| /dev/sda3 | 50G  | Root (linux filesystem) |
-| /dev/sda4 | 16G  | Swap (linux swap)       |
-| /dev/sda5 | 250G | Home (linux filesystem) |
+| /dev/sda1 | 450M | Windows Recovery        |
+| /dev/sda2 | 512M | EFI                     |
+| /dev/sda3 | 20G  | Microsoft Base          |
+| /dev/sda4 | 250G | Microsoft Basic (C)     |
+| /dev/sda5 | 50G  | Root (linux filesystem) |
+| /dev/sda6 | 16G  | Swap (linux swap)       |
+| /dev/sda7 | 250G | Home (linux filesystem) |
 |-----------+------+-------------------------|
 
 
@@ -188,9 +190,15 @@ hwclock --systohc
 locale-gen
 #+END_SRC
 3. Create /etc/locale.conf and set LANG variable
+#+BEGIN_SRC txt
 LANG=en_US.UTF-8
+#+END_SRC
+
 4. Set keyboard layout in /etc/vconsole.conf
+#+BEGIN_SRC txt
 KEYMAP=de-latin1
+#+END_SRC
+
 
 13. Network configuration
 1. Edit /etc/hostname with "arch"
@@ -213,13 +221,24 @@ passwd
 
 16. Install bootloader
 #+BEGIN_SRC sh
-pacman -S grub efibootmgr
-mount /dev/sda1 /boot
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-pacman -S os-prober
-mkdir /mnt/windows10
-mount /dev/sda2 /mnt/windows10
+pacman -S grub efibootmgr os-prober
+mkdir /boot/efi
+mount /dev/sda2 /boot/efi
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+mkdir /boot/efi/EFI/BOOT
+cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
+nano /boot/efi/EFI/startup.nsh
+#+END_SRC
+
+Add the following text
+#+BEGIN_SRC txt
+bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "My GRUB"
+exit
+#+END_SRC
+#+BEGIN_SRC sh
+grub-mkconfig -o /boot/grub/grub.cfg
+mkinitcpio -p linux
 #+END_SRC
 
 16. Network
