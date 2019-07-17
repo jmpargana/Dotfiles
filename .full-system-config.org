@@ -746,9 +746,12 @@ sudo systemctl enable powertop.service
 #+BEGIN_SRC sh
 sudo powertop --calibrate
 #+END_SRC
-*** Fan
-
-*** CPU
+*** CPU & Fan
+#+BEGIN_SRC sh
+yay -S thermald
+sudo systemctl enable thermald.service
+sudo systemctl start thermald.service
+#+END_SRC
 ** Printer
 ** Firewall
 1. Change /etc/default/ufw 
