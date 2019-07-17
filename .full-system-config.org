@@ -678,9 +678,76 @@ modprobe cpuid
 bsdtar -Oxf /boot/intel-ucode.img | iucode_tool -tb -lS -
 #+END_SRC
 ** Silent Boot
+1. Add /quiet vga=current vt.global_cursor_default=0/ to your 
+bootloader's entries' options.
+2. Hide all kernel messages from the console by 
+creating /etc/sysctl.d/20-quiet-printk.conf
+#+BEGIN_SRC txt
+kernel.printk = 3 3 3 3
+#+END_SRC
+3. Hide agetty reate /etc/systemd/system/getty@tty1.service.d/skip-prompt.conf
+#+BEGIN_SRC txt
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin username --noclear %I $TERM
+#+END_SRC
+4. Prevent startx from redirecting output by adding this to .bash_profile
+#+BEGIN_SRC sh
+[[ $(fgconsole 2>/dev/null) == 1 ]] && exec startx -- vt1 &> /dev/null
+#+END_SRC
+5. Hide fsck messages during boot by adding systemd to /etc/mkinitcpio.conf:
+#+BEGIN_SRC sh
+mkinitcpio -p linux
+#+END_SRC
+6. Do the same in systemd-fsck-root.service and systemd-fsck@.service with:
+#+BEGIN_SRC sh
+systemctl edit --full systemd-fsck-root.service
+systemctl edit --full systemd-fsck@.service
+#+END_SRC
+#+BEGIN_SRC txt
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/systemd/systemd-fsck
+StandardOutput=null
+StandardError=journal+console
+TimeoutSec=0
+#+END_SRC
+7. Retain vendor logo from BIOS (not with dual boot)
+
 ** Power Management
 *** Battery Life
+1. Start by installing the powertop package
+#+BEGIN_SRC sh
+sudo pacman -S powertop
+#+END_SRC
+
+2. Create systemd process by editing file /etc/systemd/system/powertop.service
+#+BEGIN_SRC txt
+[Unit]
+Description=Powertop tunings
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/powertop --auto-tune
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+#+END_SRC
+
+3. Start and enable service
+#+BEGIN_SRC sh
+sudo systemctl start powertop.service
+sudo systemctl enable powertop.service
+#+END_SRC
+
+4. Prevent innacurate measurement
+#+BEGIN_SRC sh
+sudo powertop --calibrate
+#+END_SRC
 *** Fan
+
 *** CPU
 ** Printer
 ** Firewall
@@ -701,6 +768,10 @@ sudo ufw allow 1176
 sudo ufw enable
 #+END_SRC
 
+** Missing firmware
+#+BEGIN_SRC sh
+yay -S aic94xx-firmware wd719x-firmware
+#+END_SRC
 ** VPN
 1. Get openvpn
 #+BEGIN_SRC shell
@@ -755,6 +826,13 @@ Last but not least, create both a keybinding with
 emacsclient -c
 #+END_SRC
 And an alias to launch emacsclient -t in terminal with "ec".
+** Others
+*** Watchdog
+#+BEGIN_SRC sh
+yay -S watchdog
+sudo systemctl enable watchdog.service
+sudo systemctl start watchdog.service
+#+END_SRC
 * Extras
 ** Python cProfiler
 #+BEGIN_SRC python

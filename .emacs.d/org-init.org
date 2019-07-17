@@ -1065,7 +1065,7 @@ a whole lot easier.
 #+BEGIN_SRC emacs-lisp
   (use-package tex
     ;; :ensure t
-    :ensure auctex
+    ;; :ensure auctex
     :defer t
     :bind ("C-c C-a C-c" . TeX-evince-sync-view)
     :config
@@ -1080,10 +1080,10 @@ a whole lot easier.
 
     And this has the autocompletion enhancement.
 #+BEGIN_SRC emacs-lisp
-(use-package company-auctex
-  ;; :ensure t
-  :config
-  (company-auctex-init))
+  ;; (use-package company-auctex
+  ;;   ;; :ensure t
+  ;;   :config
+  ;;   (company-auctex-init))
 #+END_SRC
 
 
