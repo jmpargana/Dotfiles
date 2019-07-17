@@ -717,6 +717,7 @@ TimeoutSec=0
 
 ** Power Management
 *** Battery Life
+**** powertop
 1. Start by installing the powertop package
 #+BEGIN_SRC sh
 sudo pacman -S powertop
@@ -746,6 +747,14 @@ sudo systemctl enable powertop.service
 #+BEGIN_SRC sh
 sudo powertop --calibrate
 #+END_SRC
+**** TLP
+#+BEGIN_SRC sh
+sudo pacman -S tlp tp_smape acpi_call
+sudo systemctl enable tlp.service
+sudo systemctl start tlp.service
+sudo tlp-stat
+#+END_SRC
+Read wiki for more details.
 *** CPU & Fan
 #+BEGIN_SRC sh
 yay -S thermald
