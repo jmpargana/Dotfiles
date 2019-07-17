@@ -1,6 +1,16 @@
 #+TITLE: Full System Configuration
 
 * Introduction
+
+This file contains all the steps needed to configure and install my arch
+linux system. It's mostly a pre-selection of many of the pages and wiki 
+entries I have read over the last 5 years I've used arch linux. It has
+the installation details for a dualboot system with windows 10 with
+a uefi bootloader with an intel processor, but certain sections
+have links that redirect to websites or blogs containing more detailed
+information about how to apply on slightly different environments. It 
+will also contain details on how to install nvidia drivers.
+
 * Table of Contents
 :PROPERTIES:
 :TOC: all
@@ -80,10 +90,13 @@
     -  [[#silent-boot][Silent Boot]]
     -  [[#power-management][Power Management]]
       -  [[#battery-life][Battery Life]]
-      -  [[#fan][Fan]]
-      -  [[#cpu][CPU]]
+        -  [[#powertop][powertop]]
+        -  [[#tlp][TLP]]
+      -  [[#cpu--fan][CPU & Fan]]
     -  [[#printer][Printer]]
     -  [[#firewall][Firewall]]
+    -  [[#fingerprint][Fingerprint]]
+    -  [[#missing-firmware][Missing firmware]]
     -  [[#vpn][VPN]]
     -  [[#startup-applications][Startup Applications]]
       -  [[#keepassxc][KeePassXc]]
@@ -91,6 +104,8 @@
       -  [[#protonmail-bridge][ProtonMail Bridge]]
       -  [[#thunderbird][ThunderBird]]
       -  [[#emacs][Emacs]]
+    -  [[#others][Others]]
+      -  [[#watchdog][Watchdog]]
   -  [[#extras][Extras]]
     -  [[#python-cprofiler][Python cProfiler]]
     -  [[#markdown-template][Markdown Template]]
@@ -780,6 +795,11 @@ sudo ufw allow 1176
 sudo ufw enable
 #+END_SRC
 
+** Fingerprint
+#+BEGIN_SRC sh
+yay -S libfprint-vfs0097-git
+yay -S fingerprint-gui
+#+END_SRC
 ** Missing firmware
 #+BEGIN_SRC sh
 yay -S aic94xx-firmware wd719x-firmware
