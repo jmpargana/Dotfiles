@@ -777,6 +777,27 @@ sudo systemctl enable thermald.service
 sudo systemctl start thermald.service
 #+END_SRC
 ** Printer
+1. Install cups and setup socket to stay in standby wihout being 
+automatically started at boot time.
+#+BEGIN_SRC sh
+  sudo pacman -S cups
+  sudo systemctl enable org.cups.cupsd.socket	# only activates when requested
+  sudo systemctl start org.cups.cupsd.service
+#+END_SRC
+2. Setup avahi to resolve hostname and disable systemd-resolved before 
+activating it
+#+BEGIN_SRC sh
+sudo pacman -S avahi
+sudo systemctl stop systemd-resolved.service
+sudo systemctl disable systemd-resolved.service
+sudo systemctl start avahi-daemon.service
+sudo systemctl enable avahi-daemon.service
+#+END_SRC
+3. Install extras
+#+BEGIN_SRC sh
+sudo pacman -S ghostscript gutenprint foomatic foomatic-filters hplib cups-pdf system-config-printer libcups
+#+END_SRC
+
 ** Firewall
 1. Change /etc/default/ufw 
 IPV6=yes 
@@ -893,7 +914,7 @@ def profile(fnc):
     return inner
 #+END_SRC
 ** Markdown Template
-#+BEGIN_SRC markdown
+#+BEGIN_SRC md
 # Project Title
 
 One Paragraph of project description goes here

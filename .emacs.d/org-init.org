@@ -763,6 +763,26 @@ or use *C-u <NUMBER>* to make a jump.
 	   ("M-n" . move-text-down)))
 #+END_SRC
 
+** Large files
+Emacs' engine may slow down significally when dealing with large files
+(<15MB).
+One way with be creating your own find-file-hook, so that only fundamental
+mode with be activated, without any undo trees or other expensive modes.
+The following code snippet would do the trick:
+#+BEGIN_SRC emacs-lisp
+  ;; (defun my-find-file-check-make-large-file-read-only-hook ()
+  ;;   "If a file is over a given size, make the buffer read only."
+  ;;   (when (> (buffer-size) (* 1024 1024))
+  ;;     (setq buffer-read-only t)
+  ;;     (buffer-disable-undo)
+  ;;     (fundamental-mode)))
+
+  ;; (add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+#+END_SRC
+
+There is also a minor mode that can be found on [[https://github.com/m00natic/vlfi][github]].
+But the easiest solution is to open the file via *M-x find-file-literally*
+which was added to Emacs 27.
 
 * Programming Modes
 ** Python
