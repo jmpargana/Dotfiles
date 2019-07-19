@@ -433,6 +433,7 @@ And connect Documents/ folder in /home/icm.
 #+BEGIN_SRC sh
 yay -S franz
 #+END_SRC
+Add launch keybinding (M-S-f)
 ** KeePassXC
 #+BEGIN_SRC sh
 sudo pacman -S keepassxc
@@ -764,7 +765,7 @@ sudo powertop --calibrate
 #+END_SRC
 **** TLP
 #+BEGIN_SRC sh
-sudo pacman -S tlp tp_smape acpi_call
+sudo pacman -S tlp tp_smapi acpi_call tpacpi-bat
 sudo systemctl enable tlp.service
 sudo systemctl start tlp.service
 sudo tlp-stat
@@ -813,7 +814,8 @@ sudo ufw allow 1176
 #+END_SRC
 4. Enable UFW on boot
 #+BEGIN_SRC sh
-sudo ufw enable
+sudo systemctl enable ufw
+sudo systemctl start ufw
 #+END_SRC
 
 ** Fingerprint
@@ -851,6 +853,15 @@ vpn-einwahl.uni-frankfurt.de with CiscoAnyConnect.
 *** Franz
 *** ProtonMail Bridge
 *** ThunderBird
+1. Install thunderbird and protonmail-bridge
+#+BEGIN_SRC sh
+sudo pacman -S thunderbird
+yay -S protonmail-bridge
+#+END_SRC
+2. Login to protonmail-bridge
+3. Setup IMAP ports and password in thunderbird according to [[https://protonmail.com/bridge/thunderbird][this]].
+4. Set a launch keybinding in gnome (M-S-t)
+5. Add both thunderbird and protonmail-bridge to startup processes.
 *** Emacs
 To do so, you need to add an entry in ~/.config/systemd/user/emacs.service
 containing:
@@ -886,6 +897,9 @@ yay -S watchdog
 sudo systemctl enable watchdog.service
 sudo systemctl start watchdog.service
 #+END_SRC
+* Debugging
+Dealing with general issues (troubleshooting): [[https://wiki.archlinux.org/index.php/General_troubleshooting][here]].
+Testing kernels [[https://wiki.archlinux.org/index.php/Kernel][here]].
 * Extras
 ** Python cProfiler
 #+BEGIN_SRC python
