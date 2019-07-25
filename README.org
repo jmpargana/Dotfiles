@@ -3,9 +3,10 @@
 * Introduction
 
 This repository contains my most important dot files.  As well as all the
- details needed for a full system configuration, including an
-arch linux installation guide with windows 10 dual boot, post installation
-suggestions and my entire theme configuration.
+ details needed for a full system configuration, including:
 
-Each section within an order contains its own seperate README file. To read
-my Emacs Configuration go to .emacs.d/ folder.  
+- Arch linux installation guide with post installation suggestions 
+and my entire theme configuration
+- Emacs setup with its own documentation 
+- i3 configuration (coming soon)
+

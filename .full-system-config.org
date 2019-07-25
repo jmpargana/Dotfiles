@@ -32,6 +32,7 @@ will also contain details on how to install nvidia drivers.
     -  [[#fonts][Fonts]]
     -  [[#extensions][Extensions]]
       -  [[#gsconnect][GSConnect]]
+      -  [[#switch-windows][Switch-windows]]
   -  [[#applications][Applications]]
     -  [[#zsh][Zsh]]
     -  [[#firefox][Firefox]]
@@ -105,17 +106,9 @@ will also contain details on how to install nvidia drivers.
       -  [[#thunderbird][ThunderBird]]
       -  [[#emacs][Emacs]]
     -  [[#others][Others]]
+      -  [[#fix-buggs][Fix buggs]]
       -  [[#watchdog][Watchdog]]
-  -  [[#extras][Extras]]
-    -  [[#python-cprofiler][Python cProfiler]]
-    -  [[#markdown-template][Markdown Template]]
-  -  [[#dropwizardhttpwwwdropwizardio102docs---the-web-framework-used][{Dropwizard}(http://www.dropwizard.io/1.0.2/docs/) - The web framework used]]
-  -  [[#mavenhttpsmavenapacheorg---dependency-management][{Maven}(https://maven.apache.org/) - Dependency Management]]
-  -  [[#romehttpsrometoolsgithubiorome---used-to-generate-rss-feeds][{ROME}(https://rometools.github.io/rome/) - Used to generate RSS Feeds]]
-  -  [[#billie-thompson---initial-work---purpleboothhttpsgithubcompurplebooth][**Billie Thompson** - *Initial work* - {PurpleBooth}(https://github.com/PurpleBooth)]]
-  -  [[#hat-tip-to-anyone-whose-code-was-used][Hat tip to anyone whose code was used]]
-  -  [[#inspiration][Inspiration]]
-  -  [[#etc][etc]]
+  -  [[#debugging][Debugging]]
 
 * Installation
 
@@ -349,7 +342,10 @@ sudo pacman -S noto-fonts
 #+END_SRC
 ** Extensions
 *** GSConnect
-
+*** Switch-windows
+1. Open dconf-editor
+2. Go to org/gnome/desktop/wm/keybindings
+3. Change '<Alt>Tab' from switch-applications to switch-windows
 * Applications
 ** Zsh
 1. Oh-my-zsh
@@ -765,9 +761,14 @@ sudo powertop --calibrate
 #+END_SRC
 **** TLP
 #+BEGIN_SRC sh
-sudo pacman -S tlp tp_smapi acpi_call tpacpi-bat
+sudo pacman -S tlp tp_smapi acpi_call tpacpi-bat tlp-rdw smartmontool ethtool
 sudo systemctl enable tlp.service
+sudo systemctl enable tlp-sleep.service
+sudo systemctl start tlp-sleep.service
 sudo systemctl start tlp.service
+sudo systemctl enable NetworkManager-dispatcher.service 
+sudo systemctl mask systemd-rfkill.service
+sudo systemctl mask systemd-rfkill.socket 
 sudo tlp-stat
 #+END_SRC
 Read wiki for more details.
@@ -777,6 +778,7 @@ yay -S thermald
 sudo systemctl enable thermald.service
 sudo systemctl start thermald.service
 #+END_SRC
+Visit [[https://github.com/erpalma/throttled][this]] for more information about the Lenovo bug related to CPU throttleling.
 ** Printer
 1. Install cups and setup socket to stay in standby wihout being 
 automatically started at boot time.
@@ -891,6 +893,11 @@ emacsclient -c
 #+END_SRC
 And an alias to launch emacsclient -t in terminal with "ec".
 ** Others
+*** Fix buggs
+Fix "gtk-pam: unable to locate the daemon control file" error
+#+BEGIN_SRC sh
+dbus-launch gsettings reset org.gnome.clocks world-clocks
+#+END_SRC
 *** Watchdog
 #+BEGIN_SRC sh
 yay -S watchdog
@@ -900,121 +907,3 @@ sudo systemctl start watchdog.service
 * Debugging
 Dealing with general issues (troubleshooting): [[https://wiki.archlinux.org/index.php/General_troubleshooting][here]].
 Testing kernels [[https://wiki.archlinux.org/index.php/Kernel][here]].
-* Extras
-** Python cProfiler
-#+BEGIN_SRC python
-import cProfile
-import pstats
-import io
-
-
-def profile(fnc):
-
-    """A decorator that uses cProfile to profile a function"""
-
-    def inner(*args, **kwargs):
-
-        pr = cProfile.Profile()
-        pr.enable()
-        retval = fnc(*args, **kwargs)
-        pr.disable()
-        s = io.StringIO()
-        sortby = 'cumulative'
-        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-        ps.print_stats()
-        print(s.getvalue())
-        return retval
-
-    return inner
-#+END_SRC
-** Markdown Template
-#+BEGIN_SRC md
-# Project Title
-
-One Paragraph of project description goes here
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-#+END_SRC
-
