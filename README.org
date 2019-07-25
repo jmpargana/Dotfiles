@@ -5,8 +5,7 @@
 This repository contains my most important dot files.  As well as all the
  details needed for a full system configuration, including:
 
-- Arch linux installation guide with post installation suggestions 
-and my entire theme configuration
+- Arch linux installation guide with post installation suggestions
 - Emacs setup with its own documentation 
 - i3 configuration (coming soon)
 
