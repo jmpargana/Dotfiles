@@ -326,9 +326,137 @@ git clone https://github.com/EliverLara/Ant
 And change the appearence settings with the gnome-tweak-tool.
 
 *** GDM Theme
-#+BEGIN_SRC shell
-yay -S gdm-themes
+
+If failure on logout add this line to the daemon section 
+in /etc/gdm/custom.conf and uncoment wayland line
+#+BEGIN_SRC txt
+GdmXserverTimeout=60
+#WaylandEnable=false
 #+END_SRC
+
+1. Create skript to extract existing GNOME shell theme
+#+BEGIN_SRC sh
+#!/bin/sh
+gst=/usr/share/gnome-shell/gnome-shell-theme.gresource
+workdir=${HOME}/shell-theme
+
+for r in `gresource list $gst`; do
+	r=${r#\/org\/gnome\/shell/}
+	if [ ! -d $workdir/${r%/*} ]; then
+	  mkdir -p $workdir/${r%/*}
+	fi
+done
+
+for r in `gresource list $gst`; do
+        gresource extract $gst $r >$workdir/${r#\/org\/gnome\/shell/}
+done
+#+END_SRC
+
+2. Navigate to directory and copy desired image there
+3. Create a gnome-shell-theme.gresource.xml and change filename to image
+#+BEGIN_SRC xml
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/shell/theme">
+    <file>calendar-today.svg</file>
+    <file>checkbox-focused.svg</file>
+    <file>checkbox-off-focused.svg</file>
+    <file>checkbox-off.svg</file>
+    <file>checkbox.svg</file>
+    <file>dash-placeholder.svg</file>
+    <file>gnome-shell.css</file>
+    <file>gnome-shell-high-contrast.css</file>
+    <file>icons/message-indicator-symbolic.svg</file>
+    <file>key-enter.svg</file>
+    <file>key-hide.svg</file>
+    <file>key-layout.svg</file>
+    <file>key-shift-latched-uppercase.svg</file>
+    <file>key-shift.svg</file>
+    <file>key-shift-uppercase.svg</file>
+    <file>noise-texture.png</file>
+    <file>filename</file>
+    <file>no-events.svg</file>
+    <file>no-notifications.svg</file>
+    <file>pad-osd.css</file>
+    <file>process-working.svg</file>
+    <file>toggle-off-hc.svg</file>
+    <file>toggle-off-intl.svg</file>
+    <file>toggle-on-hc.svg</file>
+    <file>toggle-on-intl.svg</file>
+  </gresource>
+</gresources>
+#+END_SRC
+
+4. Open gnome-shell.css and change the following
+#+BEGIN_SRC css
+#lockDialogGroup {
+  background: #2e3436 url(filename);
+  background-size: [WIDTH]px [HEIGHT]px;
+  background-repeat: no-repeat;
+}
+#+END_SRC
+
+5. Compile the xml file by running:
+#+BEGIN_SRC sh
+glib-compile-resources gnome-shell-theme.gresource.xml
+#+END_SRC
+
+6. Copy gnome-shell-theme.gresource to /usr/share/gnome-shell
+7. Restart the gdm.service (it might break before reboot)
+
+8. Create /etc/dconf/profile/gdm file
+#+BEGIN_SRC txt
+user-db:user
+system-db:gdm
+file-db:/usr/share/gdm/greeter-dconf-defaults
+#+END_SRC
+
+9. Create gdm database in /etc/dconf/db/gdm.d/01-logo
+#+BEGIN_SRC txt
+[org/gnome/login-screen]
+logo='/usr/share/pixmaps/logo/greeter-logo.png'
+#+END_SRC
+
+10. Update and restart display manager
+#+BEGIN_SRC sh
+sudo dconf update && sudo systemctl restart display-manager
+#+END_SRC
+
+
+*** Plymouth
+
+Plymouth provides a flicker graphical boot process
+#+BEGIN_SRC sh
+yay -S plymouth
+yay -S gdm-plymouth
+#+END_SRC
+
+Add the plymouth hook in /etc/mkinitcpio.conf after base and systemd
+(supposing you already setup systemd instead of udev for silent boot)
+#+BEGIN_SRC txt
+HOOKS=(base systemd sd-plymouth [...])
+#+END_SRC
+
+Set the following kernel parameters to your boot loader options
+#+BEGIN_SRC txt
+quiet splash loglevel=3 rd.udev.log_priority=3 vt.global_cursor_default=0
+#+END_SRC
+
+Rebuild your initrd image
+#+BEGIN_SRC sh
+mkinitcpio -p linux
+#+END_SRC
+
+ENable smooth transition by:
+1. Disable your display manager
+#+BEGIN_SRC sh
+sudo systemctl disable gdm.service
+#+END_SRC
+2. Start the respective plymouth
+#+BEGIN_SRC sh
+sudo systemctl enable gdm-plymouth.service
+#+END_SRC
+
 
 ** Fonts
 

@@ -101,8 +101,10 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ec="emacsclient -t"
-alias zshconf="ec ~/.zshrc"
+alias zc="ec ~/.zshrc"
 alias einit="ec ~/.emacs.d/org-init.org"
+alias sv="sudo vim"
+alias sz="source ~/.zshrc"
 
 
 # run ls after cd
