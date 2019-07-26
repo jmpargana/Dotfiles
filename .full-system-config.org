@@ -470,6 +470,10 @@ sudo pacman -S noto-fonts
 #+END_SRC
 ** Extensions
 *** GSConnect
+*** Activies config
+#+BEGIN_SRC sh
+yay -S gnome-shell-extension-activities-config
+#+END_SRC
 *** Switch-windows
 1. Open dconf-editor
 2. Go to org/gnome/desktop/wm/keybindings
