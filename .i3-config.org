@@ -1,0 +1,23 @@
+* Install the basics
+
+#+BEGIN_SRC sh
+sudo pacman -S i3 awesome-terminal-fonts i3status dmenu rofi feh
+#+END_SRC
+
+* Clone Dot-Files 
+
+Place my configuration file under ./config/i3/config
+
+
+* My configuration
+
+- I've changed to default terminal to gnome-terminal, since I run it with Gnome in the background.
+- Manage keybindings
+
+
+
+|-----+-------------|
+| W+c | Kill Window |
+|     |             |
+|-----+-------------|
+

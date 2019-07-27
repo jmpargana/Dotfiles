@@ -105,6 +105,7 @@ alias zc="ec ~/.zshrc"
 alias einit="ec ~/.emacs.d/org-init.org"
 alias sv="sudo vim"
 alias sz="source ~/.zshrc"
+alias i3c="ec ~/.config/i3/config"
 
 
 # run ls after cd
