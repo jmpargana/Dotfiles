@@ -8,7 +8,6 @@ sudo pacman -S i3 awesome-terminal-fonts i3status dmenu rofi feh
 
 Place my configuration file under ./config/i3/config
 
-
 * My configuration
 
 - I've changed to default terminal to gnome-terminal, since I run it with Gnome in the background.
@@ -21,3 +20,8 @@ Place my configuration file under ./config/i3/config
 |     |             |
 |-----+-------------|
 
+
+
+* Extras
+
+This [[https://github.com/addy-dclxvi/i3-starterpack][link]] contains an amazing guide on how to get started with i3.
