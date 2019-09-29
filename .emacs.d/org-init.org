@@ -478,10 +478,10 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
 
    Another famous theme with 5 different formats
 #+BEGIN_SRC emacs-lisp
-  (use-package color-theme-sanityinc-tomorrow
-    ;; :ensure t
-    :init
-    (load-theme 'sanityinc-tomorrow-day t))
+  ;; (use-package color-theme-sanityinc-tomorrow
+  ;;   ;; :ensure t
+  ;;   :init
+  ;;   (load-theme 'sanityinc-tomorrow-day t))
 #+END_SRC
 
 ** Moe-Theme
@@ -502,6 +502,15 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
   ;;       ;; :ensure t
   ;;       :config
   ;;       (load-theme 'solarized-light t))
+#+END_SRC
+
+** Nord-Theme
+
+#+BEGIN_SRC emacs-lisp
+  (use-package nord-theme
+    ;; :ensure t
+    :config
+    (load-theme 'nord t) )
 #+END_SRC
 
 ** Powerline
@@ -579,7 +588,7 @@ emacs to launch with specific dimensions and transparent background. The line
   ;; (add-to-list 'default-frame-alist '('alpha (88 . 70)))
   ;; (add-to-list 'default-frame-alist '(height . 40))
   ;; (add-to-list 'default-frame-alist '(width . 170))
-  ;; (set-face-attribute 'default nil :height 130)
+  (set-face-attribute 'default nil :height 110)
 #+END_SRC
 
 
