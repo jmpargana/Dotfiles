@@ -504,15 +504,6 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
   ;;       (load-theme 'solarized-light t))
 #+END_SRC
 
-** Nord-Theme
-
-#+BEGIN_SRC emacs-lisp
-  (use-package nord-theme
-    ;; :ensure t
-    :config
-    (load-theme 'nord t) )
-#+END_SRC
-
 ** Powerline
 
    You can also search these github [[https://github.com/milkypostman/powerline][page]] for more details.
@@ -521,6 +512,15 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
 	;; :ensure t
 	:config
 	(powerline-center-theme))
+#+END_SRC
+
+** Nord-Theme
+
+#+BEGIN_SRC emacs-lisp
+  (use-package nord-theme
+    :ensure t
+    :init
+    (load-theme 'nord t) )
 #+END_SRC
 
 ** Rainbow Delimiters 

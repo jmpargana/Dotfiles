@@ -113,6 +113,8 @@ alias yupt="yay -Syu"
 alias vv="vim ~/.vimrc"
 alias vz="vim ~/.zshrc"
 alias n="neofetch"
+alias s="sensors"
+alias nv="nvidia-smi"
 
 
 # run ls after cd
