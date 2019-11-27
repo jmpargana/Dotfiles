@@ -52,6 +52,7 @@ descriptions than would be expected from elisp comments.
     -  [[#moe-theme][Moe-Theme]]
     -  [[#solarized][Solarized]]
     -  [[#powerline][Powerline]]
+    -  [[#nord-theme][Nord-Theme]]
     -  [[#rainbow-delimiters][Rainbow Delimiters]]
     -  [[#autopair][Autopair]]
     -  [[#linum][Linum]]
@@ -67,6 +68,7 @@ descriptions than would be expected from elisp comments.
     -  [[#evil-nerd-commenter][Evil Nerd Commenter]]
     -  [[#origami][Origami]]
     -  [[#move-text][Move Text]]
+    -  [[#large-files][Large files]]
   -  [[#programming-modes][Programming Modes]]
     -  [[#python][Python]]
       -  [[#elpy][Elpy]]
@@ -936,10 +938,10 @@ you can also read some jsx and tsx specifications.
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     ;; :ensure t
-    :mode ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
-           "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.html?\\'"
-           "\\.api\\'" "\\.tsx\\'" "\\.ts\\'" "\\.jsx\\'"
-           "/some/react/path/.*\\.js[x]?\\'")
+;;    :mode ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
+;;           "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.html?\\'"
+;;           "\\.api\\'" "\\.tsx\\'" "\\.ts\\'" "\\.jsx\\'"
+;;           "/some/react/path/.*\\.js[x]?\\'")
     :bind-keymap ("C-c C-n" . web-mode-tag-match)
     :config (progn
              (flycheck-add-mode 'typescript-tslint 'web-mode)
@@ -959,9 +961,11 @@ you can also read some jsx and tsx specifications.
     This creates snippets for html and css tagging and can be very usefull. For more details [[https://github.com/smihica/emmet-mode][here]].
 #+BEGIN_SRC emacs-lisp
   (use-package emmet-mode
-    :hook (web-mode)
-    ;; :ensure t
+    :hook (html-mode rjsx-mode)
+    :ensure t
+    :config
     )
+
 #+END_SRC
 
 
@@ -975,7 +979,6 @@ first two blocks.
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
     ;; :ensure t
-    :mode "\\.js\\'"
     :hook (js2-imenu-extras-mode))
 
   (use-package js2-refactor
@@ -1005,8 +1008,8 @@ your /prettify/ keybindings. This is not needed, since it is activated on save.
 #+BEGIN_SRC emacs-lisp
   (use-package prettier-js
     ;; :ensure t
-    :hook (web-mode js2-mode)
-    ;; :bind ("M-p p" . prettier-js)
+    :bind ("M-ö p" . prettier-js)
+    :hook (web-mode js2-mode rjsx-mode)
     :config
     (progn
       (defun enable-minor-mode (my-pair)
@@ -1027,7 +1030,21 @@ JSON support
 #+BEGIN_SRC emacs-lisp
   (use-package json-mode
     ;; :ensure t
-    :hook web-mode)
+    :hook (web-mode))
+#+END_SRC
+
+
+*** JSX-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rjsx-mode
+    :ensure t
+    :mode "\\.js\\'"
+    :config 
+    (progn
+      (setq js-indent-level 2)
+      )
+    )
 #+END_SRC
 
 
