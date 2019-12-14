@@ -11,6 +11,10 @@ set softtabstop=2
 set autoindent
 set smartindent
 
+" always needed
+set encoding=utf-8
+set fileencoding=utf-8
+
 " show hybrid line numbers
 set nu rnu
 
@@ -176,8 +180,6 @@ vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
 
 
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setup Plugger and Plugins
 "
@@ -201,6 +203,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
+Plug 'terryma/vim-expand-region'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 
 call plug#end()
@@ -230,6 +235,8 @@ let g:PaperColor_Theme_Options = {
 
 colorscheme PaperColor
 
+
+let g:airline_theme='simple'
 
 
 
@@ -278,6 +285,7 @@ endif
 " ACK 
 " open ack and put the cursor in the right position
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
+noremap <leader>g :Ack
 
 " search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
@@ -306,6 +314,8 @@ map <leader>o :BufExplorer<cr>
 
 
 
+" FZF
+noremap <leader>f :GFiles <cr>
 
 
 
@@ -345,3 +355,51 @@ map <leader>o :BufExplorer<cr>
 " VIM AWESOME - https://linuxhint.com/vim_awesome/
 " awesome vim (github) - https://github.com/akrawchyk/awesome-vim
 " ultimate vim config - https://github.com/amix/vimrc
+
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Functions from amix vimrc 
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
+
+
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
