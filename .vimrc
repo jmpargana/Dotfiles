@@ -5,9 +5,9 @@
 
 " change indentation behaviour
 set expandtab
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 set autoindent
 set smartindent
 
@@ -166,7 +166,6 @@ noremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
-
 " parenthesis, brackets, quotes
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
@@ -174,6 +173,10 @@ vnoremap $3 <esc>`>a}<esc>`<i{<esc>
 vnoremap $$ <esc>`>a"<esc>`<i"<esc>
 vnoremap $q <esc>`>a'<esc>`<i'<esc>
 vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
+
+autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 
 
@@ -206,6 +209,11 @@ Plug 'tpope/vim-commentary'
 Plug 'terryma/vim-expand-region'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'arcticicestudio/nord-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'dense-analysis/ale'
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
 
 
 call plug#end()
@@ -223,20 +231,54 @@ noremap <leader>pu :PlugInstall<cr>
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set background=dark
+" set background=dark
 
-let g:PaperColor_Theme_Options = {
-  \   'theme': {
-  \     'default.dark': {
-  \       'transparent_background': 1
-  \     }
-  \   }
-  \ }
+" let g:PaperColor_Theme_Options = {
+"   \   'theme': {
+"   \     'default.dark': {
+"   \       'transparent_background': 1
+"   \     }
+"   \   }
+"   \ }
 
-colorscheme PaperColor
+" colorscheme PaperColor
+
+colorscheme nord
 
 
-let g:airline_theme='simple'
+
+let g:airline_theme='deus'
+
+
+" air-line
+let g:airline_powerline_fonts = 1
+"
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+"" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''"
 
 
 
@@ -247,6 +289,11 @@ let g:airline_theme='simple'
 
 " multiple cursors
 " https://github.com/terryma/vim-multiple-cursors
+
+
+" ALEfix from ALE
+let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+
 
 
 " vim-surround
