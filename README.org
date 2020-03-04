@@ -7,6 +7,7 @@ This repository contains my most important dot files.  As well as all the
 
 - Arch linux installation guide with post installation suggestions
 - Emacs setup with its own documentation 
-- i3 configuration (coming soon)
-- xfce and lightdm configuration (coming soon)
-- Custom kernel compilation (coming soon)
+- Vimrc file with few but awesome plugins
+- i3 configuration with great Rofi theme
+- Openbox configuration with tint2 themes
+- Some extras (Xresources, .tmux, .zshrc, etc.)
