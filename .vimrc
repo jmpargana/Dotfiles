@@ -99,6 +99,14 @@ set guioptions-=l
 set guioptions-=L
 
 
+" set terminal to open below
+set splitbelow
+" set tws=10x0
+
+set keywordprg=:Man
+
+
+
 
 
 
@@ -112,6 +120,13 @@ let mapleader = ","
 
 " fast saving
 nmap <leader>w :w!<cr>
+" nnoremap <silent> <C-S> :w!<cr>
+nmap <leader>q :q<cr>
+nmap <leader>x :x<cr>
+
+
+" open terminal
+nnoremap <leader>c :term<cr>
 
 
 " :W sudo saves the file
@@ -192,16 +207,16 @@ autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 call plug#begin('~/.vim/plugged')
 
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
 Plug 'mattn/emmet-vim'
-Plug 'frazrepo/vim-rainbow'
+" Plug 'frazrepo/vim-rainbow'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/mru.vim'
-Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jlanzarotta/bufexplorer'
@@ -209,11 +224,16 @@ Plug 'tpope/vim-commentary'
 Plug 'terryma/vim-expand-region'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 Plug 'arcticicestudio/nord-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'dense-analysis/ale'
 Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
 
 
 call plug#end()
@@ -244,10 +264,15 @@ noremap <leader>pu :PlugInstall<cr>
 " colorscheme PaperColor
 
 colorscheme nord
+" colorscheme PaperColor
+" set background=light
 
 
 
 let g:airline_theme='deus'
+
+" let g:lightline = { 'colorscheme': 'PaperColor' }
+" let g:airline_theme='papercolor'
 
 
 " air-line
@@ -363,7 +388,7 @@ map <leader>o :BufExplorer<cr>
 
 " FZF
 noremap <leader>f :GFiles <cr>
-
+noremap <leader>F :Files <cr>
 
 
 
@@ -430,6 +455,11 @@ function! <SID>BufcloseCloseIt()
     if buflisted(l:currentBufNum)
         execute("bdelete! ".l:currentBufNum)
     endif
+endfunction
+
+
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
 endfunction
 
 

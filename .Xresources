@@ -1,0 +1,9 @@
+! ------------------------------------------------------------------------------
+! Colour Configuration
+! ------------------------------------------------------------------------------
+
+#include ".Xresources.d/nord"
+#include ".Xresources.d/dmenu"
+#include ".Xresources.d/rofi"
+#include ".Xresources.d/urxvt"
+#include ".Xresources.d/xterm"

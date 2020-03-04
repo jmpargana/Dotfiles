@@ -76,6 +76,9 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+
+[[ $TMUX = "" ]] && export TERM="xterm-256color"
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -115,6 +118,29 @@ alias vz="vim ~/.zshrc"
 alias n="neofetch"
 alias s="sensors"
 alias nv="nvidia-smi"
+alias mr="cd .. && make && cd bin && ./*"
+alias cr="cargo run"
+alias ci="cargo init"
+alias prp="pipenv run python"
+alias ns="nordvpn status"
+alias p="ping 8.8.8.8 -c 3"
+alias ct="cargo test"
+alias cn="cargo new"
+alias cdo="cargo doc --open"
+alias gaa="git add ."
+alias gcm="git commit -m"
+alias gpu="git push -u origin master"
+alias cf="cargo fmt"
+alias cws="cargo web start"
+alias gs="git status"
+
+
+
+# extend PATH for python binaries
+path+=('/home/icm/.local/bin')
+path+=('/home/icm/.cargo/bin')
+export PATH
+
 
 
 # run ls after cd
@@ -122,3 +148,6 @@ function chpwd() {
 	emulate -L zsh
 	ls
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
