@@ -123,6 +123,7 @@ nmap <leader>w :w!<cr>
 " nnoremap <silent> <C-S> :w!<cr>
 nmap <leader>q :q<cr>
 nmap <leader>x :x<cr>
+nmap <leader>o :only<cr>
 
 
 " open terminal
