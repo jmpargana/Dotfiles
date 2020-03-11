@@ -133,6 +133,7 @@ alias gpu="git push -u origin master"
 alias cf="cargo fmt"
 alias cws="cargo web start"
 alias gs="git status"
+alias ys="yarn start"
 
 
 
