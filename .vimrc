@@ -238,6 +238,8 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 
+Plug 'altercation/vim-colors-solarized'
+
 call plug#end()
 
 
@@ -264,12 +266,16 @@ noremap <leader>pu :PlugInstall<cr>
 "   \ }
 
 " colorscheme PaperColor
+" set background=light
 
+" set background=light
+" colorscheme solarized
 colorscheme nord
 " colorscheme PaperColor
 " set background=light
 
 
+" let g:solarized_termcolors=256
 
 let g:airline_theme='deus'
 

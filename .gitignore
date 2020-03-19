@@ -138,3 +138,8 @@ snap/
 .config/xsettingsd/
 .config/yay/
 .config/base*
+
+.aaron*
+.eendro*
+.ccache
+.config/fish
