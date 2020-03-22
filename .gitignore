@@ -143,3 +143,4 @@ snap/
 .eendro*
 .ccache
 .config/fish
+.net*
