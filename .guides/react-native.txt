@@ -1,0 +1,7 @@
+Essential Boilerplate to Authentication
+https://medium.com/@alexmngn/the-essential-boilerplate-to-authenticate-users-on-your-react-native-app-f7a8e0e04a42
+
+React Native Training
+https://medium.com/react-native-training
+
+

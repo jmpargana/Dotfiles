@@ -144,3 +144,10 @@ snap/
 .ccache
 .config/fish
 .net*
+
+.Android*
+.android*
+.expo*
+.flutter*
+.gradle*
+Android/

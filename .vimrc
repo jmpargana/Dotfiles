@@ -240,6 +240,8 @@ Plug 'maxmellon/vim-jsx-pretty'
 
 Plug 'altercation/vim-colors-solarized'
 
+Plug 'ayu-theme/ayu-vim'
+
 call plug#end()
 
 
@@ -264,23 +266,32 @@ noremap <leader>pu :PlugInstall<cr>
 "   \     }
 "   \   }
 "   \ }
+"
 
-" colorscheme PaperColor
+
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+colorscheme PaperColor
 " set background=light
+set termguicolors
+let ayucolor="light"
+
+colorscheme ayu
 
 " set background=light
 " colorscheme solarized
-colorscheme nord
+" colorscheme nord
 " colorscheme PaperColor
 " set background=light
 
 
 " let g:solarized_termcolors=256
 
-let g:airline_theme='deus'
+" let g:airline_theme='deus'
 
-" let g:lightline = { 'colorscheme': 'PaperColor' }
-" let g:airline_theme='papercolor'
+let g:lightline = { 'colorscheme': 'PaperColor' }
+let g:airline_theme='papercolor'
 
 
 " air-line
