@@ -134,6 +134,7 @@ alias cf="cargo fmt"
 alias cws="cargo web start"
 alias gs="git status"
 alias ys="yarn start"
+alias nus="nordvpn c us"
 
 
 

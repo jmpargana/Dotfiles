@@ -1,4 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 " General Setup
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -20,6 +21,9 @@ set nu rnu
 
 " show last command
 set showcmd
+
+" disable folding in markdown files
+set nofoldenable
 
 " highlight current line
 set cursorline
@@ -110,7 +114,8 @@ set keywordprg=:Man
 
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 " Mappings
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -120,7 +125,6 @@ let mapleader = ","
 
 " fast saving
 nmap <leader>w :w!<cr>
-" nnoremap <silent> <C-S> :w!<cr>
 nmap <leader>q :q<cr>
 nmap <leader>x :x<cr>
 nmap <leader>o :only<cr>
@@ -157,6 +161,9 @@ noremap <C-l> <C-W>l
 " close current buffer
 noremap <leader>bc :Bclose<cr>:tabclose<cr>gT
 
+" kill all windows
+noremap <leader>bo :only<cr>
+
 " close all buffers
 noremap <leader>ba :bufdo :Bclose<cr>:tabclose<cr>gT
 
@@ -183,6 +190,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 
 " parenthesis, brackets, quotes
+" this is not needed since vim surrounding provides the same
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
 vnoremap $3 <esc>`>a}<esc>`<i{<esc>
@@ -193,56 +201,7 @@ vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
 autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-
-
-
-
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Setup Plugger and Plugins
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" configurations are in EDITING and PROGRAMMING sections
-call plug#begin('~/.vim/plugged')
-
-Plug 'NLKNguyen/papercolor-theme'
-" Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
-" Plug 'scrooloose/nerdtree'
-Plug 'mattn/emmet-vim'
-" Plug 'frazrepo/vim-rainbow'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plug 'mileszs/ack.vim'
-Plug 'vim-scripts/mru.vim'
-" Plug 'junegunn/goyo.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'jlanzarotta/bufexplorer'
-Plug 'tpope/vim-commentary'
-Plug 'terryma/vim-expand-region'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-" Plug 'tpope/vim-fugitive'
-Plug 'arcticicestudio/nord-vim'
-Plug 'rust-lang/rust.vim'
-Plug 'dense-analysis/ale'
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-
-Plug 'yuezk/vim-js'
-Plug 'maxmellon/vim-jsx-pretty'
-
-Plug 'altercation/vim-colors-solarized'
-
-Plug 'ayu-theme/ayu-vim'
-
-call plug#end()
+autocmd Filetype dart setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 
 " type ,pu to install all plugins
@@ -253,45 +212,147 @@ noremap <leader>pu :PlugInstall<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" Setup Plugger and Plugins
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" configurations are in EDITING and PROGRAMMING sections
+call plug#begin('~/.vim/plugged')
+
+
+""""""""""""""""""""""""""""""""""""""""""""""
+"""
+""" EDITING TOOLS
+"""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Plug 'jlanzarotta/bufexplorer'
+Plug 'tpope/vim-commentary'
+Plug 'terryma/vim-expand-region'
+Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Plug 'godlygeek/tabular'              " haven't used it so far
+" Plug 'terryma/vim-multiple-cursors'   " regex is just as effective
+" Plug 'scrooloose/nerdtree'            " fzf is much better
+" Plug 'frazrepo/vim-rainbow'           " breaks with c++ and c
+" Plug 'junegunn/goyo.vim'              " gives a cleaner look
+" Plug 'tpope/vim-fugitive'             " like magit (terminal is right here)
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""
+"""
+""" THEMES
+"""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Plug 'arcticicestudio/nord-vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'altercation/vim-colors-solarized'
+Plug 'ayu-theme/ayu-vim'
+Plug 'kaicataldo/material.vim'
+
+
+""""""""""""""""""""""""""""""""""""""""""""""
+"""
+""" PROGRAMMING LANGUAGES
+"""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+" Syntax Checker and Auto Completion
+Plug 'dense-analysis/ale'
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+
+" Rust
+Plug 'rust-lang/rust.vim'
+
+" Markdown
+Plug 'plasticboy/vim-markdown'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" JavaScript for React
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'mattn/emmet-vim'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+
+" Dart
+Plug 'dart-lang/dart-vim-plugin'
+
+
+call plug#end()
+
+
+
+
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 " Theme Config
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" set background=dark
-
-" let g:PaperColor_Theme_Options = {
-"   \   'theme': {
-"   \     'default.dark': {
-"   \       'transparent_background': 1
-"   \     }
-"   \   }
-"   \ }
-"
-
-
+" termguicolors don't work in tmux
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-colorscheme PaperColor
-" set background=light
+
+"""""""""""""""""""
+"" THEME VARS
+"""""""""""""""""""
+
+" This needs some tweaking in your terminal theme as well
+" - dark
+" - light
+set background=light
+
 set termguicolors
-let ayucolor="light"
 
-colorscheme ayu
-
-" set background=light
-" colorscheme solarized
-" colorscheme nord
-" colorscheme PaperColor
-" set background=light
-
-
+" let ayucolor="light"        " some themes need to define variables before
 " let g:solarized_termcolors=256
 
-" let g:airline_theme='deus'
 
-let g:lightline = { 'colorscheme': 'PaperColor' }
-let g:airline_theme='papercolor'
+let g:material_terminal_italics = 1     " only for material
+
+" Material Themes
+" - lighter
+" - palenight
+" - ocean 
+" - darker
+let g:material_theme_style = 'lighter'
+
+
+" Light
+" - PaperColor  
+" - auy
+" - solarized
+"
+" Dark
+" - nord
+" - material
+colorscheme material
+
+
+
+"""""""""""""""""""
+"" TAB LINE
+"""""""""""""""""""
+
+" Either Airline or Lightline is needed
+" I have both, since powerline fonts don't work 
+" on one of my computers
+" Some themes take care of these variables for you
+
+" let g:lightline = { 'colorscheme': 'PaperColor' }
+" let g:airline_theme='papercolor'
 
 
 " air-line
@@ -326,51 +387,44 @@ let g:airline_symbols.linenr = ''"
 
 
 
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" EDITING
+"
+" MODES & PLUGIN SETUP
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" multiple cursors
-" https://github.com/terryma/vim-multiple-cursors
 
 
 " ALEfix from ALE
 let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
 
 
-
-" vim-surround
-" surround selected text with any given char
-" https://github.com/tpope/vim-surround
-" REALLY POWERFULL!!
-
-
 " NERDTree
 noremap <leader>nn :NERDTreeToggle<CR>
 
 
-" Emmet
-" <C-y>,
-
-
 " Rainbow Parenthesis Improved
-let g:rainbow_active=1
-
-
-" autopairs
-" https://github.com/jiangmiao/auto-pairs
+" let g:rainbow_active=1
 
 
 " prettier
 noremap <leader>p :Prettier<cr> 
 
+let g:vim_jsx_pretty_colorful_config = 1
+
+
+" Dart
+let dart_html_in_string=v:true
+let g:dart_style_guide = 2
+let g:dart_format_on_save = 1
 
 
 " use the_silver_searcher if possible
 if executable('ag')
   let g:ackprg = 'ag --vimgrep --smart-case'
 endif
+
 
 
 " ACK 
@@ -389,11 +443,11 @@ noremap <leader>u :MRU<CR>
 
 
 
-" vim room (its really cool!)
-let g:goyo_width=100
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
-nnoremap <silent> <leader>z :Goyo<cr>
+" " vim room (its really cool!)
+" let g:goyo_width=100
+" let g:goyo_margin_top = 2
+" let g:goyo_margin_bottom = 2
+" nnoremap <silent> <leader>z :Goyo<cr>
 
 
 " bufExplorer plugin
@@ -404,55 +458,14 @@ let g:bufExplorerSortBy='name'
 map <leader>o :BufExplorer<cr>
 
 
-let g:vim_jsx_pretty_colorful_config = 1
-
-
 " FZF
 noremap <leader>f :GFiles <cr>
 noremap <leader>F :Files <cr>
 
 
 
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Since all guides advise you not to install plugins
-" when you start using vim the following ones will
-" only be installed in the future
-
-
-" Autogroups https://dougblack.io/words/a-good-vimrc.html
-" learn how to define custom values for each language mode
-
-" Command-T https://github.com/wincent/Command-T
-" open files and buffers and jump between tags
-
-" ctrl.vim https://github.com/kien/ctrlp.vim
-" fuzzy file, buffer, mru, tag finder
-
-" repeat.vim https://github.com/tpope/vim-repeat
-" I'm not sure what this one does
-
-" NERDCommenter https://github.com/scrooloose/nerdcommenter
-" comment script for vim
-
-" ALE https://github.com/dense-analysis/ale
-" Syntax checker server
-
-" commentary.vim https://github.com/tpope/vim-commentary
-
-
-
-" Other links
-" VIM AWESOME - https://linuxhint.com/vim_awesome/
-" awesome vim (github) - https://github.com/akrawchyk/awesome-vim
-" ultimate vim config - https://github.com/amix/vimrc
-
-
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 " Functions from amix vimrc 
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
