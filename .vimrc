@@ -243,6 +243,7 @@ Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'yegappan/mru'
 " Plug 'godlygeek/tabular'              " haven't used it so far
 " Plug 'terryma/vim-multiple-cursors'   " regex is just as effective
 " Plug 'scrooloose/nerdtree'            " fzf is much better
@@ -275,7 +276,7 @@ Plug 'kaicataldo/material.vim'
 
 " Syntax Checker and Auto Completion
 Plug 'dense-analysis/ale'
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --all' }
 
 " Rust
 Plug 'rust-lang/rust.vim'
