@@ -84,11 +84,12 @@ alias cf="cargo fmt"
 alias cws="cargo web start"
 
 # python
+alias py="python"
 alias prp="pipenv run python"
 alias pis="pipenv shell"
 alias ppi="pipenv install"
 alias pid="pipenv install --dev"
-alias ppp="pipp --python"
+alias ppp="pipenv --python python"
 
 # git
 alias gaa="git add ."
@@ -109,6 +110,7 @@ alias ns="nordvpn status"
 alias nus="nordvpn c us"
 alias rmd="rm -d"
 alias rmf="rm -rf"
+alias cx="chmod +x"
 
 
 # run ls after cd
