@@ -62,12 +62,12 @@ alias i3c="ec ~/.config/i3/config"
 # MOTIONS
 alias gh="cd ~"
 alias gp="cd ~/Documents/Personal"
-alias gpp="cd ~/Documents/Programming_Languages"
+alias gP="cd ~/Documents/Programming_Languages"
 alias gu="cd ~/Documents/Uni"
 alias gt="cd ~/Testing"
 alias gw="cd ~/Documents/Work"
-alias gdo="cd ~/Downloads"
-alias gla="cd ~/Documents/Languages"
+alias gD="cd ~/Downloads"
+alias gL="cd ~/Documents/Languages"
 
 
 # PROGRAMMING
@@ -107,6 +107,8 @@ alias nv="nvidia-smi"
 alias p="ping 8.8.8.8 -c 3"
 alias ns="nordvpn status"
 alias nus="nordvpn c us"
+alias rmd="rm -d"
+alias rmf="rm -rf"
 
 
 # run ls after cd
@@ -114,5 +116,12 @@ function chpwd() {
 	emulate -L zsh
 	ls
 }
+
+
+function mkcd () {
+    mkdir -p -- "$1" &&
+        cd -P -- "$1"
+}
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
