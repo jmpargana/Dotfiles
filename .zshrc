@@ -90,6 +90,7 @@ alias pis="pipenv shell"
 alias ppi="pipenv install"
 alias pid="pipenv install --dev"
 alias ppp="pipenv --python python"
+alias b="black"
 
 # git
 alias gaa="git add ."
@@ -99,6 +100,17 @@ alias gs="git status"
 
 # js
 alias ys="yarn start"
+alias nt="npm test"
+alias nps="npm start"
+alias ni="npm i -S"
+
+# docker
+alias dr="docker run"
+alias drm="docker rm"
+alias drmv="docker rm -v"
+alias dcr="docker create"
+alias de="docker exec"
+alias dps="docker ps"
 
 
 # EXTRAS
