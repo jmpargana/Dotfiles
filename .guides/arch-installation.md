@@ -70,7 +70,7 @@ pacstrap /mnt base base-devel linux linux-firmware vim
 8. Other needed packages
 
 ```sh
-pacman --root /mnt -S dhcpcd bash-completion intel-ucode wpa_supplicant netctl dialog efibootmgr dosfstools gptdisk
+pacman --root /mnt -S dhcpcd bash-completion intel-ucode wpa_supplicant netctl dialog efibootmgr dosfstools gptfdisk
 ```
 
 9. Generate fstab

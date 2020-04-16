@@ -53,7 +53,8 @@ grep -E -A 1 ".*Germany.*$" /etc/pacman.d/mirrorlist.bak | sed '/--/d' > /etc/pa
 
 # Install Arch and all needed packages for basic install
 pacstrap /mnt base base-devel linux linux-firmware vim zsh fish intel-ucode efibootmgr
-wpa_supplicant dialog networkmanager nm-connection-editor network-manager-applet bash-completion dhcpcd efibootmgr dosfstools gptdisk
+wpa_supplicant dialog networkmanager nm-connection-editor network-manager-applet bash-completion
+dhcpcd efibootmgr dosfstools gptfdisk
 
 # Generate fstab
 genfstab -Up /mnt >> /mnt/etc/fstab
