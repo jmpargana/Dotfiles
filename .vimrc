@@ -64,10 +64,10 @@ set ignorecase
 set nocompatible
 
 " for file navigation
-set path+=**
+" set path+=**
 
 " commands for file jump
-set tags=tags
+" set tags=tags
 
 
 
@@ -146,9 +146,17 @@ noremap <space> /
 noremap <silent> <leader><cr> :noh<cr>
 
 
-" split window and open edit command 
-noremap <leader>v :vsp<cr><C-w>l:e 
-noremap <leader>s :sp<cr><C-w>j:e 
+" Open files in horizontal split
+nnoremap <silent> <Leader>s :call fzf#run({
+\   'down': '40%',
+\   'sink': 'botright split' })<CR>
+
+" Open files in vertical horizontal split
+nnoremap <silent> <Leader>v :call fzf#run({
+\   'right': winwidth('.') / 2,
+\   'sink':  'vertical botright split' })<CR>
+
+
 
 
 " easier window navigation (like i3)
@@ -211,6 +219,7 @@ noremap <leader>pu :PlugInstall<cr>
 
 
 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Setup Plugger and Plugins
@@ -243,13 +252,6 @@ Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'yegappan/mru'
-" Plug 'godlygeek/tabular'              " haven't used it so far
-" Plug 'terryma/vim-multiple-cursors'   " regex is just as effective
-" Plug 'scrooloose/nerdtree'            " fzf is much better
-" Plug 'frazrepo/vim-rainbow'           " breaks with c++ and c
-" Plug 'junegunn/goyo.vim'              " gives a cleaner look
-" Plug 'tpope/vim-fugitive'             " like magit (terminal is right here)
 
 
 
@@ -291,6 +293,7 @@ Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'mattn/emmet-vim'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'hotoo/jsgf.vim'
 
 " Dart
 Plug 'dart-lang/dart-vim-plugin'
@@ -356,6 +359,17 @@ let g:material_theme_style = 'lighter'
 colorscheme material
 
 
+" Change Colorscheme
+nnoremap <silent> <Leader>C :call fzf#run({
+\   'source':
+\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+\   'sink':    'colo',
+\   'options': '+m',
+\   'left':    30
+\ })<CR>
+
+
 
 """""""""""""""""""
 "" TAB LINE
@@ -415,14 +429,6 @@ let g:airline_symbols.linenr = ''"
 let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
 
 
-" NERDTree
-noremap <leader>nn :NERDTreeToggle<CR>
-
-
-" Rainbow Parenthesis Improved
-" let g:rainbow_active=1
-
-
 " prettier
 noremap <leader>p :Prettier<cr> 
 
@@ -451,11 +457,6 @@ noremap <leader>g :Ack
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 
 
-" MRU PLUGIN
-" show files recently edited
-let MRU_Max_Entries = 300
-noremap <leader>u :MRU<CR>
-
 
 " Python PIPENV support
 let pipenv_venv_path = system('pipenv --venv')
@@ -471,13 +472,6 @@ let g:ale_python_auto_pipenv = 1
 
 
 
-" " vim room (its really cool!)
-" let g:goyo_width=100
-" let g:goyo_margin_top = 2
-" let g:goyo_margin_bottom = 2
-" nnoremap <silent> <leader>z :Goyo<cr>
-
-
 " bufExplorer plugin
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
@@ -489,6 +483,24 @@ map <leader>o :BufExplorer<cr>
 " FZF
 noremap <leader>f :GFiles <cr>
 noremap <leader>F :Files <cr>
+
+
+" MRU PLUGIN
+" show files recently edited
+command! FZFMru call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
+noremap <leader>u :FZFMru<CR>
+
+
+" CTAGS Setup
+let g:fzf_buffers_jump = 1
+let g:fzf_tags_command = 'ctags -R'
+
+noremap <leader>. :Tags<cr>
 
 
 
@@ -542,3 +554,31 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+
+function! s:tags_sink(line)
+  let parts = split(a:line, '\t\zs')
+  let excmd = matchstr(parts[2:], '^.*\ze;"\t')
+  execute 'silent e' parts[1][:-2]
+  let [magic, &magic] = [&magic, 0]
+  execute excmd
+  let &magic = magic
+endfunction
+
+function! s:tags()
+  if empty(tagfiles())
+    echohl WarningMsg
+    echom 'Preparing tags'
+    echohl None
+    call system('ctags -R')
+  endif
+
+  call fzf#run({
+  \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+  \            '| grep -v -a ^!',
+  \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+  \ 'down':    '40%',
+  \ 'sink':    function('s:tags_sink')})
+endfunction
+
+command! Tags call s:tags()
