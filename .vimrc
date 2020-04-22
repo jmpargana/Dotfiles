@@ -294,6 +294,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'mattn/emmet-vim'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'hotoo/jsgf.vim'
+Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
 
 " Dart
 Plug 'dart-lang/dart-vim-plugin'
