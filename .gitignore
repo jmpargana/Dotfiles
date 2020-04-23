@@ -139,6 +139,7 @@ snap/
 .config/yay/
 .config/base*
 .config/asciinema/*
+.config/xarchiver/*
 
 .aaron*
 .eendro*
