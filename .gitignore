@@ -138,6 +138,7 @@ snap/
 .config/xsettingsd/
 .config/yay/
 .config/base*
+.config/asciinema/*
 
 .aaron*
 .eendro*
