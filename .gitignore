@@ -140,6 +140,7 @@ snap/
 .config/base*
 .config/asciinema/*
 .config/xarchiver/*
+.KaliLinux*
 
 .aaron*
 .eendro*

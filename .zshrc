@@ -62,7 +62,7 @@ alias i3c="ec ~/.config/i3/config"
 # MOTIONS
 alias gh="cd ~"
 alias gp="cd ~/Documents/Personal"
-alias gP="cd ~/Documents/Programming_Languages"
+alias gP="cd ~/Documents/ProgrammingLanguages"
 alias gu="cd ~/Documents/Uni"
 alias gt="cd ~/Testing"
 alias gw="cd ~/Documents/Work"
@@ -111,6 +111,13 @@ alias drmv="docker rm -v"
 alias dcr="docker create"
 alias de="docker exec"
 alias dps="docker ps"
+
+# kali
+alias kali="docker run -ti --rm \
+    -v  type=bindsrc=/home/icm/.KaliLinux/Pentest/root,dst=/root \
+    -v  type=bindsrc=/home/icm/.KaliLinux/Pentest/postgresqldst=/var/lib/postgresql \
+    kali \
+    bash"
 
 
 # EXTRAS
