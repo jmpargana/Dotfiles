@@ -1,38 +1,6 @@
-# extend PATH for python binaries
-path+=('/home/icm/.local/bin')
-path+=('/home/icm/.cargo/bin')
-path+=('/opt/android-sdk/tools/bin')
-path+=('/opt/android-sdk/tools')
-path+=('/home/icm/.bin')
-export PATH
-
-export ANDROID_SDK_ROOT=/opt/android-sdk
-export ANDROID_HOME=/opt/android-sdk
-export CHROME_EXECUTABLE=/sbin/chromium
-
-# Path to your oh-my-zsh installation.
-export ZSH="/home/icm/.oh-my-zsh"
-
-ZSH_THEME="sunrise"
-
-plugins=(
-	git
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-)
-
-source $ZSH/oh-my-zsh.sh
-
-
-[[ $TMUX = "" ]] && export TERM="xterm-256color"
-
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
-
-export ARCHFLAGS="-arch x86_64"
+set -g -x fish_greeting ''
+set -g -x PATH ~/.cargo/bin ~/.local/bin $PATH
+set -g -x PATH ~/Android/Sdk/tools/bin $PATH
 
 
 # EDITOR SHORTCUTS
@@ -46,6 +14,8 @@ alias sv="sudo vim"
 alias vv="vim ~/.vimrc"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
+alias vf="vim ~/.config/fish/config.fish"
+alias sf="source ~/.config/fish/config.fish"
 
 
 # ARCH
@@ -68,7 +38,7 @@ alias gt="cd ~/Testing"
 alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"
-alias gk="cd ~/.KaliLinux"
+alias gk="cd ~/.KaliLinux/"
 
 
 # PROGRAMMING
@@ -133,17 +103,10 @@ alias rmf="rm -rf"
 alias cx="chmod +x"
 
 
-# run ls after cd
-function chpwd() {
-	emulate -L zsh
-	ls
-}
-
-
-function mkcd () {
-    mkdir -p -- "$1" &&
-        cd -P -- "$1"
-}
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+function cd
+    if count $argv > /dev/null
+        builtin cd "$argv"; and ls
+    else
+        builtin cd ~; and ls
+    end
+end
