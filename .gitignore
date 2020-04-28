@@ -140,7 +140,11 @@ snap/
 .config/base*
 .config/asciinema/*
 .config/xarchiver/*
+.config/Android*
+
+Android*
 .KaliLinux*
+.emulator*
 
 .aaron*
 .eendro*
