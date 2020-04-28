@@ -164,3 +164,6 @@ Recordings/
 
 .bin/
 .Virtual*
+
+Pictures/
+.fontconfig/

@@ -16,6 +16,7 @@ alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias vf="vim ~/.config/fish/config.fish"
 alias sf="source ~/.config/fish/config.fish"
+alias vg="vim ~/.gitignore"
 
 
 # ARCH
