@@ -167,3 +167,6 @@ Recordings/
 
 Pictures/
 .fontconfig/
+
+.zoom*
+.config/zoom*

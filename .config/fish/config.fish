@@ -1,6 +1,9 @@
 set -g -x fish_greeting ''
 set -g -x PATH ~/.cargo/bin ~/.local/bin $PATH
 set -g -x PATH ~/Android/Sdk/tools/bin $PATH
+set -g -x PATH /var/lib/snapd/snap/bin $PATH
+set -g -x PATH ~/Android/Sdk/tools $PATH
+set -g -x PATH ~/Android/Sdk/emulator $PATH
 
 
 # EDITOR SHORTCUTS
@@ -35,7 +38,7 @@ alias gh="cd ~"
 alias gp="cd ~/Documents/Personal"
 alias gP="cd ~/Documents/ProgrammingLanguages"
 alias gu="cd ~/Documents/Uni"
-alias gt="cd ~/Testing"
+alias gt="cd ~/Documents/Testing"
 alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"

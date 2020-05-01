@@ -357,7 +357,7 @@ let g:material_theme_style = 'lighter'
 " Dark
 " - nord
 " - material
-colorscheme material
+colorscheme PaperColor
 
 
 " Change Colorscheme
@@ -440,6 +440,8 @@ let g:vim_jsx_pretty_colorful_config = 1
 let dart_html_in_string=v:true
 let g:dart_style_guide = 2
 let g:dart_format_on_save = 1
+
+noremap <leader>df :DartFmt<cr>
 
 
 " use the_silver_searcher if possible
