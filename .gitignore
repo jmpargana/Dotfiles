@@ -170,3 +170,6 @@ Pictures/
 
 .zoom*
 .config/zoom*
+go/*
+.config/yarn/
+.yarn/

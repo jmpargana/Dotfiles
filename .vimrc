@@ -4,109 +4,54 @@
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" change indentation behaviour
-set expandtab
+
+set expandtab               " change indentation behaviour
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set autoindent
 set smartindent
 
-" always needed
-set encoding=utf-8
+set encoding=utf-8          " always needed
 set fileencoding=utf-8
 
-" show hybrid line numbers
-set nu rnu
+set nu rnu                  " show hybrid line numbers
+set showcmd                 " show last command
+set nofoldenable            " disable folding in markdown files
+set cursorline              " highlight current line
+set wildmenu                " visual autocomplete for command menu
 
-" show last command
-set showcmd
-
-" disable folding in markdown files
-set nofoldenable
-
-" highlight current line
-set cursorline
-
-" visual autocomplete for command menu
-set wildmenu
-
-" indent according to each filetype
-filetype indent on
-
-" show  parenthesis match
-set showmatch
-
-" how many lines of history VIM remembers
-set history=500
-
-
-" syntax highlighting
-syntax on
+filetype indent on          " indent according to each filetype
+set showmatch               " show  parenthesis match
+set history=500             " how many lines of history VIM remembers
+syntax on                   " syntax highlighting
 filetype plugin indent on
 
-" wrap text that exceeds screen width
-set wrap
+set wrap                    " wrap text that exceeds screen width
+set matchpairs+=<:>         "highlight pairs
+set hlsearch                " highlight matching search patterns
+set incsearch               " enable incremental search
+set ignorecase              " ignore matching cases
+set nocompatible            " open files with vim instead of vi
 
-"highlight pairs
-set matchpairs+=<:>
+set so=7                    " set 7 lines to the cursor - when moving vertically
+set ruler                   " always show current position
+set cmdheight=1             " height of the command bar
+set hid                     " a buffer becomes hidden when it is abandoned
+set magic                   " for regex search
 
-" highlight matching search patterns
-set hlsearch
-
-" enable incremental search
-set incsearch
-
-" ignore matching cases
-set ignorecase
-
-" open files with vim instead of vi
-set nocompatible
-
-" for file navigation
-" set path+=**
-
-" commands for file jump
-" set tags=tags
-
-
-
-" VIM user interface
-" set 7 lines to the cursor - when moving vertically
-set so=7
-
-" always show current position
-set ruler
-
-" height of the command bar
-set cmdheight=1
-
-" a buffer becomes hidden when it is abandoned
-set hid
-
-" for regex search
-set magic
-
-" disable backup, swap files, etc.
-set nobackup
+set nobackup                " disable backup, swap files, etc.
 set nowb
 set noswapfile
-
-" break line on 100 characters
-set lbr
+set lbr                     " break line on 100 characters
 set tw=100
 
-" disable scrollbars
-set guioptions-=r
+set guioptions-=r           " disable scrollbars
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
 
-
-" set terminal to open below
-set splitbelow
-" set tws=10x0
-
+set splitbelow              " set terminal to open below
 set keywordprg=:Man
 
 
@@ -120,12 +65,11 @@ set keywordprg=:Man
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" define the leader
-let mapleader = ","
+let mapleader = ","         " define the leader
 
 " fast saving
 nmap <leader>w :w!<cr>
-nmap <leader>q :q<cr>
+nmap <leader>q :q!<cr>
 nmap <leader>x :x<cr>
 nmap <leader>o :only<cr>
 
@@ -133,9 +77,7 @@ nmap <leader>o :only<cr>
 " open terminal
 nnoremap <leader>c :term<cr>
 
-
 " :W sudo saves the file
-" (useful for handling the permission-denied errror)
 command! W execute 'w !sudo tee % > /dev/null' <bar>edit!
 
 
@@ -166,9 +108,6 @@ noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 
 
-" close current buffer
-noremap <leader>bc :Bclose<cr>:tabclose<cr>gT
-
 " kill all windows
 noremap <leader>bo :only<cr>
 
@@ -183,14 +122,6 @@ noremap <leader>h :bprevious<cr>
 noremap <leader>tn :tabnew<cr>
 noremap <leader>to :tabonly<cr>
 noremap <leader>tc :tabclose<cr>
-noremap <leader>tm :tabmove<cr>
-noremap <leader>t<leader> :tabnext
-
-noremap <leader>tl :tabr<cr>
-noremap <leader>th :tabl<cr>
-
-" open new tab with the current buffer's path
-noremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 
 " return to the last edit position when opening files
@@ -206,10 +137,13 @@ vnoremap $$ <esc>`>a"<esc>`<i"<esc>
 vnoremap $q <esc>`>a'<esc>`<i'<esc>
 vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
+" filetypes with 2 spaces tab indentation
+autocmd Filetype {{java,type}script{,react},html,dart} setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
-autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-autocmd Filetype dart setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+" force rescan syntax highlighting in this files extensions
+" autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+" autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+" autocmd BufNewFile, BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
 
 " type ,pu to install all plugins
@@ -290,11 +224,19 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " JavaScript for React
 Plug 'yuezk/vim-js'
-Plug 'maxmellon/vim-jsx-pretty'
+" Plug 'maxmellon/vim-jsx-pretty'
 Plug 'mattn/emmet-vim'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'hotoo/jsgf.vim'
 Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
+
+" Typescript
+Plug 'leafgarland/typescript-vim'
+Plug 'neoclide/vim-jsx-improve'
+" Plug 'peitalin/vim-jsx-typescript'
+" Plug 'styled-components/vim-styled-components'
+" Plug 'jparise/vim-gaphql'
+
 
 " Dart
 Plug 'dart-lang/dart-vim-plugin'
@@ -303,6 +245,9 @@ Plug 'dart-lang/dart-vim-plugin'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
 Plug 'kh3phr3n/python-syntax'           
+
+" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 
 call plug#end()
@@ -357,7 +302,7 @@ let g:material_theme_style = 'lighter'
 " Dark
 " - nord
 " - material
-colorscheme PaperColor
+colorscheme material
 
 
 " Change Colorscheme
@@ -444,6 +389,17 @@ let g:dart_format_on_save = 1
 noremap <leader>df :DartFmt<cr>
 
 
+" Go
+noremap <leader>gb :GoBuild<cr>
+noremap <leader>gi :GoInstall<cr>
+noremap <leader>gt :GoTest<cr>
+noremap <leader>gr :GoRun<cr>
+noremap <leader>gf :GoFmt<cr>
+noremap <leader>gd :GoDef<cr>
+noremap <leader>gc :GoDoc<cr>
+noremap <leader>gl :GoLint<cr>
+
+
 " use the_silver_searcher if possible
 if executable('ag')
   let g:ackprg = 'ag --vimgrep --smart-case'
@@ -454,7 +410,7 @@ endif
 " ACK 
 " open ack and put the cursor in the right position
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
-noremap <leader>g :Ack
+" noremap <leader>g :Ack
 
 " search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>

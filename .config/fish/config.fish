@@ -4,6 +4,7 @@ set -g -x PATH ~/Android/Sdk/tools/bin $PATH
 set -g -x PATH /var/lib/snapd/snap/bin $PATH
 set -g -x PATH ~/Android/Sdk/tools $PATH
 set -g -x PATH ~/Android/Sdk/emulator $PATH
+set -g -x PATH ~/go/bin $PATH
 
 
 # EDITOR SHORTCUTS
@@ -43,6 +44,7 @@ alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"
 alias gk="cd ~/.KaliLinux/"
+alias gba="cd ~/Documents/Bachelor/app"
 
 
 # PROGRAMMING
@@ -87,6 +89,13 @@ alias dcr="docker create"
 alias de="docker exec"
 alias dps="docker ps"
 
+
+# go
+alias gr="go run"
+alias got="go test"
+alias gb="go build"
+alias gf="go fmt"
+
 # kali
 alias kali="docker run -ti --rm \
     -v  type=bindsrc=/home/icm/.KaliLinux/Pentest/root,dst=/root \
@@ -113,4 +122,8 @@ function cd
     else
         builtin cd ~; and ls
     end
+end
+
+function mkcd
+    mkdir -p $argv; and cd $argv
 end
