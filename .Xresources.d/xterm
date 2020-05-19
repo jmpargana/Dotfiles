@@ -12,6 +12,12 @@ XTerm.vt100.metaSendsEscape: true
 XTerm.vt100.backarrowKey: false
 XTerm.ttyModes: erase ^?
 
+*VT100.colorBDMode:     true
+*VT100.colorBD:         red
+*VT100.colorULMode:     true
+*VT100.colorUL:         cyan
+*VT100.veryBoldColors: 6
+
 XTerm.vt100.translations: #override \n\
     Ctrl <Key>M: fullscreen() \n\
     Ctrl <Key>R: restore() \n\
@@ -24,3 +30,4 @@ XTerm.vt100.translations: #override \n\
 XTerm.vt100.geometry: 90x40
 
 XTerm*selectToClipboard: true
+

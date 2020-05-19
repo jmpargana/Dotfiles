@@ -58,7 +58,6 @@ set keywordprg=:Man
 
 
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Mappings
@@ -276,7 +275,8 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 " This needs some tweaking in your terminal theme as well
 " - dark
 " - light
-set background=light
+set background=dark
+" set t_Co=265
 
 set termguicolors
 
