@@ -44,7 +44,7 @@ alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"
 alias gk="cd ~/.KaliLinux/"
-alias gba="cd ~/Documents/Bachelor/app"
+alias gba="cd ~/Documents/Bachelor/Bachelorarbeit"
 
 
 # PROGRAMMING

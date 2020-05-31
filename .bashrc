@@ -24,6 +24,12 @@ alias sz="source ~/.zshrc"
 
 # navigation
 alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias ll="ls -l"
+alias lo="ls -o"
+alias lh="ls -lh"
+alias la="ls -la"
 
 # ARCH
 alias pac="sudo pacman -S"
@@ -85,6 +91,12 @@ alias dcr="docker create"
 alias de="docker exec"
 alias dps="docker ps"
 
+# go
+alias gb="go build"
+alias gr="go run"
+alias gf="go fmt"
+alias gd="go doc"
+
 # kali
 alias kali="docker run -ti --rm \
     -v  type=bindsrc=/home/icm/.KaliLinux/Pentest/root,dst=/root \
@@ -108,6 +120,7 @@ alias cx="chmod +x"
 
 # ENV
 PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
+# PS1=$COLOR_YELLOW'\u@\h: '$COLOR_LIGHT_RED'\W\e[0m\$ '
 PS2='> '
 # PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "  
 # LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
@@ -132,17 +145,31 @@ COLOR_YELLOW='\e[1;33m'
 COLOR_GRAY='\e[0;30m'
 COLOR_LIGHT_GRAY='\e[0;37m'
 
-LESS=-R
-LESS_TERMCAP_mb=$'\E[1;31m'     
-LESS_TERMCAP_md=$'\E[1;36m'    
-LESS_TERMCAP_me=$'\E[0m'      
-LESS_TERMCAP_so=$'\E[01;44;33m'
-LESS_TERMCAP_se=$'\E[0m'      
-LESS_TERMCAP_us=$'\E[1;32m'  
-LESS_TERMCAP_ue=$'\E[0m'    
+export LESS=-R
+export LESS_TERMCAP_mb=$'\E[1;31m'     
+export LESS_TERMCAP_md=$'\E[1;36m'    
+export LESS_TERMCAP_me=$'\E[0m'      
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_se=$'\E[0m'      
+export LESS_TERMCAP_us=$'\E[1;32m'  
+export LESS_TERMCAP_ue=$'\E[0m'    
+
+
+# include .files when globbing
+shopt -s dotglob
+# fix spelling errors for cd
+shopt -s cdspell
+
+bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
+bind "set bell-style none" # no bell
+# bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 
 
+# quick backup
+bu () { cp $1 ~/.backup/`basename $1`-`date +%Y%m%d%H%M`.backup ;  }
+
+# change builtin cd to list directories after being called
 cd() {
     if [ -n "$1" ]; then
         builtin cd "$@" && ls --group-directories-first
@@ -150,5 +177,62 @@ cd() {
         builtin cd ~ && ls --group-directories-first
     fi
 }
+
+# beautiful script to extract files according to format
+extract () {
+	if [ -f $1 ] ; then
+		case $1 in
+			*.tar.bz2)   tar xvjf $1    ;;
+			*.tar.gz)    tar xvzf $1    ;;
+			*.bz2)       bunzip2 $1     ;;
+			*.rar)       unrar x $1       ;;
+			*.gz)        gunzip $1      ;;
+			*.tar)       tar xvf $1     ;;
+			*.tbz2)      tar xvjf $1    ;;
+			*.tgz)       tar xvzf $1    ;;
+			*.zip)       unzip $1       ;;
+			*.Z)         uncompress $1  ;;
+			*.7z)        7z x $1        ;;
+			*)           echo "don't know how to extract '$1'..." ;;
+		esac
+	else
+		echo "'$1' is not a valid file!"
+	fi
+}
+
+
+# go up n directories instead of ../../..
+up(){
+	local d=""
+	limit=$1
+	for ((i=1 ; i <= limit ; i++)) do
+		d=$d/..
+	done
+	d=$(echo $d | sed 's/^\///')
+	if [ -z "$d" ]; then
+		d=..
+	fi
+	cd $d
+}
+
+
+# print given column from pipeline
+fawk() {
+    first="awk '{print "
+    last="}'"
+    cmd="${first}\$${1}${last}"
+    eval $cmd
+}
+
+
+# alias for sudo or sudo last command
+s() {
+    if [[ $# == 0 ]]; then
+        sudo $(history -p '!!')
+    else
+        sudo "$@"
+    fi
+}
+
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
