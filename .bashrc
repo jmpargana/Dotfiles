@@ -17,6 +17,9 @@ alias ip="ip -color=auto"
 # editing
 alias vb='vim ~/.bashrc'
 alias sb="source ~/.bashrc"
+alias vf="vim ~/.config/fish/config.fish"
+alias sf="source ~/.config/fish/config.fish"
+alias va="vim ~/.config/alacritty/alacritty.yml"
 alias sv="sudo vim"
 alias vv="vim ~/.vimrc"
 alias vz="vim ~/.zshrc"
@@ -45,7 +48,7 @@ alias gh="cd ~"
 alias gp="cd ~/Documents/Personal"
 alias gP="cd ~/Documents/ProgrammingLanguages"
 alias gu="cd ~/Documents/Uni"
-alias gt="cd ~/Testing"
+alias gt="cd ~/Documents/Testing"
 alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"
@@ -118,14 +121,6 @@ alias cx="chmod +x"
 
 
 
-# ENV
-PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
-# PS1=$COLOR_YELLOW'\u@\h: '$COLOR_LIGHT_RED'\W\e[0m\$ '
-PS2='> '
-# PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "  
-# LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
-
-
 # Colors
 COLOR_NC='\e[0m' # No Color
 COLOR_WHITE='\e[1;37m'
@@ -144,6 +139,16 @@ COLOR_BROWN='\e[0;33m'
 COLOR_YELLOW='\e[1;33m'
 COLOR_GRAY='\e[0;30m'
 COLOR_LIGHT_GRAY='\e[0;37m'
+
+
+# ENV
+# PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
+PS1='\['"$COLOR_LIGHT_CYAN"'\]\u@\['"$COLOR_LIGHT_CYAN"'\]\h \['"$COLOR_LIGHT_RED"'\]\W\[\e[0m\]\$ '
+PS2='> '
+# PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "  
+# LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
+
+
 
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[1;31m'     
