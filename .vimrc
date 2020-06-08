@@ -27,7 +27,7 @@ set history=500             " how many lines of history VIM remembers
 syntax on                   " syntax highlighting
 filetype plugin indent on
 
-set wrap                    " wrap text that exceeds screen width
+set nowrap                    " wrap text that exceeds screen width
 set matchpairs+=<:>         "highlight pairs
 set hlsearch                " highlight matching search patterns
 set incsearch               " enable incremental search

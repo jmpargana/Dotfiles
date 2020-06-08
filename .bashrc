@@ -6,6 +6,9 @@
 [[ $- != *i* ]] && return
 
 
+export PATH=$PATH:~/go/bin
+
+
 # ALIASES
 # basic
 alias ls='ls --color=auto'
@@ -52,6 +55,7 @@ alias gt="cd ~/Documents/Testing"
 alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"
+alias gba="cd ~/Documents/Bachelor/Bachelorarbeit"
 alias gk="cd ~/.KaliLinux"
 
 
@@ -79,6 +83,7 @@ alias gaa="git add ."
 alias gcm="git commit -m"
 alias gpu="git push -u origin master"
 alias gs="git status"
+alias gc="git clone"
 
 # js
 alias ys="yarn start"
@@ -93,6 +98,10 @@ alias drmv="docker rm -v"
 alias dcr="docker create"
 alias de="docker exec"
 alias dps="docker ps"
+alias dpsa="docker ps -a"
+alias di="docker images"
+alias ds="docker search"
+alias dp="docker pull"
 
 # go
 alias gb="go build"
@@ -170,6 +179,15 @@ bind "set bell-style none" # no bell
 # bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 
+mkcd() {
+    if [ ! -n "$1" ]; then
+        echo "Enter a directory name"
+    elif [ -d $1 ]; then
+        echo "$1"' already exists'
+    else
+        mkdir -p $1 && cd $1
+    fi
+}
 
 # quick backup
 bu () { cp $1 ~/.backup/`basename $1`-`date +%Y%m%d%H%M`.backup ;  }
