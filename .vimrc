@@ -243,7 +243,7 @@ Plug 'dart-lang/dart-vim-plugin'
 " Python
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
-Plug 'kh3phr3n/python-syntax'           
+
 
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -372,7 +372,10 @@ let g:airline_symbols.linenr = ''"
 
 
 " ALEfix from ALE
-let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+let b:ale_fixers = {
+    \   'javascript': ['prettier', 'eslint'],
+    \   'python': ['yapf', 'black', 'autopep8']
+    \}
 
 
 " prettier
@@ -389,16 +392,6 @@ let g:dart_format_on_save = 1
 noremap <leader>df :DartFmt<cr>
 
 
-" Go
-noremap <leader>gb :GoBuild<cr>
-noremap <leader>gi :GoInstall<cr>
-noremap <leader>gt :GoTest<cr>
-noremap <leader>gr :GoRun<cr>
-noremap <leader>gf :GoFmt<cr>
-noremap <leader>gd :GoDef<cr>
-noremap <leader>gc :GoDoc<cr>
-noremap <leader>gl :GoLint<cr>
-
 
 " use the_silver_searcher if possible
 if executable('ag')
@@ -414,20 +407,6 @@ vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-
-
-
-" Python PIPENV support
-let pipenv_venv_path = system('pipenv --venv')
-
-if shell_error == 0
-    let venv_path = substitute(pipenv_venv_path, '\n', '', '')
-    let g:ycm_python_binary_path = venv_path . '/bin/python'
-else
-    let g_ycm_python_binary_path = 'python'
-endif
-
-let g:ale_python_auto_pipenv = 1
 
 
 
@@ -460,6 +439,108 @@ let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
 
 noremap <leader>. :Tags<cr>
+
+
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" PYTHON
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+" This script should load three lines in ipython 
+"
+" import module_name
+" import importlib
+" re = lambda: importlib.reload(module_name)
+"
+" so the current module can easily be reloaded when changes are made
+function! s:load_module_ipython()
+    let l:file = expand('%:r')
+    term ipython
+endfunction
+
+autocmd FileType python nmap <leader>t :<C-u>call <SID>load_module_ipython()<CR>
+
+
+" Python PIPENV support
+let pipenv_venv_path = system('pipenv --venv')
+
+if shell_error == 0
+    let venv_path = substitute(pipenv_venv_path, '\n', '', '')
+    let g:ycm_python_binary_path = venv_path . '/bin/python'
+else
+    let g_ycm_python_binary_path = 'python'
+endif
+
+let g:ale_python_auto_pipenv = 1
+
+
+let python_highlight_all = 1
+
+let g:ale_fix_on_save = 1
+
+
+
+
+""""""""""""""""""""""""""""""""""""""""""
+" GO
+""""""""""""""""""""""""""""""""""""""""""
+"
+" Navigation is covered by (ctrl-]/gd) to go to definition
+" and (ctrl-t) to pop to first goto jump call
+"
+" To check for documentation, either wait for a couple of seconds
+" or type (K) to split a mini-buffer with the documentation
+
+
+" run :GoBuild or :GoTestCompile according to test or regular file type
+function! s:build_go_files()
+    let l:file = expand('%')
+    if l:file =~# '^\f\+_test\.go$'
+        call go#test#Test(0, 1)
+    elseif l:file =~# '^\f\+\.go$'
+        call go#cmd#Build(0)
+    endif
+endfunction
+
+
+" basic keybindings
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+
+" toggle :GoCoverage to highlight the code covered by your tests
+autocmd FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+" autocmd FileType go nmap <leader>cb <Plug>(go-coverage-browser)
+autocmd FileType go nmap <leader>a :GoAlternate<cr>
+
+autocmd FileType go nmap <leader>d :GoDecls<cr>
+autocmd FileType go nmap <leader>dd :GoDeclsDir<cr>
+
+
+" this will import missing libs automatically on save
+let g:go_fmt_command = "goimports"
+
+
+" beautify all the code
+let g:go_highlight_types=1
+" let g:go_highlight_fields=1
+let g:go_highlight_functions=1
+let g:go_highlight_function_calls=1
+let g:go_highlight_operators=1
+let g:go_highlight_extra_types=1
+let g:go_highlight_build_contraints=1
+
+
+" Create shortcuts to open alternate (test file) in different tab
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+
+
 
 
 
