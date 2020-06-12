@@ -135,6 +135,7 @@ alias nus="nordvpn c us"
 alias rmd="rm -d"
 alias rmf="rm -rf"
 alias cx="chmod +x"
+alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
 
 
 export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
@@ -275,13 +276,30 @@ cd_with_fzf() {
 
 # no need to ranger with this
 open_with_fzf() {
-    fd -t f -H -I | fzf -m --preview="head $LINES {}" | xargs -ro -d "\n" xdg-open 2>&-
+    fd -t f -H -I | fzf -m --preview='bat --color=always --theme="OneHalfLight" --style=numbers --line-range :500 {}' | xargs -ro -d "\n" xdg-open 2>&-
 }
 
 # pacman search and install
 pacs() {
     sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}")
 }
+
+
+# rga (ripgrep-all) uses grep in all types of files pdf, ebooks, zip, odt, etc.
+#   this function redirects the output to fzf
+# rga-fzf() {
+# 	RG_PREFIX="rga --files-with-matches"
+# 	local file
+# 	file="$(
+# 		FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+# 			fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+# 				--phony -q "$1" \
+# 				--bind "change:reload:$RG_PREFIX {q}" \
+# 				--preview-window="70%:wrap"
+# 	)" &&
+# 	echo "opening $file" &&
+# 	xdg-open "$file"
+# }
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
