@@ -178,7 +178,6 @@ call plug#begin('~/.vim/plugged')
 """
 """"""""""""""""""""""""""""""""""""""""""""""
 
-Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-surround'
@@ -406,30 +405,34 @@ vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 " noremap <leader>g :Ack
 
 " search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+vnoremap <silent> <leader>R :call VisualSelection('replace', '')<CR>
 
 
 
-" bufExplorer plugin
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerFindActive=1
-let g:bufExplorerSortBy='name'
-map <leader>o :BufExplorer<cr>
 
-
+""""""""""""""""""""""""""""""""""
 " FZF
+""""""""""""""""""""""""""""""""""
+
+" I use fzf to:
+"   - search for files in git directory
+"   - all directories recursively
+"   - navigate through the open buffers
+"   - open recently opened files
+"   - create ctags for definition jumps
+"   - change colorscheme
+"   - search for pattern in directory (with ripgrep)
+
 noremap <leader>f :GFiles <cr>
 noremap <leader>F :Files <cr>
+noremap <leader>o :Buffers<cr>   
 
-
-" MRU PLUGIN
 " show files recently edited
 command! FZFMru call fzf#run({
-\  'source':  v:oldfiles,
-\  'sink':    'e',
-\  'options': '-m -x +s',
-\  'down':    '40%'})
+    \  'source':  v:oldfiles,
+    \  'sink':    'e',
+    \  'options': '-m -x +s',
+    \  'down':    '40%'})
 
 noremap <leader>u :FZFMru<CR>
 
@@ -440,6 +443,16 @@ let g:fzf_tags_command = 'ctags -R'
 
 noremap <leader>. :Tags<cr>
 
+
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1, 
+    \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%') 
+    \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+    \   <bang>0)
+
+
+noremap <leader>r :Rg<Cr>
 
 
 

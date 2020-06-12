@@ -6,7 +6,15 @@
 [[ $- != *i* ]] && return
 
 
+# path 
 export PATH=$PATH:~/go/bin
+
+
+
+# binds
+bind '"\C-g":"cd_with_fzf\n"'
+bind '"\C-o":"open_with_fzf\n"'
+alias o="xdg-open"
 
 
 # ALIASES
@@ -128,6 +136,8 @@ alias rmd="rm -d"
 alias rmf="rm -rf"
 alias cx="chmod +x"
 
+
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
 
 
 # Colors
@@ -255,6 +265,22 @@ s() {
     else
         sudo "$@"
     fi
+}
+
+
+# great navigation with fzf
+cd_with_fzf() {
+    cd $HOME && cd "$(fd -I -t d | fzf --preview="tree -L 1 {}")"
+}
+
+# no need to ranger with this
+open_with_fzf() {
+    fd -t f -H -I | fzf -m --preview="head $LINES {}" | xargs -ro -d "\n" xdg-open 2>&-
+}
+
+# pacman search and install
+pacs() {
+    sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}")
 }
 
 
