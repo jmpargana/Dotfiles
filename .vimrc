@@ -200,6 +200,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'ayu-theme/ayu-vim'
 Plug 'kaicataldo/material.vim'
+Plug 'junegunn/goyo.vim'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -396,6 +397,11 @@ noremap <leader>df :DartFmt<cr>
 if executable('ag')
   let g:ackprg = 'ag --vimgrep --smart-case'
 endif
+
+
+" GOYO
+" activate zen mode
+noremap <leader>z :Goyo<cr>
 
 
 

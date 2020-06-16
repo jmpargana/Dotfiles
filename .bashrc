@@ -8,10 +8,12 @@
 
 # path 
 export PATH=$PATH:~/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 
 
-# binds
+ #binds
 bind '"\C-g":"cd_with_fzf\n"'
 bind '"\C-o":"open_with_fzf\n"'
 alias o="xdg-open"
@@ -139,6 +141,8 @@ alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
 
 
 export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
+export EDITOR=vim
+export VISUAL=vim
 
 
 # Colors
