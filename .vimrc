@@ -27,14 +27,14 @@ set history=500             " how many lines of history VIM remembers
 syntax on                   " syntax highlighting
 filetype plugin indent on
 
-set nowrap                    " wrap text that exceeds screen width
-set matchpairs+=<:>         "highlight pairs
+" set nowrap                  " wrap text that exceeds screen width
+set matchpairs+=<:>         " highlight pairs
 set hlsearch                " highlight matching search patterns
 set incsearch               " enable incremental search
 set ignorecase              " ignore matching cases
 set nocompatible            " open files with vim instead of vi
 
-set so=7                    " set 7 lines to the cursor - when moving vertically
+" set so=7                    " set 7 lines to the cursor - when moving vertically
 set ruler                   " always show current position
 set cmdheight=1             " height of the command bar
 set hid                     " a buffer becomes hidden when it is abandoned

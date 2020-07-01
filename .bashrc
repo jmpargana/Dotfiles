@@ -7,25 +7,27 @@
 
 
 # path 
-export PATH=$PATH:~/go/bin
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:~/.cargo/bin              # rust binaries
+export PATH=$PATH:~/.local/bin              # python binaries
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin   # go binaries
 
 
 
  #binds
 bind '"\C-g":"cd_with_fzf\n"'
 bind '"\C-o":"open_with_fzf\n"'
-alias o="xdg-open"
+alias open="xdg-open"
 
 
 # ALIASES
 # basic
-alias ls='ls --color=auto'
+alias ls='ls --color=auto'                  # ls should be changed to exa
 alias diff='diff --color=auto'
 alias grep="grep --color=auto"
 alias dmesg="dmesg --color=always"
 alias ip="ip -color=auto"
+alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
 
 # editing
 alias vb='vim ~/.bashrc'
@@ -38,7 +40,7 @@ alias vv="vim ~/.vimrc"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 
-# navigation
+# navigation -> up() function is also very powerful
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -49,12 +51,13 @@ alias la="ls -la"
 
 # ARCH
 alias pac="sudo pacman -S"
+alias pacr="sudo pacman -R"
 alias ya="yay -S"
-alias upt="sudo pacman -Syyu"
-alias yupt="yay -Syu"
+alias upt="yay -Syu --devel --timeupdate"
 
 # WINDOW MANAGERS
-alias i3c="ec ~/.config/i3/config"
+alias i3c="vim ~/.config/i3/config"
+alias obc="vim ~/.config/openbox/rc.xml"
 
 # MOTIONS
 alias gh="cd ~"
@@ -78,6 +81,9 @@ alias cn="cargo new"
 alias cdo="cargo doc --open"
 alias cf="cargo fmt"
 alias cws="cargo web start"
+alias cn="cargo_new"
+alias cnl="cargo_new_lib"
+
 
 # python
 alias py="python"
@@ -101,6 +107,12 @@ alias nt="npm test"
 alias nps="npm start"
 alias ni="npm i -S"
 
+# heroku
+alias gph="git push heroku master"
+alias hlt="heroku logs -t"
+alias hcp="heroku container:push web"
+alias hcr="heroku container:release"
+
 # docker
 alias dr="docker run"
 alias drm="docker rm"
@@ -118,6 +130,11 @@ alias gb="go build"
 alias gr="go run"
 alias gf="go fmt"
 alias gd="go doc"
+alias gi="go install"
+
+# ssh toggler
+alias sssh="sudo systemctl start sshd.service"
+alias stssh="sudo systemctl stop sshd.service"
 
 # kali
 alias kali="docker run -ti --rm \
@@ -137,7 +154,8 @@ alias nus="nordvpn c us"
 alias rmd="rm -d"
 alias rmf="rm -rf"
 alias cx="chmod +x"
-alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
+alias sa="systemd-analyze"
+alias sab="systemd-analyze blame"
 
 
 export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
@@ -286,6 +304,26 @@ open_with_fzf() {
 # pacman search and install
 pacs() {
     sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}")
+}
+
+cargo_new() {
+    if [ ! -n "$1" ]; then
+        "Enter a project name"
+    elif [ -d $1 ]; then
+        echo "$1"' already exists'
+    else
+        cargo new $1 && cd $1
+    fi
+}
+
+cargo_new_lib() {
+    if [ ! -n "$1" ]; then
+        "Enter a project name"
+    elif [ -d $1 ]; then
+        echo "$1"' already exists'
+    else
+        cargo new --lib $1 && cd $1
+    fi
 }
 
 

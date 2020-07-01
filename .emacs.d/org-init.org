@@ -249,8 +249,8 @@ performance. First make sure you need all the packages on these configuration. I
 in Haskell, Web-development you can prevent emacs from loading those modes' features on startup
 by adding /:defer t/ inside all corresponding /(use-package ...)/ sections. 
 
-Another Step you can take to improve your startup speed is disable all ;; :ensure tags on the
-/use-package/ blocks. To do so, type *M-% ;; :ensure t RET ;; :ensure t* at the beginning of
+Another Step you can take to improve your startup speed is disable all :ensure tags on the
+/use-package/ blocks. To do so, type *M-% :ensure t RET :ensure t* at the beginning of
 the file, followed by *!* and all lines will be commented. This will improve your startup
 in about 0.7 seconds.
 
@@ -311,7 +311,7 @@ This hasn't been integrated yet, but should be changed in the near future.
     (require 'use-package))
 
   (use-package diminish
-    ;; :ensure t
+    :ensure t
     )
 
   (require 'bind-key)
@@ -333,7 +333,7 @@ by /Counsel/, although the later makes use of some of Smex's functions.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smex
-    ;; :ensure t
+    :ensure t
     :bind (("M-x" . smex))
     :config (smex-initialize))
 #+END_SRC
@@ -357,7 +357,7 @@ To read its documentation go to [[https://oremacs.com/swiper/][IVY]].
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-    ;; :ensure t
+    :ensure t
     :diminish (ivy-mode . "")
     :config
     (progn
@@ -378,7 +378,7 @@ documetation, but it is quite intuitive to use.
 
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
-    ;; :ensure t
+    :ensure t
     :bind
     ([remap isearch-forward]  . swiper)
     ([remap isearch-backward] . swiper))
@@ -393,7 +393,7 @@ documentation.
 
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
-    ;; :ensure t
+    :ensure t
     :bind (("C-c C-f" . counsel-find-file)
 	   ("M-x" . counsel-M-x)))
 #+END_SRC   
@@ -404,7 +404,7 @@ documentation.
 if you run the builtin /shell/.
 #+BEGIN_SRC emacs-lisp
 (use-package bash-completion
-  ;; :ensure t
+  :ensure t
   :defer t
   :config
   (autoload 'bash-completion-dynamic-complete
@@ -424,7 +424,7 @@ which allows you to reset to the last state you had before creating a spliting a
 
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
-    ;; :ensure t
+    :ensure t
     :defer t
     :bind (("M-o" . ace-window)
 	   ([remap other-window] . ace-window))
@@ -440,7 +440,7 @@ but this one is smaller and simpler.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dired-sidebar
-    ;; :ensure t
+    :ensure t
     :bind ("M-d" . dired-sidebar-toggle-sidebar)
     :commands (dired-sidebar-toggle-sidebar))
 #+END_SRC
@@ -454,7 +454,7 @@ work. To learn them by heart check its [[https://projectile.readthedocs.io/en/la
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    ;; :ensure t
+    :ensure t
     :init (setq projectile-completion-system 'ivy)
     :config
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -481,7 +481,7 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
    Another famous theme with 5 different formats
 #+BEGIN_SRC emacs-lisp
   ;; (use-package color-theme-sanityinc-tomorrow
-  ;;   ;; :ensure t
+  ;;   :ensure t
   ;;   :init
   ;;   (load-theme 'sanityinc-tomorrow-day t))
 #+END_SRC
@@ -491,7 +491,7 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
    Moe theme offers different color schemes and powerline support. Go [[https://github.com/kuanyui/moe-theme.el][here]] for further details.
 #+BEGIN_SRC emacs-lisp
   ;; (use-package moe-theme
-  ;;   ;; :ensure t
+  ;;   :ensure t
   ;;   :config
   ;;   (moe-theme-set-color 'cyan)
   ;;   (moe-dark))
@@ -501,7 +501,7 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
 
 #+BEGIN_SRC emacs-lisp
   ;; (use-package solarized-theme
-  ;;       ;; :ensure t
+  ;;       :ensure t
   ;;       :config
   ;;       (load-theme 'solarized-light t))
 #+END_SRC
@@ -511,7 +511,7 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
    You can also search these github [[https://github.com/milkypostman/powerline][page]] for more details.
 #+BEGIN_SRC emacs-lisp
   (use-package powerline
-	;; :ensure t
+	:ensure t
 	:config
 	(powerline-center-theme))
 #+END_SRC
@@ -531,7 +531,7 @@ for other emacs themes go to [[https://emacsthemes.com][this link]].
 I've configured it to run on global-mode.
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
-  ;; :ensure t
+  :ensure t
   :config 
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
@@ -541,7 +541,7 @@ I've configured it to run on global-mode.
    Another good package, that I might use to replace this one is [[https://github.com/Fuco1/smartparens][SmartParens]], but for now it works.
 #+BEGIN_SRC emacs-lisp
 (use-package autopair
-  ;; :ensure t
+  :ensure t
   :config
   (autopair-global-mode))
 #+END_SRC
@@ -551,7 +551,7 @@ I've configured it to run on global-mode.
    Show line numbers on the side. This mode might not work with autocomple.
 #+BEGIN_SRC emacs-lisp
 (use-package linum
-  ;; :ensure t
+  :ensure t
   :config
   (global-linum-mode 1))
 #+END_SRC
@@ -605,7 +605,7 @@ prefer company. It's a bit harder to setup, but I find it to work more efficient
 can also be loaded to show company's documentation alongside.
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    ;; :ensure t
+    :ensure t
     :config
     (progn
       (bind-key [remap completion-at-point] #'company-complete company-mode-map)
@@ -618,7 +618,7 @@ can also be loaded to show company's documentation alongside.
     :diminish company-mode)
 
   (use-package company-quickhelp
-    ;; :ensure t
+    :ensure t
     :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
 #+END_SRC
 
@@ -628,7 +628,7 @@ can also be loaded to show company's documentation alongside.
 of its minor modes, created specially to work with certain languages.
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    ;; :ensure t
+    :ensure t
     :init (global-flycheck-mode)
     :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 #+END_SRC
@@ -640,7 +640,7 @@ writing exponentially, but I'm currently not using it. Check [[https://github.co
 #+BEGIN_SRC emacs-lisp
 ;; Use snippets as shortcuts in your code editing
 ;; (use-package yasnippet
-;;   ;; :ensure t
+;;   :ensure t
 ;;   :defer t
 ;;   :config
 ;;   ;; (validate-setq
@@ -655,7 +655,7 @@ writing exponentially, but I'm currently not using it. Check [[https://github.co
 
 ;; Snippet collection
 ;; (use-package yasnippet-snippets
-;;   ;; :ensure t
+;;   :ensure t
 ;;   :defer t)
 #+END_SRC
 
@@ -667,7 +667,7 @@ be setup to work with ivy or helm.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
-    ;; :ensure t
+    :ensure t
     :defer t
     :bind (("M-g o" . dumb-jump-go-other-window)
 	   ("M-g j" . dumb-jump-go)
@@ -688,7 +688,7 @@ Feel free to change them to your taste.
 
    #+BEGIN_SRC emacs-lisp
      (use-package multiple-cursors
-       ;; :ensure t
+       :ensure t
        :bind (("C-s-c C-s-c" . mc/edit-lines)
 	      ("C->" . mc/mark-next-like-this)
 	      ("C-<" . mc/mark-previous-like-this)
@@ -703,7 +703,7 @@ you are editing. It follows strict semantic rules and works quite efficiently.
 
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-    ;; :ensure t
+    :ensure t
     :bind ("C-#" . er/expand-region))
 #+END_SRC
 
@@ -715,7 +715,7 @@ Its very easy to use, and all the keybindings needed are described below.
 
 #+BEGIN_SRC emacs-lisp
   (use-package corral
-    ;; :ensure t
+    :ensure t
     :bind (("M-9" . corral-parentheses-backward)
 	   ("M-8" . corral-parentheses-forward)
 	   ("M-[" . corral-brackets-backward)
@@ -736,7 +736,7 @@ block, like a whole function.
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-nerd-commenter
-    ;; :ensure t
+    :ensure t
     :defer t
     :bind (("C-C l" . evilnc-comment-or-uncomment-lines)
 	   ("C-c b" . evilnc-comment-or-uncomment-paragraphs)))
@@ -751,7 +751,7 @@ and it is already pretty usefull in high verbosity modes like c++.
 
 #+BEGIN_SRC emacs-lisp
   (use-package origami
-    ;; :ensure t
+    :ensure t
     ;; :ensure s
     ;; :ensure dash
     :defer t
@@ -768,7 +768,7 @@ or use *C-u <NUMBER>* to make a jump.
 
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
-    ;; :ensure t
+    :ensure t
     :defer t
     :bind (("M-p" . move-text-up)
 	   ("M-n" . move-text-down)))
@@ -809,7 +809,7 @@ if you do, just uncomment those two lines of code.
     With Elpy you can run the whole program by typing *C-u C-c C-c*.
 #+BEGIN_SRC emacs-lisp
 (use-package elpy
-  ;; :ensure t
+  :ensure t
   :config
   (progn
     ;; (setq python-shell-interpreter "ipython"
@@ -823,7 +823,7 @@ if you do, just uncomment those two lines of code.
 in python with jedi.
 #+BEGIN_SRC emacs-lisp
 (use-package company-jedi
-  ;; :ensure t
+  :ensure t
   :config
   (progn
     (add-hook 'python-mode-hook 'jedi:setup)
@@ -837,7 +837,7 @@ in python with jedi.
 running *C-c M-d* and creating and entry for each parameter and return value.
 #+BEGIN_SRC emacs-lisp
   (use-package sphinx-doc
-    ;; :ensure t
+    :ensure t
     :config
     (add-hook 'python-mode-hook (lambda ()
 				  (sphinx-doc-mode t))))
@@ -889,7 +889,7 @@ on my use-package version.
     Irony more compiles your code and checks for syntax errors while writing and editing your files.
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-    ;; :ensure t
+    :ensure t
     :hook ((c++-mode-hook . irony-mode)
            (c-mode-hook . irony-mode)
            (objc-mode-hook . irony-mode)
@@ -901,7 +901,7 @@ on my use-package version.
     This one enhances your autocompletion using the clang library.
 #+BEGIN_SRC emacs-lisp
 (use-package company-irony
-  ;; :ensure t
+  :ensure t
   :config
   (add-to-list 'company-backends 'company-irony))
 #+END_SRC
@@ -911,7 +911,7 @@ on my use-package version.
     And this one enhances syntax checking and highlighting even further.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck-irony
-  ;; :ensure t
+  :ensure t
   :commands flycheck-irony-setup
   :init
   (add-hook 'c++-mode-hook 'flycheck-irony-setup)
@@ -937,7 +937,7 @@ you can also read some jsx and tsx specifications.
 
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
-    ;; :ensure t
+    :ensure t
 ;;    :mode ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
 ;;           "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.html?\\'"
 ;;           "\\.api\\'" "\\.tsx\\'" "\\.ts\\'" "\\.jsx\\'"
@@ -978,11 +978,11 @@ first two blocks.
 
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
-    ;; :ensure t
+    :ensure t
     :hook (js2-imenu-extras-mode))
 
   (use-package js2-refactor
-    ;; :ensure t
+    :ensure t
     :hook (js2-refactor-mode xref-backend-functions xref-js2-xref-backend)
     :config
     (progn
@@ -996,7 +996,7 @@ Read more about /Skewer/ [[https://github.com/skeeto/skewer-mode][here]].
 
 #+BEGIN_SRC emacs-lisp
   (use-package skewer-mode
-    ;; :ensure t
+    :ensure t
     :ensure simple-httpd
     :bind ("C-c C-c C-s" . run-skewer)
     :hook (js2-mode css-mode html-mode))
@@ -1007,7 +1007,7 @@ your /prettify/ keybindings. This is not needed, since it is activated on save.
 
 #+BEGIN_SRC emacs-lisp
   (use-package prettier-js
-    ;; :ensure t
+    :ensure t
     :bind ("M-ö p" . prettier-js)
     :hook (web-mode js2-mode rjsx-mode)
     :config
@@ -1029,7 +1029,7 @@ JSON support
 
 #+BEGIN_SRC emacs-lisp
   (use-package json-mode
-    ;; :ensure t
+    :ensure t
     :hook (web-mode))
 #+END_SRC
 
@@ -1054,7 +1054,7 @@ JSON support
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-tern
-    ;; :ensure t
+    :ensure t
     :config
     (progn
       (add-to-list 'company-backends 'company-tern)
@@ -1084,7 +1084,7 @@ JSON support
 in the haskell [[https://wiki.haskell.org/Emacs][wiki]]. My config is quite minimal.
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
-    ;; :ensure t
+    :ensure t
     :ensure intero
     :mode ("\\.hs\\'" . haskell-mode)
     :hook (haskell-indentation-mode
@@ -1110,7 +1110,7 @@ a whole lot easier.
     This has the main configuration
 #+BEGIN_SRC emacs-lisp
   (use-package tex
-    ;; :ensure t
+    :ensure t
     ;; :ensure auctex
     :defer t
     :bind ("C-c C-a C-c" . TeX-evince-sync-view)
@@ -1127,7 +1127,7 @@ a whole lot easier.
     And this has the autocompletion enhancement.
 #+BEGIN_SRC emacs-lisp
   ;; (use-package company-auctex
-  ;;   ;; :ensure t
+  ;;   :ensure t
   ;;   :config
   ;;   (company-auctex-init))
 #+END_SRC
@@ -1138,7 +1138,7 @@ a whole lot easier.
    For MarkDown make sure you have the packages installed, as mentioned in the introduction section.
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    ;; :ensure t
+    :ensure t
     :commands (markdown-mode gfm-mode)
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . markdown-mode)
@@ -1156,7 +1156,7 @@ to /this/ or /all/ and run the command *M-x org-make-toc*. For more details
 read this [[https://github.com/alphapapa/org-make-toc/blob/master/README.org][page]].
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    ;; :ensure t
+    :ensure t
     :ensure org-bullets
     :ensure ox-gfm
     :ensure htmlize
@@ -1165,7 +1165,7 @@ read this [[https://github.com/alphapapa/org-make-toc/blob/master/README.org][pa
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   (use-package org-make-toc
-    ;; :ensure t
+    :ensure t
     :hook org-mode)
 #+END_SRC
 
@@ -1177,7 +1177,7 @@ Run *M-x load-library RET ox-reveal* and then *C-c C-e R R* to export.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ox-reveal
-    ;; :ensure t
+    :ensure t
     :defer t
     :config (setq org-reveal-root "file:///home/icm/.reveal.js"))
 #+END_SRC
@@ -1190,7 +1190,7 @@ Run *M-x load-library RET ox-reveal* and then *C-c C-e R R* to export.
    This package provides a very intuitiv GUI-like interface to manage your git. Read more [[https://magit.vc/][here]].
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  ;; :ensure t
+  :ensure t
   :bind (("C-x g" . magit-status)))
 #+END_SRC
 
@@ -1255,7 +1255,7 @@ melpa but instead *M-x run RET /package-name/*.
 
 #+BEGIN_SRC emacs-lisp
   (use-package try
-    ;; :ensure t
+    :ensure t
     :defer t)
 #+END_SRC
 
@@ -1272,7 +1272,7 @@ keybindings. For more details check [[https://github.com/hrs/engine-mode][their 
 
 #+BEGIN_SRC emacs-lisp
   (use-package engine-mode
-    ;; :ensure t
+    :ensure t
     :config
     (progn
     
