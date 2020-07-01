@@ -293,7 +293,7 @@ s() {
 
 # great navigation with fzf
 cd_with_fzf() {
-    cd $HOME && cd "$(fd -I -t d | fzf --preview="tree -L 1 {}")"
+    builtin cd $HOME && cd "$(fd -I -t d | fzf --preview="tree -L 1 {}")"
 }
 
 # no need to ranger with this
