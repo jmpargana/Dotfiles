@@ -1,6 +1,17 @@
+####################################################################################
 #
-# ~/.bashrc
+# bashrc
 #
+# Author: Joao Pargana
+# 
+# Requirements:
+#   - fzf
+#   - rg
+#   - sd
+#   - fd
+#   - ged
+#   - bat
+#   - exa
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -191,7 +202,11 @@ PS2='> '
 # LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
 
 
+# FZF RIPGREP SETTINGS
+export FZF_DEFAULT_OPTS='rg --files --no-ignore-vcs --hidden'
 
+
+# LESS COLORS
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[1;31m'     
 export LESS_TERMCAP_md=$'\E[1;36m'    
@@ -303,7 +318,7 @@ open_with_fzf() {
 
 # pacman search and install
 pacs() {
-    sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}")
+    sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}" | xargs)
 }
 
 cargo_new() {
@@ -323,6 +338,15 @@ cargo_new_lib() {
         echo "$1"' already exists'
     else
         cargo new --lib $1 && cd $1
+    fi
+}
+
+
+kp() {
+    local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+
+    if [ "x$pid" != "x" ]; then
+        echo $pid | xargs kill -$(1:-9)
     fi
 }
 
