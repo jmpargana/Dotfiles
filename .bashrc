@@ -169,7 +169,7 @@ alias sa="systemd-analyze"
 alias sab="systemd-analyze blame"
 
 
-export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
+# export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
 export EDITOR=vim
 export VISUAL=vim
 
@@ -203,7 +203,7 @@ PS2='> '
 
 
 # FZF RIPGREP SETTINGS
-export FZF_DEFAULT_OPTS='rg --files --no-ignore-vcs --hidden'
+# export FZF_DEFAULT_OPTS='rg --files --no-ignore-vcs --hidden'
 
 
 # LESS COLORS
@@ -343,7 +343,7 @@ cargo_new_lib() {
 
 
 kp() {
-    local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+    local pid=$(ps -ef | sed 1d | eval "fzf -m --header='[kill:process]'" | awk '{print $2}')
 
     if [ "x$pid" != "x" ]; then
         echo $pid | xargs kill -$(1:-9)

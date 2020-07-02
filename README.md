@@ -1,6 +1,6 @@
-#+TITLE: Config Files
+# Config Files
 
-* Introduction
+- Introduction
 
 This repository contains my most important dot files.  As well as all the
  details needed for a full system configuration, including:
