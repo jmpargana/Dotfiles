@@ -15,13 +15,14 @@
 # If you want to use XFCE config tools...
 #
 #xfce-mcs-manager &
-tint2 & 
-nitrogen --restore &
+# tint2 & 
+~/.config/polybar/launch.sh &
+feh --bg-fill ~/Documents/Pictures/121412.jpg &
 picom &
 # conky &
-xfce4-power-manager &
+# xfce4-power-manager &
 volumeicon &
 dunst &
 nm-applet &
 keepassxc &
-sleep 5s && nc & 
+# sleep 5s && nc & 

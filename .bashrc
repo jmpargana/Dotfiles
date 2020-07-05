@@ -12,6 +12,7 @@
 #   - ged
 #   - bat
 #   - exa
+#   - hub
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -23,22 +24,39 @@ export PATH=$PATH:~/.cargo/bin              # rust binaries
 export PATH=$PATH:~/.local/bin              # python binaries
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin   # go binaries
 
-
-
  #binds
 bind '"\C-g":"cd_with_fzf\n"'
 bind '"\C-o":"open_with_fzf\n"'
-alias open="xdg-open"
-
 
 # ALIASES
 # basic
-alias ls='ls --color=auto'                  # ls should be changed to exa
 alias diff='diff --color=auto'
-alias grep="grep --color=auto"
 alias dmesg="dmesg --color=always"
 alias ip="ip -color=auto"
+alias open="xdg-open"
+alias ipa="ip addr show"
 alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
+
+# use colorful versions of cmd utilities if available
+if type exa > /dev/null 2>&1; then
+    alias ls="exa"
+else
+    alias ls="ls --color"
+fi
+
+if type rg > /dev/null 2>&1; then
+    alias grep="rg"
+else
+    alias grep="grep --color=auto"
+fi
+
+if type bat > /dev/null 2>&1; then
+    alias cat="bat"
+fi
+
+if type hub > /dev/null 2>&1; then
+    alias git="hub"
+fi
 
 # editing
 alias vb='vim ~/.bashrc'
@@ -58,7 +76,7 @@ alias ....="cd ../../.."
 alias ll="ls -l"
 alias lo="ls -o"
 alias lh="ls -lh"
-alias la="ls -la"
+alias la="ls -a"
 
 # ARCH
 alias pac="sudo pacman -S"
@@ -195,15 +213,8 @@ COLOR_LIGHT_GRAY='\e[0;37m'
 
 
 # ENV
-# PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
 PS1='\['"$COLOR_LIGHT_CYAN"'\]\u@\['"$COLOR_LIGHT_CYAN"'\]\h \['"$COLOR_LIGHT_RED"'\]\W\[\e[0m\]\$ '
 PS2='> '
-# PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "  
-# LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
-
-
-# FZF RIPGREP SETTINGS
-# export FZF_DEFAULT_OPTS='rg --files --no-ignore-vcs --hidden'
 
 
 # LESS COLORS
@@ -224,7 +235,6 @@ shopt -s cdspell
 
 bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
 bind "set bell-style none" # no bell
-# bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 
 mkcd() {
@@ -284,6 +294,12 @@ up(){
 		d=..
 	fi
 	cd $d
+}
+
+
+# ripgrep fzf
+rgf() {
+    RG_PREFIX="rg --files-with-matches"
 }
 
 

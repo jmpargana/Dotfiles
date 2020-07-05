@@ -8,7 +8,7 @@
 !.emacs.d/
 
 # Just the important configs
-!.config/{Thunar,alacritty,dunst,fish,i3,i3status,nitrogen,openbox,picom,ranger,rofi,tint2}
+!.config/{Thunar,alacritty,dunst,fish,i3,i3status,nitrogen,openbox,picom,ranger,rofi,polybar}
 !.config/pavucontrol.ini
 
 # Personals

@@ -53,7 +53,7 @@ set guioptions-=L
 
 set splitbelow              " set terminal to open below
 set keywordprg=:Man
-
+set completeopt-=preview    " prevent vim from opening buffer when plugin makes suggestions
 
 
 
@@ -139,12 +139,6 @@ vnoremap $e <esc>`>a"<esc>`<i"<esc>
 " filetypes with 2 spaces tab indentation
 autocmd Filetype {{java,type}script{,react},html,dart} setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
-" force rescan syntax highlighting in this files extensions
-" autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-" autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-" autocmd BufNewFile, BufRead *.tsx,*.jsx set filetype=typescript.tsx
-
-
 " type ,pu to install all plugins
 noremap <leader>pu :PlugInstall<cr>
 
@@ -179,7 +173,6 @@ call plug#begin('~/.vim/plugged')
 """"""""""""""""""""""""""""""""""""""""""""""
 
 Plug 'tpope/vim-commentary'
-Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -211,7 +204,7 @@ Plug 'junegunn/goyo.vim'
 
 " Syntax Checker and Auto Completion
 Plug 'dense-analysis/ale'
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --all' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Rust
 Plug 'rust-lang/rust.vim'
@@ -221,21 +214,9 @@ Plug 'plasticboy/vim-markdown'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
-" JavaScript for React
-Plug 'yuezk/vim-js'
-" Plug 'maxmellon/vim-jsx-pretty'
+" TypeScript for React
 Plug 'mattn/emmet-vim'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plug 'hotoo/jsgf.vim'
-Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
-
-" Typescript
-Plug 'leafgarland/typescript-vim'
-Plug 'neoclide/vim-jsx-improve'
-" Plug 'peitalin/vim-jsx-typescript'
-" Plug 'styled-components/vim-styled-components'
-" Plug 'jparise/vim-gaphql'
-
+Plug 'sheerun/vim-polyglot'
 
 " Dart
 Plug 'dart-lang/dart-vim-plugin'
@@ -337,28 +318,6 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-"" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''"
 
 
 
@@ -377,11 +336,42 @@ let b:ale_fixers = {
     \   'python': ['yapf', 'black', 'autopep8']
     \}
 
+let g:ale_python_auto_pipenv = 1
+let g:ale_fix_on_save = 1
 
-" prettier
-noremap <leader>p :Prettier<cr> 
 
-let g:vim_jsx_pretty_colorful_config = 1
+nmap <silent> [c <Plug>(ale_previous_wrap)
+nmap <silent> ]c <Plug>(ale_next_wrap)
+
+" Navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostics-prev)
+nmap <silent> ]g <Plug>(coc-diagnostics-next)
+
+
+
+" CoC
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+
+" Highlight references when holding cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Formating selected code.
+xmap <leader>p <Plug>(coc-format-selected)
+nmap <leader>p <Plug>(coc-format-selected)
+
 
 
 " Dart
@@ -392,26 +382,6 @@ let g:dart_format_on_save = 1
 noremap <leader>df :DartFmt<cr>
 
 
-
-" use the_silver_searcher if possible
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep --smart-case'
-endif
-
-
-" GOYO
-" activate zen mode
-noremap <leader>z :Goyo<cr>
-
-
-
-" ACK 
-" open ack and put the cursor in the right position
-vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
-" noremap <leader>g :Ack
-
-" search and replace the selected text
-vnoremap <silent> <leader>R :call VisualSelection('replace', '')<CR>
 
 
 
@@ -430,7 +400,7 @@ vnoremap <silent> <leader>R :call VisualSelection('replace', '')<CR>
 "   - search for pattern in directory (with ripgrep)
 
 noremap <leader>f :GFiles <cr>
-noremap <leader>F :Files <cr>
+noremap <leader>F :Files ~<cr>
 noremap <leader>o :Buffers<cr>   
 
 " show files recently edited
@@ -458,7 +428,7 @@ command! -bang -nargs=* Rg
     \   <bang>0)
 
 
-noremap <leader>r :Rg<Cr>
+noremap <C-g> :Rg <Cr>
 
 
 
@@ -493,10 +463,7 @@ else
 endif
 
 let g:ale_python_auto_pipenv = 1
-
-
 let python_highlight_all = 1
-
 let g:ale_fix_on_save = 1
 
 
@@ -565,7 +532,7 @@ autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" Functions from amix vimrc 
+" Functions
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -595,24 +562,6 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 
-
-
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
 
 
 function! s:tags_sink(line)
