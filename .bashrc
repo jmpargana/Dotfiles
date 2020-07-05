@@ -36,6 +36,7 @@ alias ip="ip -color=auto"
 alias open="xdg-open"
 alias ipa="ip addr show"
 alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
+alias v="vim"
 
 # use colorful versions of cmd utilities if available
 if type exa > /dev/null 2>&1; then

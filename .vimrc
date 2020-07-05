@@ -34,13 +34,16 @@ set incsearch               " enable incremental search
 set ignorecase              " ignore matching cases
 set nocompatible            " open files with vim instead of vi
 
-" set so=7                    " set 7 lines to the cursor - when moving vertically
+set so=5                    " set 5 lines to the cursor - useful in big screens
 set ruler                   " always show current position
 set cmdheight=1             " height of the command bar
 set hid                     " a buffer becomes hidden when it is abandoned
 set magic                   " for regex search
+set updatetime=300          " for autocompletion
 
 set nobackup                " disable backup, swap files, etc.
+set nowritebackup
+" set paste                   " when pasting from clipboard 
 set nowb
 set noswapfile
 set lbr                     " break line on 100 characters
@@ -174,9 +177,10 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-repeat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
 
 
 
@@ -343,17 +347,39 @@ let g:ale_fix_on_save = 1
 nmap <silent> [c <Plug>(ale_previous_wrap)
 nmap <silent> ]c <Plug>(ale_next_wrap)
 
+
+
+" CoC
+if has("patch-8.1.1564")
+	set signcolumn=number
+else
+	set signcolumn=yes
+endif
+
+inoremap <silent><expr> <TAB>
+	\ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" : 
+    \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+
 " Navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostics-prev)
 nmap <silent> ]g <Plug>(coc-diagnostics-next)
 
-
-
-" CoC
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+nmap <leader>. <Plug>(coc-codeaction)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -417,7 +443,7 @@ noremap <leader>u :FZFMru<CR>
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
 
-noremap <leader>. :Tags<cr>
+noremap <leader>t :Tags<cr>
 
 
 command! -bang -nargs=* Rg
@@ -429,7 +455,6 @@ command! -bang -nargs=* Rg
 
 
 noremap <C-g> :Rg <Cr>
-
 
 
 
