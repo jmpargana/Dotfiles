@@ -178,8 +178,10 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'ludovicchabant/vim-gutentags'
 
 
 
@@ -260,10 +262,10 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 " This needs some tweaking in your terminal theme as well
 " - dark
 " - light
-set background=dark
+set background=light
 " set t_Co=265
 
-set termguicolors
+" set termguicolors
 
 " let ayucolor="light"        " some themes need to define variables before
 " let g:solarized_termcolors=256
@@ -287,7 +289,7 @@ let g:material_theme_style = 'lighter'
 " Dark
 " - nord
 " - material
-colorscheme material
+colorscheme PaperColor
 
 
 " Change Colorscheme

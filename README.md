@@ -9,5 +9,5 @@ This repository contains my most important dot files.  As well as all the
 - [bashrc](.bashrc) with some nice functions
 - Emacs [setup](.emacs.d/README.org) with its own documentation 
 - i3 [configuration](.config/i3/config) with Rofi theme
-- Openbox [configuration](.config/openbox/rc.xml) with tint2 themes
+- Openbox [configuration](.config/openbox/rc.xml) with [polybar](.config/polybar/config) theme
 - Some extras ([Xresources](.Xresources), [tmux](.tmux.conf), [zshrc](.zshrc), etc.)
