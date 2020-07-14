@@ -189,7 +189,7 @@ alias sa="systemd-analyze"
 alias sab="systemd-analyze blame"
 
 
-# export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
 export EDITOR=vim
 export VISUAL=vim
 
