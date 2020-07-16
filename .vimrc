@@ -429,8 +429,10 @@ noremap <leader>df :DartFmt<cr>
 "   - search for pattern in directory (with ripgrep)
 
 noremap <leader>f :GFiles <cr>
-noremap <leader>F :Files ~<cr>
+noremap <leader>F :Files <cr>
 noremap <leader>o :Buffers<cr>   
+
+command CD cd %:p:h
 
 " show files recently edited
 command! FZFMru call fzf#run({

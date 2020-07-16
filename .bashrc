@@ -146,6 +146,7 @@ alias hcr="heroku container:release"
 
 # docker
 alias dr="docker run"
+alias drir="docker run -it --rm"
 alias drm="docker rm"
 alias drmv="docker rm -v"
 alias dcr="docker create"
@@ -189,7 +190,7 @@ alias sa="systemd-analyze"
 alias sab="systemd-analyze blame"
 
 
-export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
+# export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
 export EDITOR=vim
 export VISUAL=vim
 
@@ -228,6 +229,8 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_se=$'\E[0m'      
 export LESS_TERMCAP_us=$'\E[1;32m'  
 export LESS_TERMCAP_ue=$'\E[0m'    
+
+export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore-vcs"
 
 
 # include .files when globbing
