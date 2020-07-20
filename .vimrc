@@ -432,7 +432,12 @@ noremap <leader>f :GFiles <cr>
 noremap <leader>F :Files <cr>
 noremap <leader>o :Buffers<cr>   
 
-command CD cd %:p:h
+command! CD cd %:p:h
+
+autocmd FileType c      nnoremap <leader>ce :make %<<cr> :!./%<<cr>
+autocmd FileType cpp    nnoremap <leader>ce :make %<<cr> :!./%<<cr>
+autocmd FileType python nnoremap <leader>pi :!python -i %<cr>
+autocmd FileType python nnoremap <leader>pr :!python %<cr>
 
 " show files recently edited
 command! FZFMru call fzf#run({

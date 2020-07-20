@@ -16,7 +16,14 @@
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-[[ -z "$TMUX" ]] && exec tmux
+
+# launch tmux only on graphical environment and check if no session is started
+if [[ $DISPLAY ]]; then
+    if which tmux >/dev/null 2>&1; then
+        test -z "$TMUX" && (tmux attach || tmux new-session)
+    fi
+fi
+
 
 
 # path 
