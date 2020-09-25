@@ -92,6 +92,11 @@ alias pac="sudo pacman -S"
 alias pacr="sudo pacman -R"
 alias ya="yay -S"
 alias upt="yay -Syu --devel --timeupdate"
+alias sss="sudo systemctl start"
+alias sse="sudo systemctl enable"
+alias ssr="sudo systemctl restart"
+alias ssd="sudo systemctl disable"
+alias ssst="sudo systemctl stop"
 
 # WINDOW MANAGERS
 alias i3c="vim ~/.config/i3/config"
@@ -170,6 +175,8 @@ alias gr="go run"
 alias gf="go fmt"
 alias gd="go doc"
 alias gi="go install"
+
+# arch
 
 # ssh toggler
 alias sssh="sudo systemctl start sshd.service"
