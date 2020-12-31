@@ -11,8 +11,8 @@ set tabstop=4
 set softtabstop=4
 set autoindent
 set smartindent
-
 set path+=**
+
 set encoding=utf-8          " always needed
 set fileencoding=utf-8
 
@@ -28,26 +28,24 @@ set history=500             " how many lines of history VIM remembers
 syntax on                   " syntax highlighting
 filetype plugin indent on
 
-" set nowrap                  " wrap text that exceeds screen width
+set nowrap                    " wrap text that exceeds screen width
 set matchpairs+=<:>         " highlight pairs
 set hlsearch                " highlight matching search patterns
 set incsearch               " enable incremental search
 set ignorecase              " ignore matching cases
 set nocompatible            " open files with vim instead of vi
 
-set so=5                    " set 5 lines to the cursor - useful in big screens
+" set so=7                    " set 7 lines to the cursor - when moving vertically
 set ruler                   " always show current position
 set cmdheight=1             " height of the command bar
 set hid                     " a buffer becomes hidden when it is abandoned
 set magic                   " for regex search
-set updatetime=300          " for autocompletion
+set updatetime=300
 
 set nobackup                " disable backup, swap files, etc.
-set nowritebackup
-" set paste                   " when pasting from clipboard 
 set nowb
 set noswapfile
-set lbr                     " break line on 100 characters
+" set lbr                     " break line on 100 characters
 set tw=100
 
 set guioptions-=r           " disable scrollbars
@@ -58,6 +56,10 @@ set guioptions-=L
 set splitbelow              " set terminal to open below
 set keywordprg=:Man
 set completeopt-=preview    " prevent vim from opening buffer when plugin makes suggestions
+
+set spelllang=en_us,de,ru
+autocmd BufRead,BufNewFile *.{md,tex} setlocal spell
+" set complete+=kspell
 
 
 
@@ -78,7 +80,7 @@ nmap <leader>o :only<cr>
 
 
 " open terminal
-nnoremap <leader>c :term<cr>
+" nnoremap <leader>c :term<cr>
 
 " :W sudo saves the file
 command! W execute 'w !sudo tee % > /dev/null' <bar>edit!
@@ -141,7 +143,13 @@ vnoremap $q <esc>`>a'<esc>`<i'<esc>
 vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
 " filetypes with 2 spaces tab indentation
-autocmd Filetype {{java,type}script{,react},html,dart} setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+autocmd Filetype {{java,type}script{,react},html,dart,xml,vue} setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+
+" force rescan syntax highlighting in this files extensions
+" autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+" autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+autocmd BufNewFile, BufRead *.tsx,*.jsx set filetype=typescriptreact
+
 
 " type ,pu to install all plugins
 noremap <leader>pu :PlugInstall<cr>
@@ -177,13 +185,11 @@ call plug#begin('~/.vim/plugged')
 """"""""""""""""""""""""""""""""""""""""""""""
 
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
 Plug 'ludovicchabant/vim-gutentags'
-
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf.vim'
 
 
 
@@ -193,14 +199,15 @@ Plug 'ludovicchabant/vim-gutentags'
 """
 """"""""""""""""""""""""""""""""""""""""""""""
 
-Plug 'arcticicestudio/nord-vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'altercation/vim-colors-solarized'
-Plug 'ayu-theme/ayu-vim'
-Plug 'kaicataldo/material.vim'
-Plug 'junegunn/goyo.vim'
+" Plug 'arcticicestudio/nord-vim'
+" Plug 'NLKNguyen/papercolor-theme'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" Plug 'altercation/vim-colors-solarized'
+" Plug 'ayu-theme/ayu-vim'
+" Plug 'kaicataldo/material.vim'
+Plug 'tomasiser/vim-code-dark'
+Plug 'powerline/powerline'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -221,17 +228,21 @@ Plug 'plasticboy/vim-markdown'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
-" TypeScript for React
+" Typescript
 Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'leafgarland/typescript-vim'
 
-" Dart
-Plug 'dart-lang/dart-vim-plugin'
+" React
+Plug 'peitalin/vim-jsx-typescript'
+
+" Vue
+Plug 'posva/vim-vue'
 
 " Python
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
-
+Plug 'kh3phr3n/python-syntax'           
 
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -252,8 +263,8 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " termguicolors don't work in tmux
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 
 """""""""""""""""""
@@ -263,8 +274,7 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 " This needs some tweaking in your terminal theme as well
 " - dark
 " - light
-set background=light
-" set t_Co=265
+" set background=dark
 
 " set termguicolors
 
@@ -279,7 +289,7 @@ let g:material_terminal_italics = 1     " only for material
 " - palenight
 " - ocean 
 " - darker
-let g:material_theme_style = 'lighter'
+" let g:material_theme_style = 'palenight'
 
 
 " Light
@@ -290,7 +300,10 @@ let g:material_theme_style = 'lighter'
 " Dark
 " - nord
 " - material
-colorscheme PaperColor
+
+set t_Co=265
+set t_ut=
+colorscheme codedark
 
 
 " Change Colorscheme
@@ -318,16 +331,16 @@ nnoremap <silent> <Leader>C :call fzf#run({
 " let g:airline_theme='papercolor'
 
 
-" air-line
+" " air-line
 let g:airline_powerline_fonts = 1
-"
+
+
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
 
-
-
+let g:airline_theme = 'codedark'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -346,22 +359,14 @@ let b:ale_fixers = {
 let g:ale_python_auto_pipenv = 1
 let g:ale_fix_on_save = 1
 
-
 nmap <silent> [c <Plug>(ale_previous_wrap)
 nmap <silent> ]c <Plug>(ale_next_wrap)
 
 
-
 " CoC
-if has("patch-8.1.1564")
-	set signcolumn=number
-else
-	set signcolumn=yes
-endif
-
 inoremap <silent><expr> <TAB>
-	\ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" : 
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
     \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
@@ -370,7 +375,10 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1] =~# '\s'
 endfunction
 
+
 inoremap <silent><expr> <c-space> coc#refresh()
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 
 " Navigate diagnostics
@@ -381,6 +389,8 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <leader>cf :CocFix<cr>
 
 nmap <leader>. <Plug>(coc-codeaction)
 
@@ -413,6 +423,15 @@ noremap <leader>df :DartFmt<cr>
 
 
 
+" Python PIPENV support
+let pipenv_venv_path = system('pipenv --venv')
+
+if shell_error == 0
+    let venv_path = substitute(pipenv_venv_path, '\n', '', '')
+    let g:ycm_python_binary_path = venv_path . '/bin/python'
+else
+    let g_ycm_python_binary_path = 'python'
+endif
 
 
 """"""""""""""""""""""""""""""""""
@@ -430,21 +449,19 @@ noremap <leader>df :DartFmt<cr>
 
 noremap <leader>f :GFiles <cr>
 noremap <leader>F :Files <cr>
-noremap <leader>o :Buffers<cr>   
-
-command! CD cd %:p:h
-
-autocmd FileType c      nnoremap <leader>ce :make %<<cr> :!./%<<cr>
-autocmd FileType cpp    nnoremap <leader>ce :make %<<cr> :!./%<<cr>
-autocmd FileType python nnoremap <leader>pi :!python -i %<cr>
-autocmd FileType python nnoremap <leader>pr :!python %<cr>
+noremap <leader>o :Buffers<cr>
 
 " show files recently edited
 command! FZFMru call fzf#run({
-    \  'source':  v:oldfiles,
-    \  'sink':    'e',
-    \  'options': '-m -x +s',
-    \  'down':    '40%'})
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
+
+" C-c in SQL
+let g:ftplugin_sql_omni_key = '<C-j>'
+
 
 noremap <leader>u :FZFMru<CR>
 
@@ -453,69 +470,55 @@ noremap <leader>u :FZFMru<CR>
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
 
-noremap <leader>t :Tags<cr>
 
-
-command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-ignore-vcs --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1, 
-    \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%') 
-    \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
-    \   <bang>0)
-
-
-noremap <C-g> :Rg <Cr>
-
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""
-" PYTHON
-""""""""""""""""""""""""""""""""""""""""""""""""
-
-" This script should load three lines in ipython 
-"
-" import module_name
-" import importlib
-" re = lambda: importlib.reload(module_name)
-"
-" so the current module can easily be reloaded when changes are made
-function! s:load_module_ipython()
-    let l:file = expand('%:r')
-    term ipython
+function! FzfSpellSink(word)
+  exe 'normal! "_ciw'.a:word
 endfunction
-
-autocmd FileType python nmap <leader>t :<C-u>call <SID>load_module_ipython()<CR>
-
-
-" Python PIPENV support
-let pipenv_venv_path = system('pipenv --venv')
-
-if shell_error == 0
-    let venv_path = substitute(pipenv_venv_path, '\n', '', '')
-    let g:ycm_python_binary_path = venv_path . '/bin/python'
-else
-    let g_ycm_python_binary_path = 'python'
-endif
-
-let g:ale_python_auto_pipenv = 1
-let python_highlight_all = 1
-let g:ale_fix_on_save = 1
+function! FzfSpell()
+  let suggestions = spellsuggest(expand("<cword>"))
+  return fzf#run({'source': suggestions, 'sink': function("FzfSpellSink"), 'down': 10 })
+endfunction
+nnoremap z= :call FzfSpell()<CR>
 
 
+noremap <leader>t :Tags <cr>
+command! CD cd %:p:h
+
+" function! s:CompileRun()
+"     execute 'make ' . expand( '%' )
+"     execute '!./' . expand( '%:r' )
+" endfunction
+
+" command! C call s:CompileRun()
+noremap <leader>ce :make %<<cr> :!./%<<cr>
+
+command! PYR execute "!python %"
+command! IPY execute "!python -i %"
 
 
-""""""""""""""""""""""""""""""""""""""""""
-" GO
-""""""""""""""""""""""""""""""""""""""""""
-"
-" Navigation is covered by (ctrl-]/gd) to go to definition
-" and (ctrl-t) to pop to first goto jump call
-"
-" To check for documentation, either wait for a couple of seconds
-" or type (K) to split a mini-buffer with the documentation
+" FZF.vim now supports this command out of the box
+" so this code is no longer needed.
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
+  \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+  \   <bang>0)
 
 
-" run :GoBuild or :GoTestCompile according to test or regular file type
+noremap <C-g> :Rg <CR>
+
+
+
+
+" Rust
+let g:rustfmt_autosave = 1
+
+
+
+" VIM-GO SETUP
+
+" run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
     let l:file = expand('%')
     if l:file =~# '^\f\+_test\.go$'
@@ -524,6 +527,8 @@ function! s:build_go_files()
         call go#cmd#Build(0)
     endif
 endfunction
+
+
 
 
 " basic keybindings
@@ -563,11 +568,9 @@ autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 
 
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" Functions
+" Functions from amix vimrc 
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -596,7 +599,6 @@ endfunction
 function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
-
 
 
 function! s:tags_sink(line)
