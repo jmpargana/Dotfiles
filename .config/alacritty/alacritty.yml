@@ -1,12 +1,12 @@
 # Copyright (c) 2017-present Arctic Ice Studio <development@arcticicestudio.com>
 # Copyright (c) 2017-present Sven Greb <code@svengreb.de>
 
-window:
-    dimensions:
-        columns: 90
-        lines: 40
-
-
+# Project:    Nord Alacritty
+# Version:    0.1.0
+# Repository: https://github.com/arcticicestudio/nord-alacritty
+# License:    MIT
+# References:
+#   https://github.com/jwilm/alacritty
 
 # NORDTHEME
 # colors:
@@ -37,61 +37,88 @@ window:
 
 
 
-# # # PENCIL LIGHT
+# # # Base16 Material Palenight - alacritty color config
+# # # Nate Peterson
 # # colors:
-# #  # Default Colors
-# #  primary:
-# #    background: '#f1f1f1'
-# #    foreground: '#424242'
-# #  # Normal colors
-# #  normal:
-# #    black:   '#212121'
-# #    red:     '#c30771'
-# #    green:   '#10a778'
-# #    yellow:  '#a89c14'
-# #    blue:    '#008ec4'
-# #    magenta: '#523c79'
-# #    cyan:    '#20a5ba'
-# #    white:   '#e0e0e0'
-# #  # Bright colors
-# #  bright:
-# #    black:   '#212121'
-# #    red:     '#fb007a'
-# #    green:   '#5fd7af'
-# #    yellow:  '#f3e430'
-# #    blue:    '#20bbfc'
-# #    magenta: '#6855de'
-# #    cyan:    '#4fb8cc'
-# #    white:   '#f1f1f1'
+#   # Default colors
+#   primary:
+#     background: '0x292d3e'
+#     foreground: '0x959dcb'
+
+#   # Colors the cursor will use if `custom_cursor_colors` is true
+#   cursor:
+#     text: '0x292d3e'
+#     cursor: '0x959dcb'
+
+#   # Normal colors
+#   normal:
+#     black:   '0x292d3e'
+#     red:     '0xf07178'
+#     green:   '0xc3e88d'
+#     yellow:  '0xffcb6b'
+#     blue:    '0x82aaff'
+#     magenta: '0xc792ea'
+#     cyan:    '0x89ddff'
+#     white:   '0x959dcb'
+
+#   # Bright colors
+#   bright:
+#     black:   '0x676e95'
+#     red:     '0xf78c6c'
+#     green:   '0x444267'
+#     yellow:  '0x32374d'
+#     blue:    '0x8796b0'
+#     magenta: '0x959dcb'
+#     cyan:    '0xff5370'
+#     white:   '0xffffff'
+
+# draw_bold_text_with_bright_colors: false
 
 
 
+# # PENCIL LIGHT
+# colors:
+#  # Default Colors
+#  primary:
+#    background: '#f1f1f1'
+#    foreground: '#424242'
+#  # Normal colors
+#  normal:
+#    black:   '#212121'
+#    red:     '#c30771'
+#    green:   '#10a778'
+#    yellow:  '#a89c14'
+#    blue:    '#008ec4'
+#    magenta: '#523c79'
+#    cyan:    '#20a5ba'
+#    white:   '#e0e0e0'
+#  # Bright colors
+#  bright:
+#    black:   '#212121'
+#    red:     '#fb007a'
+#    green:   '#5fd7af'
+#    yellow:  '#f3e430'
+#    blue:    '#20bbfc'
+#    magenta: '#6855de'
+#    cyan:    '#4fb8cc'
+#    white:   '#f1f1f1'
 
-# # Colors (PaperColor - Light)
-colors:
-  # Default colors
-  primary:
-    background: '0xEEEEEE'
-    foreground: '0x4D4D4C'
 
-  # Normal colors
-  normal:
-    black:   '0xEDEDED'
-    red:     '0xD7005F'
-    green:   '0x718C00'
-    yellow:  '0xD75F00'
-    blue:    '0x4271AE'
-    magenta: '0x8959A8'
-    cyan:    '0x3E999F'
-    white:   '0x4D4D4C'
+window:
+  dimensions:
+    columns: 90
+    lines: 40
+font:
+  size: 10
+  
 
-  # Bright colors
-  bright:
-    black:   '0x969694'
-    red:     '0xD7005F'
-    green:   '0x718C00'
-    yellow:  '0xD75F00'
-    blue:    '0x4271AE'
-    magenta: '0x8959A8'
-    cyan:    '0x3E999F'
-    white:   '0xF5F5F5'
+scrolling:
+  history: 10000
+  multiplier: 3
+
+# key_bindings:
+#   - { key: B, mods: Alt,   action: ScrollPageUp }
+#   - { key: F, mods: Alt,   action: ScrollPageDown }
+
+
+
