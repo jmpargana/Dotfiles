@@ -63,7 +63,6 @@ autocmd BufRead,BufNewFile *.{md,tex} setlocal spell
 
 
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Mappings
@@ -118,7 +117,6 @@ noremap <leader>bo :only<cr>
 
 " close all buffers
 noremap <leader>ba :bufdo :Bclose<cr>:tabclose<cr>gT
-
 " navigate between buffers
 noremap <leader>l :bnext<cr>
 noremap <leader>h :bprevious<cr>
@@ -207,7 +205,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'ayu-theme/ayu-vim'
 " Plug 'kaicataldo/material.vim'
 Plug 'tomasiser/vim-code-dark'
-Plug 'powerline/powerline'
+" Plug 'powerline/powerline'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -339,6 +337,7 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
+let g:airline_symbols.space = "\ua0"
 
 let g:airline_theme = 'codedark'
 
@@ -529,6 +528,8 @@ function! s:build_go_files()
 endfunction
 
 
+autocmd FileType javascript noremap <leader>t :!npm t<cr>
+autocmd FileType vue noremap <leader>t :!npm t<cr>
 
 
 " basic keybindings
