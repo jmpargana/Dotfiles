@@ -13,18 +13,19 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" Editing
-Plug 'tpope/vim-commentary'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }            " Themes 
+Plug 'vim-airline/vim-airline'                                  " Status line 
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-commentary'                                     " Editing
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-" Plug 'ludovicchabant/vim-gutentags'
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }             " Navigation
 Plug 'junegunn/fzf.vim'
-
-" Syntax
-Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-Plug 'nvim-treesitter/playground'
+Plug 'tpope/vim-fugitive'                                       " VSC
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }   " Syntax and more
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }               " IDE 
+Plug 'ludovicchabant/vim-gutentags'                           
 
 call plug#end()
 

@@ -17,9 +17,11 @@ set matchpairs+=<:>         " highlight pairs
 set ignorecase              " ignore matching cases
 set magic                   " for regex search
 set nobackup                " disable backup, swap files, etc.
-set nowb
+set nowritebackup
 set tw=100
 set splitbelow              " set terminal to open below
+set updatetime=300
+set shortmess+=c
 
 
 " Source vimrc after reediting
