@@ -22,6 +22,8 @@ set tw=100
 set splitbelow              " set terminal to open below
 set updatetime=300
 set shortmess+=c
+set guicursor=a:blinkon0
+set termguicolors
 
 
 " Source vimrc after reediting
@@ -31,4 +33,7 @@ au! BufWritePost $HOME/.config/nvim/init.vim source %
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " filetypes with 2 spaces tab indentation
-autocmd Filetype {{java,type}script{,react},html,dart,xml,vue} setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+autocmd Filetype {{java,type}script{,react},html,dart,xml,vue,json,yaml,yml} setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+
+let $RC="$HOME/.config/nvim/init.vim"
+let $RTP="$HOME/.config/nvim"

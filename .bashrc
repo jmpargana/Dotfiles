@@ -1,40 +1,55 @@
-########################################################################################
+####################################################################################
 #
-# ~/.bashrc 
+# bashrc
 #
 # Author: Joao Pargana
-#
+# 
 # Requirements:
-#   - exa
 #   - fzf
-#   - ripgrep
-#   - fd  
-#   - bat
+#   - rg
 #   - sd
+#   - fd
+#   - ged
+#   - bat
+#   - exa
 #   - hub
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-# [[ -z "$TMUX" ]] && exec tmux
-if which tmux >/dev/null 2>&1; then
-    test -z "$TMUX" && (tmux attach || tmux new-session)
-fi
+
+# launch tmux only on graphical environment and check if no session is started
+ # if [[ $DISPLAY ]]; then
+#     if which tmux >/dev/null 2>&1; then
+#         test -z "$TMUX" && (tmux attach || tmux new-session)
+#     fi
+# fi
 
 
-# setup path
-PATH=$PATH:~/.local/bin
-PATH=$PATH:~/go/bin
-PATH=$PATH:~/.cargo/bin
 
-alias vi=nvim
-alias vim=nvim
-alias n=nvim
+# path 
+export GOPATH=$HOME/go
+export PATH=$PATH:~/.cargo/bin              # rust binaries
+export PATH=$PATH:~/.local/bin              # python binaries
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin   # go binaries
+export TERM="screen-256color"
+
+ #binds
+bind '"\C-g":"cd_with_fzf\n"'
+bind '"\C-o":"open_with_fzf\n"'
 
 # ALIASES
-# basic colors
+# basic
+alias fd=fdfind
 alias diff='diff --color=auto'
 alias dmesg="dmesg --color=always"
 alias ip="ip -color=auto"
+alias open="xdg-open"
+alias ipa="ip addr show"
+alias bat='bat --color=always --theme="OneHalfLight" --style=numbers'
+# alias vim="nvim"
+alias v="nvim"
+alias vi="nvim"
+alias vim="nvim"
 
 # use colorful versions of cmd utilities if available
 if type exa > /dev/null 2>&1; then
@@ -43,11 +58,12 @@ else
     alias ls="ls --color"
 fi
 
-if type rg > /dev/null 2>&1; then
-    alias grep="rg"
-else
-    alias grep="grep --color=auto"
-fi
+alias grep="grep --color=auto"
+# if type rg > /dev/null 2>&1; then
+#     alias grep="rg"
+# else
+#     alias grep="grep --color=auto"
+# fi
 
 if type bat > /dev/null 2>&1; then
     alias cat="bat"
@@ -57,35 +73,25 @@ if type hub > /dev/null 2>&1; then
     alias git="hub"
 fi
 
-
 # editing
-# if type nvim > /dev/null 2>&1; then
-#     alias vim="nvim"
-# fi
-
-alias v="nvim"
-alias vn="vim -u ~/.basic.vim"
-alias vb='nvim ~/.bashrc'
+alias vb='vim ~/.bashrc'
 alias sb="source ~/.bashrc"
+alias vf="vim ~/.config/fish/config.fish"
+alias sf="source ~/.config/fish/config.fish"
+alias va="vim ~/.config/alacritty/alacritty.yml"
 alias sv="sudo vim"
-alias vv="nvim ~/.vimrc"
-alias vz="nvim ~/.zshrc"
+alias vv="vim ~/.vimrc"
+alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
-alias va="nvim ~/.config/alacritty/alacritty.yml"
-alias vnt="vim -u NONE ~/.tmux.conf"
-alias vt="nvim ~/.tmux.conf"
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-# navigation
+# navigation -> up() function is also very powerful
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
-alias ll="exa -al"
+alias ll="ls -l"
 alias lo="ls -o"
 alias lh="ls -lh"
-alias la="exa -a"
-alias lt="exa -T"
-alias lr="exa -R"
+alias la="ls -a"
 
 # ARCH
 alias pac="sudo pacman -S"
@@ -94,17 +100,13 @@ alias ya="yay -S"
 alias upt="yay -Syu --devel --timeupdate"
 alias sss="sudo systemctl start"
 alias sse="sudo systemctl enable"
-alias open="xdg-open"
+alias ssr="sudo systemctl restart"
+alias ssd="sudo systemctl disable"
+alias ssst="sudo systemctl stop"
 
 # WINDOW MANAGERS
 alias i3c="vim ~/.config/i3/config"
 alias obc="vim ~/.config/openbox/rc.xml"
-
-# bind to functions
-bind '"\C-g":"cd_with_fzf\n"'
-bind '"\C-o":"open_with_fzf\n"'
-
-
 
 # MOTIONS
 alias gh="cd ~"
@@ -115,8 +117,8 @@ alias gt="cd ~/Documents/Testing"
 alias gw="cd ~/Documents/Work"
 alias gD="cd ~/Downloads"
 alias gL="cd ~/Documents/Languages"
+alias gba="cd ~/Documents/Bachelor/Bachelorarbeit"
 alias gk="cd ~/.KaliLinux"
-alias gba="cd ~/Documents/Bachelorarbeit/AlexaStudyingAssistant"
 
 
 # PROGRAMMING
@@ -124,6 +126,7 @@ alias gba="cd ~/Documents/Bachelorarbeit/AlexaStudyingAssistant"
 alias cr="cargo run"
 alias ci="cargo init"
 alias ct="cargo test"
+alias cn="cargo new"
 alias cdo="cargo doc --open"
 alias cf="cargo fmt"
 alias cws="cargo web start"
@@ -138,44 +141,58 @@ alias pis="pipenv shell"
 alias ppi="pipenv install"
 alias pid="pipenv install --dev"
 alias ppp="pipenv --python python"
-alias pb="black"
+alias b="black"
 
 # git
 alias gaa="git add ."
 alias gcm="git commit -m"
-alias gpu="git push -u origin main"
+alias gpu="git push -u origin HEAD"
 alias gs="git status"
-alias gc="git clone"
+alias gc="git commit"
+alias gb="git branch"
+alias gck="git checkout"
 
 # js
 alias ys="yarn start"
 alias nt="npm test"
 alias nps="npm start"
 alias ni="npm i -S"
+alias yc="yarn compile"
+alias yb="yarn build"
+alias yt="yarn test"
+alias ytu="yarn test:unit"
+
+# heroku
+alias gph="git push heroku master"
+alias hlt="heroku logs -t"
+alias hcp="heroku container:push web"
+alias hcr="heroku container:release"
 
 # docker
 alias dr="docker run"
+alias drir="docker run -it --rm"
 alias drm="docker rm"
 alias drmv="docker rm -v"
 alias dcr="docker create"
 alias de="docker exec"
 alias dps="docker ps"
+alias dpsa="docker ps -a"
 alias di="docker images"
 alias ds="docker search"
 alias dp="docker pull"
 
 # go
-alias gi="go install"
 alias gb="go build"
 alias gr="go run"
 alias gf="go fmt"
 alias gd="go doc"
+alias gi="go install"
 
+# arch
 
 # ssh toggler
 alias sssh="sudo systemctl start sshd.service"
 alias stssh="sudo systemctl stop sshd.service"
-
 
 # kali
 alias kali="docker run -ti --rm \
@@ -183,7 +200,6 @@ alias kali="docker run -ti --rm \
     -v  type=bindsrc=/home/icm/.KaliLinux/Pentest/postgresqldst=/var/lib/postgresql \
     kali \
     bash"
-
 
 
 # EXTRAS
@@ -198,6 +214,10 @@ alias rmf="rm -rf"
 alias cx="chmod +x"
 alias sa="systemd-analyze"
 alias sab="systemd-analyze blame"
+
+
+export EDITOR=vim
+export VISUAL=vim
 
 
 # Colors
@@ -219,14 +239,13 @@ COLOR_YELLOW='\e[1;33m'
 COLOR_GRAY='\e[0;30m'
 COLOR_LIGHT_GRAY='\e[0;37m'
 
+
 # ENV
-# PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
-PS1='\['"$COLOR_LIGHT_CYAN"'\]\u@\['"$COLOR_LIGHT_GREEN"'\]\h \['"$COLOR_LIGHT_RED"'\]\W\[\e[0m\]\$ '
+PS1='\['"$COLOR_LIGHT_CYAN"'\]\u@\['"$COLOR_LIGHT_CYAN"'\]\h \['"$COLOR_LIGHT_RED"'\]\W\[\e[0m\]\$ '
 PS2='> '
-# PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "  
-# LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
 
 
+# LESS COLORS
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[1;31m'     
 export LESS_TERMCAP_md=$'\E[1;36m'    
@@ -236,8 +255,7 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'  
 export LESS_TERMCAP_ue=$'\E[0m'    
 
-# fzf vars
-export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore-vcs"
+export FZF_DEFAULT_COMMAND="rg --files"
 
 
 # include .files when globbing
@@ -247,10 +265,17 @@ shopt -s cdspell
 
 bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
 bind "set bell-style none" # no bell
-# bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 
-
+mkcd() {
+    if [ ! -n "$1" ]; then
+        echo "Enter a directory name"
+    elif [ -d $1 ]; then
+        echo "$1"' already exists'
+    else
+        mkdir -p $1 && cd $1
+    fi
+}
 
 # quick backup
 bu () { cp $1 ~/.backup/`basename $1`-`date +%Y%m%d%H%M`.backup ;  }
@@ -270,7 +295,6 @@ extract () {
 		case $1 in
 			*.tar.bz2)   tar xvjf $1    ;;
 			*.tar.gz)    tar xvzf $1    ;;
-			*.tar.xz)    tar xf $1    ;;
 			*.bz2)       bunzip2 $1     ;;
 			*.rar)       unrar x $1       ;;
 			*.gz)        gunzip $1      ;;
@@ -303,6 +327,12 @@ up(){
 }
 
 
+# ripgrep fzf
+rgf() {
+    RG_PREFIX="rg --files-with-matches"
+}
+
+
 # print given column from pipeline
 fawk() {
     first="awk '{print "
@@ -322,26 +352,53 @@ s() {
 }
 
 
-# ripgrep fzf
-rgf() {
-    RG_PREFIX="rg --files-with-matches"
-}
-
-# really powerfull navigation command
-open_with_fzf() {
-    fd -t f -H -I | fzf -m --preview="bat --color=always --style=numbers --line-range :500 {}" | xargs -ro -d "\n" xdg-open 2>&- 
-}
-
-# move to any directory and show tree
+# great navigation with fzf
 cd_with_fzf() {
-        builtin cd $HOME && cd "$(fd -t d | fzf --preview="tree -L 1 {}" --bind="space:toggle-preview")"
+    builtin cd $HOME && cd "$(fd -I -t d | fzf --preview="tree -L 2 {}")"
 }
 
+# no need to ranger with this
+open_with_fzf() {
+    fd -t f -H -I | fzf -m --preview='bat --color=always --theme="OneHalfLight" --style=numbers --line-range :500 {}' | xargs -ro -d "\n" xdg-open 2>&-
+}
+
+# pacman search and install
 pacs() {
-    sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --bind=space:toggle-preview | xargs)
+    sudo pacman -S $(pacman -Ssq | fzf -m --preview="pacman -Si {}" | xargs)
+}
+
+cargo_new() {
+    if [ ! -n "$1" ]; then
+        "Enter a project name"
+    elif [ -d $1 ]; then
+        echo "$1"' already exists'
+    else
+        cargo new $1 && cd $1
+    fi
+}
+
+cargo_new_lib() {
+    if [ ! -n "$1" ]; then
+        "Enter a project name"
+    elif [ -d $1 ]; then
+        echo "$1"' already exists'
+    else
+        cargo new --lib $1 && cd $1
+    fi
 }
 
 
+kp() {
+    local pid=$(ps -ef | sed 1d | eval "fzf -m --header='[kill:process]'" | awk '{print $2}')
+
+    if [ "x$pid" != "x" ]; then
+        echo $pid | xargs kill -$(1:-9)
+    fi
+}
+
+
+# rga (ripgrep-all) uses grep in all types of files pdf, ebooks, zip, odt, etc.
+#   this function redirects the output to fzf
 # rga-fzf() {
 # 	RG_PREFIX="rga --files-with-matches"
 # 	local file
@@ -356,73 +413,30 @@ pacs() {
 # 	xdg-open "$file"
 # }
 
-
-mkcd() {
-    if [ ! -n "$1" ]; then
-        echo "Enter a directory name"
-    elif [ -d $1 ]; then
-        echo "$1"' already exists' 
-    else
-        mkdir -p $1 && cd $1
-    fi
-}
-
-cargo_new() {
-    if [ ! -n "$1" ]; then
-        "Enter a project name"
-    elif [ -d $1 ]; then
-        echo "$1"' already exists'
-    else
-        cargo new $1 && cd $1
-    fi
-}
+# FZF config
+source /usr/share/doc/fzf/examples/key-bindings.bash
+source /usr/share/doc/fzf/examples/completion.bash
 
 
-
-cargo_new_lib() {
-    if [ ! -n "$1" ]; then
-        "Enter a project name"
-    elif [ -d $1 ]; then
-        echo "$1"' already exists'
-    else
-        cargo new --lib $1 && cd $1
-    fi
-}
-
-
-# Kill Process allows you to select as many processes from fzf as you want with
-# the TAB key and enter will kill them by ID number.
-kp() {
-    local pid=$(ps -ef | sed 1d | eval "fzf -m --header='[kill:process]'" | awk '{print $2}')
-
-    if [ "x$pid" != "x" ]; then
-        echo $pid | xargs kill -${1:-9}
-    fi
-}
-
-
-_fzf_compgen_path() {
-    fd --hidden --follow --exclude ".git" . "$1"
-}
-
-_fzf_compgen_dir() {
-    fd --type d --hidden --follow --exclude ".git" . "$1"
-}
-
-
-ass() {
-    name="${1}"
-    base="$(basename ${name} .nasm)"
-    base="$(basename ${base} .asm)"
-    yasm -f elf64 -g dwarf2 -l "${base}".lst "${name}" 
-    ld "${base}".o -o "${base}"
-}
-
-
-# _fzf_setup_completion path ag git kubectl dir tree rg
-
-
-export EDITOR=nvim
-export VISUAL=nvim
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source "$HOME/.cargo/env"
+
+export PATH=/home/icm/.bin:$PATH
+
+[[ -e "/home/icm/.lib/orecle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/icm/.lib/orecle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh"
+
+export C=ocid1.tenancy.oc1..aaaaaaaag646tppsnid2yhrn4nsz4fbixh6dmbpxpjih4jojfud5f4tsumzq
+export KUBECONFIG=$HOME/.kube/config

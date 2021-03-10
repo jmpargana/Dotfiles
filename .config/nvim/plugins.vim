@@ -20,12 +20,15 @@ Plug 'tpope/vim-commentary'                                     " Editing
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
+Plug 'breuckelen/vim-resize'
+Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }             " Navigation
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'                                       " VSC
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }   " Syntax and more
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }               " IDE 
+Plug 'antoinemadec/coc-fzf'
 Plug 'ludovicchabant/vim-gutentags'                           
+Plug 'mattn/emmet-vim'
 
 call plug#end()
 

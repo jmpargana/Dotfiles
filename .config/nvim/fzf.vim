@@ -11,9 +11,14 @@
 "   - change colorscheme
 "   - search for pattern in directory (with ripgrep)
 
-noremap <leader>f :GFiles <cr>
-noremap <leader>F :Files <cr>
+noremap <leader>fd :GFiles <cr>
+noremap <leader>ff :Files <cr>
 noremap <leader>o :Buffers<cr>
+noremap <leader>u :FZFMru<CR>
+noremap <leader>fl :Lines<CR>
+noremap <leader>fc :Commands<CR>
+
+noremap <leader>fs :CocFzfList symbols<cr>
 
 " show files recently edited
 command! FZFMru call fzf#run({
@@ -22,7 +27,6 @@ command! FZFMru call fzf#run({
 \  'options': '-m -x +s',
 \  'down':    '40%'})
 
-noremap <leader>u :FZFMru<CR>
 
 " CTAGS Setup
 let g:fzf_buffers_jump = 1
