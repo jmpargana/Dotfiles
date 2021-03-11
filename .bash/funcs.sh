@@ -83,7 +83,7 @@ s() {
 
 # Navigate from ~
 cd_with_fzf() {
-    builtin cd $HOME && cd "$(fd -I -t d | fzf --preview="tree -L 2 {}")"
+    builtin cd $HOME && cd "$(fd -I -H -t d | fzf --preview="tree -L 2 {}")"
 }
 
 

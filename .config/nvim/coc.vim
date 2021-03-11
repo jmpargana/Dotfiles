@@ -125,7 +125,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Deal with transparent cursor
 " https://github.com/neoclide/coc.nvim/issues/1775
-set guicursor+=a:ver1-Cursor/lCursor
+" set guicursor+=a:ver1-Cursor/lCursor
 let g:coc_disable_transparent_cursor = 1
 
 
