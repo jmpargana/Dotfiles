@@ -29,6 +29,7 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }               " IDE
 Plug 'antoinemadec/coc-fzf'
 Plug 'ludovicchabant/vim-gutentags'                           
 Plug 'mattn/emmet-vim'
+Plug 'dbeniamine/cheat.sh-vim'                                  " Magic
  
 call plug#end()
 
