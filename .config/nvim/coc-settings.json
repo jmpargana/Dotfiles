@@ -1,3 +1,11 @@
 {
-
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "typescript",
+    "javascript",
+    "vue"
+  ],
+  "prettier.semi": false,
+  // FIXME: this will probably change
+  "prettier.singleQuote": false
 }

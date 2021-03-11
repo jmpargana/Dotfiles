@@ -78,10 +78,14 @@ augroup end
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
+" format selected
+vmap <leader>F <Plug>(coc-format-selected)
+nmap <leader>F <Plug>(coc-format-selected)
+
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <leader>fi  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -124,3 +128,16 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 set guicursor+=a:ver1-Cursor/lCursor
 let g:coc_disable_transparent_cursor = 1
 
+
+" Automatically load all extensions
+let g:coc_global_extensions = [
+    \'coc-json',
+    \'coc-tsserver',
+    \'coc-yaml',
+    \'coc-vetur',
+    \'coc-swagger',
+    \'coc-sh',
+    \'coc-fzf-preview',
+    \'coc-emmet',
+    \'coc-tailwindcss'
+    \]
