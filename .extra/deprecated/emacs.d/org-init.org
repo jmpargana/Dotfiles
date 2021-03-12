@@ -1,0 +1,1396 @@
+#+TITLE: Emacs Config File
+
+
+* Introduction
+
+  This files' first section serves as a README with a general installation and 
+usage guide. My emacs init is written in this org mode file in the shape of 
+literate programming. You can navigate through each section easily and change 
+any code block while being able to read its documentation with broader 
+descriptions than would be expected from elisp comments.
+
+* Table of Contents
+:PROPERTIES:
+:TOC: all
+:END:
+  -  [[#introduction][Introduction]]
+  -  [[#table-of-contents][Table of Contents]]
+  -  [[#preparation][Preparation]]
+    -  [[#installation][Installation]]
+      -  [[#python-packages][Python packages]]
+        -  [[#jedi][jedi]]
+        -  [[#autopep8][autopep8]]
+        -  [[#flake8][flake8]]
+        -  [[#virtualenv][virtualenv]]
+      -  [[#c-related-packages][C++ related packages]]
+        -  [[#g][g++]]
+        -  [[#make][make]]
+        -  [[#cmake][cmake]]
+        -  [[#clang][clang]]
+        -  [[#cling][cling...]]
+      -  [[#a-full-installation-of-latex-and-markdown][A full installation of LaTeX and MarkDown]]
+      -  [[#silver-searcher-or-ag-for-declarationdefinition-jumps][Silver searcher or ag for declaration/definition jumps]]
+      -  [[#dash-and-s][Dash and s]]
+      -  [[#revealjs-and-prettier][Revealjs and Prettier]]
+    -  [[#usage][Usage]]
+    -  [[#editing][Editing]]
+  -  [[#optimization][Optimization]]
+  -  [[#package-init][Package Init]]
+  -  [[#navigation][Navigation]]
+    -  [[#smex][Smex]]
+    -  [[#y-or-n][Y-or-N]]
+    -  [[#ivy][IVY]]
+    -  [[#swiper][Swiper]]
+    -  [[#counsel][Counsel]]
+    -  [[#bash-completion][Bash-completion]]
+    -  [[#ace-window][Ace Window]]
+    -  [[#sidebar][Sidebar]]
+    -  [[#projectile][Projectile]]
+    -  [[#other-packages][Other packages]]
+  -  [[#theme--visual][Theme & Visual]]
+    -  [[#color-theme-sanityinc-tomorrow][Color-theme-sanityinc-tomorrow]]
+    -  [[#moe-theme][Moe-Theme]]
+    -  [[#solarized][Solarized]]
+    -  [[#powerline][Powerline]]
+    -  [[#nord-theme][Nord-Theme]]
+    -  [[#rainbow-delimiters][Rainbow Delimiters]]
+    -  [[#autopair][Autopair]]
+    -  [[#linum][Linum]]
+    -  [[#general-layout][General layout]]
+  -  [[#editing][Editing]]
+    -  [[#company][Company]]
+    -  [[#flycheck][Flycheck]]
+    -  [[#yasnippet][Yasnippet]]
+    -  [[#dump-jump][Dump Jump]]
+    -  [[#multiple-cursors][Multiple Cursors]]
+    -  [[#expand-region][Expand Region]]
+    -  [[#corral][Corral]]
+    -  [[#evil-nerd-commenter][Evil Nerd Commenter]]
+    -  [[#origami][Origami]]
+    -  [[#move-text][Move Text]]
+    -  [[#large-files][Large files]]
+  -  [[#programming-modes][Programming Modes]]
+    -  [[#python][Python]]
+      -  [[#elpy][Elpy]]
+      -  [[#company-jedi][Company-jedi]]
+      -  [[#sphinx-doc][Sphinx-doc]]
+    -  [[#c][C++]]
+      -  [[#irony][Irony]]
+      -  [[#company-irony][Company-irony]]
+      -  [[#flycheck-irony][Flycheck-irony]]
+    -  [[#web-development][Web Development]]
+      -  [[#web-mode][Web-Mode]]
+      -  [[#emmet-mode][Emmet-mode]]
+      -  [[#javascript][JavaScript]]
+      -  [[#company-tern][Company-Tern]]
+    -  [[#my-sql][My-SQL]]
+    -  [[#haskell][Haskell]]
+    -  [[#latex][LaTeX]]
+      -  [[#auctex][Auctex]]
+      -  [[#company-auctex][Company-AucTeX]]
+    -  [[#markdown][MarkDown]]
+    -  [[#org-mode][Org-mode]]
+  -  [[#version-control][Version Control]]
+    -  [[#magit][Magit]]
+  -  [[#keybindings][Keybindings]]
+  -  [[#interesting-packages][Interesting Packages]]
+    -  [[#try][Try]]
+    -  [[#engine-mode][Engine Mode]]
+    -  [[#benchmarking][Benchmarking]]
+    -  [[#rest-client][Rest Client]]
+    -  [[#hydra][Hydra]]
+    -  [[#avy][Avy]]
+    -  [[#auto-snippet][Auto Snippet]]
+    -  [[#neo-tree][Neo Tree]]
+    -  [[#ipy][Ipy]]
+    -  [[#format-all][Format All]]
+    -  [[#external-editor][External Editor]]
+    -  [[#restart-emacs][Restart Emacs]]
+    -  [[#eclim][Eclim]]
+    -  [[#undo-tree][Undo Tree]]
+    -  [[#buffer-move][Buffer Move]]
+    -  [[#go-to-last-change][Go To Last Change]]
+    -  [[#general][General]]
+    -  [[#workgroups][Workgroups]]
+    -  [[#string-infliction][String Infliction]]
+  -  [[#other-references][Other references]]
+      -  [[#httpsgithubcomemacs-twawesome-emacsawesome-emacs][Awesome Emacs]]
+      -  [[#httpemacssexyemacs-sexy][Emacs Sexy]]
+      -  [[#httpsgithubcomcaisahemacsdzawesome-configs][Awesome Configs]]
+
+* Preparation
+** Installation
+   
+   Installing my emacs init is as easy as cloning this repository and adding 
+the two files (init.el and org-init.org) to your .emacs folder. 
+#+BEGIN_SRC sh
+git clone https://github.com/jmpargana/init-files
+mv init-files/* ~/.emacs.d/
+#+END_SRC
+
+If you wish to use some simple functions that I wrote for my c++-mode, you should
+additionally copy my c++-customs.el file to a special folder.
+#+BEGIN_SRC sh
+mkdir --parents ~/.emacs.d/elpa/c++-custom/; mv c++-custom.el $_
+#+END_SRC
+
+   Make sure you have the following packages installed on your system, so each of the 
+major modes work with their full functionalities.
+
+*** Python packages
+
+    These installation details assume you have pip installed on your system, 
+if not check out [[https://pypi.org/project/pip/][this link]]. If you are running an arch based system you can also 
+install the following packages with these commands:
+**** jedi
+#+BEGIN_SRC sh
+sudo pacman -S python-jedi
+#+END_SRC
+**** autopep8
+#+BEGIN_SRC sh
+sudo pacman -S autopep8
+#+END_SRC
+**** flake8
+#+BEGIN_SRC sh
+sudo pacman -S flake8
+#+END_SRC
+**** virtualenv
+#+BEGIN_SRC sh
+sudo pacman -S python-virtualenv
+#+END_SRC
+
+*** C++ related packages
+
+    For full functionality of the /irony/ and /dumb jump/ packages you should have the following
+packages or compilers pre installed.
+**** g++
+#+BEGIN_SRC sh
+sudo pacman -S g++
+#+END_SRC
+**** make
+#+BEGIN_SRC sh
+sudo pacman -S make
+#+END_SRC
+**** cmake
+#+BEGIN_SRC sh
+sudo pacman -S cmake
+#+END_SRC
+**** clang
+#+BEGIN_SRC sh
+sudo pacman -S clang
+#+END_SRC
+
+**** cling...
+#+BEGIN_SRC sh
+yay -S cling-git
+#+END_SRC
+
+*** A full installation of LaTeX and MarkDown
+
+    For more details check out these two links: [[https://www.latex-project.org/get/][TeX]] and [[https://fletcherpenney.net/multimarkdown/][md]].
+
+*** Silver searcher or ag for declaration/definition jumps
+
+    This one also depends on your operating system, for arch run:
+#+BEGIN_SRC sh
+sudo pacman -S the_silver_searcher
+#+END_SRC 
+otherwise check out for further details on [[https://github.com/ggreer/the_silver_searcher][this link]].
+
+*** Dash and s 
+
+    You are also required to install /dash/ for usage of the /org-make-toc/ package.
+#+BEGIN_SRC sh
+sudo pacman -S dash
+#+END_SRC
+
+*** Revealjs and Prettier
+
+  Another package you need to install is the revealjs package, if you wish to be able
+to export your org-mode documentation into slides. If you don't, just ignore this
+block.
+
+#+BEGIN_SRC sh
+git clone https://github.com/hakimel/reveal.js/
+cd reveal.js
+npm install
+#+END_SRC
+
+As well as prettier to /beautify/ your code. /Emacs-format/ is also a 
+usefull package, but if you only need it for javascript prettier is better.
+#+BEGIN_SRC sh
+sudo pacman -S prettier
+#+END_SRC
+
+** Usage
+
+   The first time you open open your emacs file all packages will be installed. 
+If for some reason you run into an error and can't continue the installation 
+process run *M-x package-refresh-contents*.
+After the installation restart emacs and create a server for jedi and irony by running:
+ *M-x jedi:install-server* and *M-x irony-install-server*.
+That's pretty much it. Enjoy the best text editor!
+
+** Editing
+
+To edit this emacs configuration, just open the /org-init.org/ file in your 
+/.emacs/ folder and edit any code snippets you want. If you aren't familiar 
+with org-mode, to edit a code block type *<s* followed by *Tab* write what 
+language it is supposed to be, in this case /emacs-lisp/ and write any code 
+you want. To better edit and make use of that language's major and minor 
+modes, type *C-c '* to launch another buffer where you 
+run the code, then save it and run *C-c C-x C-e* to evaluate your results.
+
+
+* Optimization
+  
+  If you are not happy with the startup time a couple of steps can be made to improve your emacs'
+performance. First make sure you need all the packages on these configuration. If you don't code
+in Haskell, Web-development you can prevent emacs from loading those modes' features on startup
+by adding /:defer t/ inside all corresponding /(use-package ...)/ sections. 
+
+Another Step you can take to improve your startup speed is disable all :ensure tags on the
+/use-package/ blocks. To do so, type *M-% :ensure t RET :ensure t* at the beginning of
+the file, followed by *!* and all lines will be commented. This will improve your startup
+in about 0.7 seconds.
+
+  You can also invoke more garbage collection while launching your emacs and use more RAM just so
+it loads faster. To do so, simply uncomment the following code and copy the second line of code
+to the end of the file. 
+#+BEGIN_SRC emacs-lisp
+;; (setq gc-cons-threshold (* 50 1000 1000))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+;; (setq gc-cons-threshold (* 2 1000 1000))
+#+END_SRC
+
+  Another step you can do to improve the performance, which I'd highly advise you to, is running
+and emacs server on startup by adding the following line of code to your autostart file:
+#+BEGIN_SRC sh
+emacs --daemon
+#+END_SRC
+and then running a client of your server each time you want to use it. The launching speed will be
+comparable to vim. You can open a client with this command:
+#+BEGIN_SRC sh
+emacsclient -c
+#+END_SRC
+or run an instance on the terminal with:
+#+BEGIN_SRC sh
+emacsclient -t
+#+END_SRC
+
+  Further improvement can be made, make sure to read [[https://www.emacswiki.org/emacs/OptimizingEmacsStartup][this page]].
+
+
+* Package Init
+  
+  First thing to do is connect to the emacs package database and setup a package manager to 
+organize all of your installations and properly compile them. The package organizer I use is
+/use-package/ created by the current maintainer of emacs. You have all the features needed to bind
+packages with keybindings, other packages, ensure they are installed on start up, defer them 
+until being called and more. Check out [[https://github.com/jwiegley/use-package][this link]] for details.
+
+Another option to install or avoid installing packages on start is setting
+the global variable */(setq use-package-always-ensure t)/* to true or nill.
+This hasn't been integrated yet, but should be changed in the near future.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+  (package-initialize)
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile
+    (require 'use-package))
+
+  (use-package diminish
+    :ensure t
+    )
+
+  (require 'bind-key)
+#+END_SRC
+
+
+* Navigation
+
+  There are multiple packages to help you navigate inside emacs and optimize your code editing.
+Some are builtin and very efficient, some should be installed and configured. My config is minimal
+but I left some references for some helpfull packages that can enhance your navigability.
+
+** Smex
+
+   *Smex* offers enhanced /Meta-X/ functionalities with autocompletion and priorization of your
+most used commands. It also keeps a list of your last used ones. It can't be configured much further
+so make sure to check out [[https://github.com/nonsequitur/smex][this links]]. Currently this package is overwritten
+by /Counsel/, although the later makes use of some of Smex's functions.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t
+    :bind (("M-x" . smex))
+    :config (smex-initialize))
+#+END_SRC
+
+** Y-or-N
+
+  This code block prevent emacs from constantly asking you if you want to leave your files saved
+and prompting you with just /y/ or /n/.
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+(fset 'yes-or-no-p-history 'y-or-n-p)
+(setq confirm-nonexistent-file-or-buffer nil)
+#+END_SRC
+
+** IVY
+
+IVY is a really powerfull package and extremely minimalistic. It is an 
+interactive interface for completion and serves as an enhancement for IDO
+built-in mode. It comes attached to two more modes, /Swiper/ and /Counsel/.
+To read its documentation go to [[https://oremacs.com/swiper/][IVY]].
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish (ivy-mode . "")
+    :config
+    (progn
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-height 10)
+      (setq ivy-count-format "")
+      (setq ivy-initial-inputs-alist nil)
+      (ivy-mode 1)
+      (setq ivy-re-builders-alist
+        '((t   . ivy--regex-ignore-order)))))
+#+END_SRC
+
+** Swiper
+
+   Swiper is a search completion mode directly connected to /IVY/. It shows
+results with line numbers inside the minibuffer. You can find more on IVY's
+documetation, but it is quite intuitive to use.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind
+    ([remap isearch-forward]  . swiper)
+    ([remap isearch-backward] . swiper))
+#+END_SRC
+
+** Counsel
+   
+   This package is also connected to /IVY/ and /Swiper/. It enhances the 
+/M-x/ functionalities from /Smex/ while still making use of it. It has many
+other features that can be use. You can find more details in /IVY/'s 
+documentation.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :bind (("C-c C-f" . counsel-find-file)
+	   ("M-x" . counsel-M-x)))
+#+END_SRC   
+
+** Bash-completion
+
+   I currently run ansi-term as my emacs terminal emulator, but these customization can be usefull
+if you run the builtin /shell/.
+#+BEGIN_SRC emacs-lisp
+(use-package bash-completion
+  :ensure t
+  :defer t
+  :config
+  (autoload 'bash-completion-dynamic-complete
+    "bash-completion"
+    "BASH completion hook")
+  (add-hook 'shell-dynamic-complete-functions
+  	    'bash-completion-dynamic-complete))
+#+END_SRC
+
+** Ace Window
+
+This package allows you to easily navigate between buffers. Its a replacement for the
+built-in *C-x o* command, but where it really proves its value, is when you have 
+multiple buffers opened. You type *M-o* and you are prompted with numbers, and can easily
+jump directly to each of them. Additionally I've added a line activating the /winner-mode/
+which allows you to reset to the last state you had before creating a spliting a buffer.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :defer t
+    :bind (("M-o" . ace-window)
+	   ([remap other-window] . ace-window))
+    :config (winner-mode 1))
+#+END_SRC
+
+** Sidebar
+
+   Dired Sidebar is a package that allows you to have a /VSCODE/-like feel, so
+you can find files and folders more interactively if you aren't familiar your
+project yet. Another good package that does something similar is the /NeoTree/,
+but this one is smaller and simpler.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-sidebar
+    :ensure t
+    :bind ("M-d" . dired-sidebar-toggle-sidebar)
+    :commands (dired-sidebar-toggle-sidebar))
+#+END_SRC
+
+** Projectile
+
+Projectile is a project manager that allows you to jump between files belonging to your
+project fast and easily. Its configuration is simple. Type *C-c p* to start.
+Currently this package is not showing its options, even though the commands 
+work. To learn them by heart check its [[https://projectile.readthedocs.io/en/latest/][documentation]].
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init (setq projectile-completion-system 'ivy)
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1))
+#+END_SRC
+
+** Other packages
+
+A very famous and powerfull package worth mentioning is /Helm/. It is 
+a replacement for /IDO/, /Meta-x/ and it can be connected with all major 
+navigation modes, like /Projectile/ and others.  I haven't tried it but 
+might do so soon. 
+ Another very important feature is the Tabbing indentation in emacs, which can be 
+enhanced with [[https://github.com/Malabarba/aggressive-indent-mode][this package]].
+
+
+* Theme & Visual
+
+  In this section I have my full theme customization. I run moe-theme with powerline. To search
+for other emacs themes go to [[https://emacsthemes.com][this link]]. 
+
+** Color-theme-sanityinc-tomorrow
+
+   Another famous theme with 5 different formats
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package color-theme-sanityinc-tomorrow
+  ;;   :ensure t
+  ;;   :init
+  ;;   (load-theme 'sanityinc-tomorrow-day t))
+#+END_SRC
+
+** Moe-Theme
+
+   Moe theme offers different color schemes and powerline support. Go [[https://github.com/kuanyui/moe-theme.el][here]] for further details.
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package moe-theme
+  ;;   :ensure t
+  ;;   :config
+  ;;   (moe-theme-set-color 'cyan)
+  ;;   (moe-dark))
+#+END_SRC
+
+** Solarized
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package solarized-theme
+  ;;       :ensure t
+  ;;       :config
+  ;;       (load-theme 'solarized-light t))
+#+END_SRC
+
+** Powerline
+
+   You can also search these github [[https://github.com/milkypostman/powerline][page]] for more details.
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+	:ensure t
+	:config
+	(powerline-center-theme))
+#+END_SRC
+
+** Nord-Theme
+
+#+BEGIN_SRC emacs-lisp
+  (use-package nord-theme
+    :ensure t
+    :init
+    (load-theme 'nord t) )
+#+END_SRC
+
+** Rainbow Delimiters 
+
+   This package is essential for visual highlighting, specially if you work with lisp. 
+I've configured it to run on global-mode.
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :config 
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+
+** Autopair
+
+   Another good package, that I might use to replace this one is [[https://github.com/Fuco1/smartparens][SmartParens]], but for now it works.
+#+BEGIN_SRC emacs-lisp
+(use-package autopair
+  :ensure t
+  :config
+  (autopair-global-mode))
+#+END_SRC
+
+** Linum
+
+   Show line numbers on the side. This mode might not work with autocomple.
+#+BEGIN_SRC emacs-lisp
+(use-package linum
+  :ensure t
+  :config
+  (global-linum-mode 1))
+#+END_SRC
+
+** General layout
+
+   Small pieces of code to hide the tool-bar, scroll-bar, menu-bar, stop the cursor from blinking,
+show the par parentheses as well as preventing emacs from saving backup files. I also configured
+emacs to launch with specific dimensions and transparent background. The line 
+/(toggle-frame-maximized)/ can be uncommented to run on full screen.
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+
+  (scroll-bar-mode -1)
+  (setq inhibit-startup-screen t)
+
+  (setq visible-cursor nil)
+  (blink-cursor-mode 0)
+
+  (show-paren-mode 1)
+
+  ;; Deactivate ring bell
+  (setq ring-bell-function 'ignore)
+
+  ;; Stop emacs from saving *~ files
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+
+  ;; Truncate lines if file, shell or interpreter is too long
+  ;; (setq-default toggle-truncate-lines t)
+  (setq-default global-visual-line-mode t)
+
+  ;; Initialize emacs window with certain dimensions and font size
+  ;; (set-frame-parameter (selected-frame) 'alpha '(88 . 70))
+  ;; (add-to-list 'default-frame-alist '('alpha (88 . 70)))
+  ;; (add-to-list 'default-frame-alist '(height . 40))
+  ;; (add-to-list 'default-frame-alist '(width . 170))
+  (set-face-attribute 'default nil :height 110)
+#+END_SRC
+
+
+* Editing
+
+  This block contains the most important modes to easily edit files on emacs.
+
+** Company
+
+   Company is my autocompletion package. You can also use autocomplete, but I personally
+prefer company. It's a bit harder to setup, but I find it to work more efficiently. Quickhelp
+can also be loaded to show company's documentation alongside.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (progn
+      (bind-key [remap completion-at-point] #'company-complete company-mode-map)
+      (setq company-tooltip-align-annotations t)
+      (setq company-show-numbers t)
+      (setq company-dabbrev-downcase nil)
+      (setq company--idle-delay 0)
+      (setq company-minimum-prefix-length 2)
+      (global-company-mode))
+    :diminish company-mode)
+
+  (use-package company-quickhelp
+    :ensure t
+    :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
+#+END_SRC
+
+** Flycheck
+
+   This mode checks your typing while editing, to further enhance it, make sure you install each
+of its minor modes, created specially to work with certain languages.
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode)
+    :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+#+END_SRC
+
+** Yasnippet
+
+   This package creates snippets that can be loaded when tabbing. It can speed up your code
+writing exponentially, but I'm currently not using it. Check [[https://github.com/joaotavora/yasnippet][this]] for some examples.
+#+BEGIN_SRC emacs-lisp
+;; Use snippets as shortcuts in your code editing
+;; (use-package yasnippet
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   ;; (validate-setq
+;;   ;;  yas-verbosity 1
+;;   ;;  yas-wrap-around-region t)
+
+;;   ;; (with-eval-after-load 'yasnippet
+;;   ;;   (validate-setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+
+;;   (yas-reload-all)
+;;   (yas-global-mode))
+
+;; Snippet collection
+;; (use-package yasnippet-snippets
+;;   :ensure t
+;;   :defer t)
+#+END_SRC
+
+** Dump Jump
+
+   This package could also be configured in the navigation section. It runs with ag or 
+(silver seacher) and jumps from file across file between declaration and definition. It can 
+be setup to work with ivy or helm.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
+    :ensure t
+    :defer t
+    :bind (("M-g o" . dumb-jump-go-other-window)
+	   ("M-g j" . dumb-jump-go)
+	   ("M-g i" . dumb-jump-go-prompt)
+	   ("M-g x" . dumb-jump-go-prefer-external)
+	   ("M-g z" . dumb-jump-go-prefer-external-other-window))
+    :config (setq dumb-jump-selector 'ivy))
+#+END_SRC
+
+** Multiple Cursors
+
+   Multiple Cursors allows you to edit multiple entries in parallel. It's a great
+package and you can read more about in [[https://github.com/magnars/multiple-cursors.el][here]]. To select create multiple cursors
+while highlighting a block, type *C-s-c C-s-c*. Use *C-j* to create a new 
+line while having this mode on. To select not depending on block use the
+other keybindings. They are quite complicated, but I ended up getting used to.
+Feel free to change them to your taste.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package multiple-cursors
+       :ensure t
+       :bind (("C-s-c C-s-c" . mc/edit-lines)
+	      ("C->" . mc/mark-next-like-this)
+	      ("C-<" . mc/mark-previous-like-this)
+	      ("C-s-c C-<" . mc/mark-all-like-this)))
+
+   #+END_SRC
+
+** Expand Region
+
+   This package allows you do select logical blocks, according to the language
+you are editing. It follows strict semantic rules and works quite efficiently.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :bind ("C-#" . er/expand-region))
+#+END_SRC
+
+** Corral
+
+Corral is a lightweight package that lets you quickly wrap parentheses and other
+delimiters around text, intuitively surrounding what you want it to using just two commands.
+Its very easy to use, and all the keybindings needed are described below.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package corral
+    :ensure t
+    :bind (("M-9" . corral-parentheses-backward)
+	   ("M-8" . corral-parentheses-forward)
+	   ("M-[" . corral-brackets-backward)
+	   ("M-]" . corral-brackets-forward)
+	   ("M-7" . corral-braces-backward)
+	   ("M-0" . corral-braces-forward)
+	   ("M-\"" . corral-double-quotes-backward))
+    :config (setq corral-preserve-point t))
+#+END_SRC
+
+** Evil Nerd Commenter
+
+With Nerd Commenter, one can easily comment or uncomment blocks or lines.
+My current setup uses *M-;* to add a comment by the end of a line 
+(this one is built in emacs), *C-c l* to comment or uncomment to line,
+can also be used for the whole selected region and *C-c b* for an implicit
+block, like a whole function.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-nerd-commenter
+    :ensure t
+    :defer t
+    :bind (("C-C l" . evilnc-comment-or-uncomment-lines)
+	   ("C-c b" . evilnc-comment-or-uncomment-paragraphs)))
+#+END_SRC
+
+** Origami
+
+Origami folds code blocks the same org mode does. Can be very usefull if you work
+with big files with a lot of definitions. It has multiple functions, that you can
+check out [[https://github.com/gregsexton/origami.el][here]]. Currently *C-c f* folds or unfolds recursively functions for me 
+and it is already pretty usefull in high verbosity modes like c++.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package origami
+    :ensure t
+    ;; :ensure s
+    ;; :ensure dash
+    :defer t
+    ;; :hook (prog-mode)
+    :bind ("C-c f" . origami-recursively-toggle-node)
+    :config)
+#+END_SRC
+
+** Move Text
+
+This move moves selected regions around up or down or even jumping to a line.
+Use the meta key followed by previous or next to move from line to line,
+or use *C-u <NUMBER>* to make a jump.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package move-text
+    :ensure t
+    :defer t
+    :bind (("M-p" . move-text-up)
+	   ("M-n" . move-text-down)))
+#+END_SRC
+
+** Large files
+Emacs' engine may slow down significally when dealing with large files
+(<15MB).
+One way with be creating your own find-file-hook, so that only fundamental
+mode with be activated, without any undo trees or other expensive modes.
+The following code snippet would do the trick:
+#+BEGIN_SRC emacs-lisp
+  ;; (defun my-find-file-check-make-large-file-read-only-hook ()
+  ;;   "If a file is over a given size, make the buffer read only."
+  ;;   (when (> (buffer-size) (* 1024 1024))
+  ;;     (setq buffer-read-only t)
+  ;;     (buffer-disable-undo)
+  ;;     (fundamental-mode)))
+
+  ;; (add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+#+END_SRC
+
+There is also a minor mode that can be found on [[https://github.com/m00natic/vlfi][github]].
+But the easiest solution is to open the file via *M-x find-file-literally*
+which was added to Emacs 27.
+
+* Programming Modes
+** Python
+
+   My Python mode contains very few minor modes, but many things can be done with them.
+
+*** Elpy
+
+    Elpa runs a virtual environment for python and you can do pretty much everything you would
+need from a python IDE. Check out its [[https://elpy.readthedocs.io/en/latest/][documentation]] for more details. I don't use /IPython/, but
+if you do, just uncomment those two lines of code.
+
+    With Elpy you can run the whole program by typing *C-u C-c C-c*.
+#+BEGIN_SRC emacs-lisp
+(use-package elpy
+  :ensure t
+  :config
+  (progn
+    ;; (setq python-shell-interpreter "ipython"
+    ;; 	  python-shell-interpreter-args "--simple-prompt -i")
+    (elpy-enable)))
+#+END_SRC
+
+*** Company-jedi
+
+    Make sure you have python jedi pre-installed and these package will assist your auto completion
+in python with jedi.
+#+BEGIN_SRC emacs-lisp
+(use-package company-jedi
+  :ensure t
+  :config
+  (progn
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (add-to-list 'company-backends 'company-jedi)
+    (setq jedi:complete-on-dot t)))
+#+END_SRC
+
+*** Sphinx-doc
+
+    Sphinx allows you to easily create a documentation for your functions and methods by simply
+running *C-c M-d* and creating and entry for each parameter and return value.
+#+BEGIN_SRC emacs-lisp
+  (use-package sphinx-doc
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook (lambda ()
+				  (sphinx-doc-mode t))))
+#+END_SRC
+
+
+** C++
+   
+   On C++ major mode I have created my own functions to easily compile and run the code on the 
+term buffer as well as configure /.h/ files to be opened in c++-mode and configured tabs and
+indentation to behave slightly differently than usual. These functions are shown inside the
+/bind/ section and refer to 5 functions that can be found in the /c++-custom.el/ file under
+/elpa/c++-custom/ directory. The most usefull will probably be *C-c C-y C-e* which compiles
+and executes the file on a running shell, *C-c C-y C-p* runs an interpreter called /CLING/ 
+from /ROOT/ which can be a very usefull way of testing short code snippets, if you are used
+to test your code in something like a lisp REPL or python interpreter. The last *C-c C-y C-s*
+sends a selected block to the /cling/'s process. 
+
+If you check the .el file or use these functions, you'll see that each time a snippet is
+send to the shell buffer, the string "cling" is evaluated as well. Initially I tried
+implementing them as asynchronous /comint/ processes, but the output generated by cling
+was very strange due to this [[https://sft.its.cern.ch/jira/browse/ROOT-4454][issue]]. If it works on you, please change the functions. They
+will look both cleaner and correct.
+
+Currently those functions and keybindings are global, which shouldn't be the case. You can add
+/:map c++-mode-map/ after /:bind/ and before defining them, but currently that doesn't work
+on my use-package version.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package c++-mode
+	:defer t
+	:mode ("\\.cpp\\'" "\\.h\\'" "\\.cc\\'")
+	:bind (("C-c C-y C-e" . execute-c-program)
+	   ("C-c C-y C-x" . cpp-snippet)
+	   ("C-c C-y C-c" . cpp-comment)
+	   ("C-c C-y C-p" . run-cling)
+	   ("C-c C-y C-s" . cling-send-block))
+	:init 
+	(progn
+	  (load "~/.emacs.d/elpa/c++-custom/c++-custom.el")
+	  (setq c-basic-offset 4)
+	  (setq tab-width 4)
+	  (setq indent-tabs-mode t)
+	  (c-set-offset 'substatement-open 0)))
+#+END_SRC
+
+*** Irony
+    
+    Irony more compiles your code and checks for syntax errors while writing and editing your files.
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :ensure t
+    :hook ((c++-mode-hook . irony-mode)
+           (c-mode-hook . irony-mode)
+           (objc-mode-hook . irony-mode)
+           (irony-mode-hook . irony-cdb-autosetup-compile-option)))
+#+END_SRC
+
+*** Company-irony
+    
+    This one enhances your autocompletion using the clang library.
+#+BEGIN_SRC emacs-lisp
+(use-package company-irony
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-irony))
+#+END_SRC
+
+*** Flycheck-irony
+
+    And this one enhances syntax checking and highlighting even further.
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck-irony
+  :ensure t
+  :commands flycheck-irony-setup
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-irony-setup)
+  (add-hook 'c-mode-hook 'flycheck-irony-setup))
+#+END_SRC
+
+
+** Web Development
+
+   For web development one package exists that combines multiple mode, since we constantly edit
+different languages and sometimes inside the same file. Web-mode I found is the most efficient
+and easy to setup macro mode to solve this issue and I currently use it to edit typescript files
+with embedded html.
+
+*** Web-Mode
+
+    Its quite a long configuration, but it barely scratches the surface of what can be done. Make
+sure to check their [[http://web-mode.org/][website]] and read more about all the features.
+
+    In this block I setup web-mode to run in all files with these extensions. I also use it on
+typescript files, since the rendering of embedded html with tide didn't fully work. Further down
+you can also read some jsx and tsx specifications.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+;;    :mode ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
+;;           "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.html?\\'"
+;;           "\\.api\\'" "\\.tsx\\'" "\\.ts\\'" "\\.jsx\\'"
+;;           "/some/react/path/.*\\.js[x]?\\'")
+    :bind-keymap ("C-c C-n" . web-mode-tag-match)
+    :config (progn
+             (flycheck-add-mode 'typescript-tslint 'web-mode)
+             (setq web-mode-markup-indent-offset 2)
+             (setq web-mode-css-indent-offset 2)
+             (setq web-mode-code-indent-offset 2)
+             (setq web-mode-style-padding 1)
+             (setq web-mode-script-padding 1)
+             (setq web-mode-block-padding 0)
+             (setq web-mode-enable-auto-pairing t)
+             (setq web-mode-enable-css-colorization t)))
+#+END_SRC
+
+
+*** Emmet-mode 
+
+    This creates snippets for html and css tagging and can be very usefull. For more details [[https://github.com/smihica/emmet-mode][here]].
+#+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+    :hook (html-mode rjsx-mode)
+    :ensure t
+    :config
+    )
+
+#+END_SRC
+
+
+*** JavaScript 
+
+    For JavaScript mode, with purely javascript files, this configuration can be quite helpfull
+I very often use the package /skewer/ to have a interpreter-like work 
+environment similar to emacs' /REPL/. Its configuration comes after the
+first two blocks.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-mode
+    :ensure t
+    :hook (js2-imenu-extras-mode))
+
+  (use-package js2-refactor
+    :ensure t
+    :hook (js2-refactor-mode xref-backend-functions xref-js2-xref-backend)
+    :config
+    (progn
+      (js2r-add-keybindings-with-prefix "C-c C-r")
+      (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+      (define-key js-mode-map (kbd "M-.") nil)
+      (define-key js2-mode-map (kbd "C-k") #'js2r-kill)))
+#+END_SRC
+
+Read more about /Skewer/ [[https://github.com/skeeto/skewer-mode][here]].
+
+#+BEGIN_SRC emacs-lisp
+  (use-package skewer-mode
+    :ensure t
+    :ensure simple-httpd
+    :bind ("C-c C-c C-s" . run-skewer)
+    :hook (js2-mode css-mode html-mode))
+#+END_SRC
+
+To use prettier with your code just hook it to your javascript modes and run
+your /prettify/ keybindings. This is not needed, since it is activated on save.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package prettier-js
+    :ensure t
+    :bind ("M-ö p" . prettier-js)
+    :hook (web-mode js2-mode rjsx-mode)
+    :config
+    (progn
+      (defun enable-minor-mode (my-pair)
+	"Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
+	(if (buffer-file-name)
+	    (if (string-match (car my-pair) buffer-file-name)
+		(funcall (cdr my-pair)))))
+    
+      (add-hook 'web-mode-hook #'(lambda ()
+				   (enable-minor-mode
+				    '("\\.jsx?\\'" . prettier-js-mode))))))
+#+END_SRC
+
+If you further need JSX and JSON support, these two packages can be installed [[https://github.com/felipeochoa/rjsx-mode][rjsx]] and [[https://github.com/joshwnj/json-mode][json]].
+
+JSON support
+
+#+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+    :ensure t
+    :hook (web-mode))
+#+END_SRC
+
+
+*** JSX-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rjsx-mode
+    :ensure t
+    :mode "\\.js\\'"
+    :config 
+    (progn
+      (setq js-indent-level 2)
+      )
+    )
+#+END_SRC
+
+
+*** Company-Tern 
+
+    Autocompletion for JavaScript
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-tern
+    :ensure t
+    :config
+    (progn
+      (add-to-list 'company-backends 'company-tern)
+      (define-key tern-mode-keymap (kbd "M-.") nil)
+      (define-key tern-mode-keymap (kbd "M-,") nil)))
+#+END_SRC
+
+
+** My-SQL
+
+   Mariadb should be running on your system for this command to work
+#+BEGIN_SRC emacs-lisp
+  (use-package sql-mode
+    :bind ("C-c C-x C-x C-c" . sql-mysql)
+    :config
+    (setq sql-mysql-login-params
+        '((user :default "root")
+          (password :default "")
+          (database :default "")
+          (server :default "localhost"))))
+#+END_SRC
+
+
+** Haskell
+
+   Emacs is considered the best editor for haskell and there exist many packages you can read about
+in the haskell [[https://wiki.haskell.org/Emacs][wiki]]. My config is quite minimal.
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode
+    :ensure t
+    :ensure intero
+    :mode ("\\.hs\\'" . haskell-mode)
+    :hook (haskell-indentation-mode
+	   interactive-haskell-mode
+	   intero-global-mode
+	   rainnbow-delimiters-mode)
+    :bind ("C-c C-x C-h" . run-haskell))
+#+END_SRC
+
+
+** LaTeX
+
+   For LaTeX mode I don't have much setup, some features missing are commands to automatically 
+compile and connect the a biber server. You are welcome to create them. With the command *C-c C-a C-c*
+you can open /evince/ (if installed) to preview your pdf file, or even better, you can preview
+the results inside your tex file with *C-c C-p C-b*.
+
+You should also keep in mind, that Org-mode can export its files to Latex and make your life
+a whole lot easier.
+
+*** Auctex
+
+    This has the main configuration
+#+BEGIN_SRC emacs-lisp
+  (use-package tex
+    :ensure t
+    ;; :ensure auctex
+    :defer t
+    :bind ("C-c C-a C-c" . TeX-evince-sync-view)
+    :config
+    (progn
+      (setq-default TeX-engine 'xetex)
+      (setq LaTeX-item-indent 0)
+      (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)))
+
+#+END_SRC
+
+*** Company-AucTeX
+
+    And this has the autocompletion enhancement.
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package company-auctex
+  ;;   :ensure t
+  ;;   :config
+  ;;   (company-auctex-init))
+#+END_SRC
+
+
+** MarkDown
+   
+   For MarkDown make sure you have the packages installed, as mentioned in the introduction section.
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :commands (markdown-mode gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :config (setq markdown-command "multimarkdown"))
+#+END_SRC
+
+
+** Org-mode
+   
+   Org mode is the single most usefull mode inside emacs, and one should simply use for everything.
+You can export its files to html, latex, beamer, revealjs, and more. Read the [[https://orgmode.org/manual/][documetation]].
+Currently you can create a table of contents by assigning the property of *TOC* 
+to /this/ or /all/ and run the command *M-x org-make-toc*. For more details
+read this [[https://github.com/alphapapa/org-make-toc/blob/master/README.org][page]].
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :ensure t
+    :ensure org-bullets
+    :ensure ox-gfm
+    :ensure htmlize
+    :defer t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  (use-package org-make-toc
+    :ensure t
+    :hook org-mode)
+#+END_SRC
+
+The next code block contains my configuration to export org-mode code
+into /reveal.js/ slides. If you don't know about it, you can try it
+out at their [[https://slides.com/][website]]. If you followed the instructions above, revealjs
+should already be installed in a folder. 
+Run *M-x load-library RET ox-reveal* and then *C-c C-e R R* to export.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-reveal
+    :ensure t
+    :defer t
+    :config (setq org-reveal-root "file:///home/icm/.reveal.js"))
+#+END_SRC
+
+
+* Version Control
+
+** Magit
+
+   This package provides a very intuitiv GUI-like interface to manage your git. Read more [[https://magit.vc/][here]].
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)))
+#+END_SRC
+
+
+* Keybindings
+
+  My custom keybindings offer easy navigation throughout emacs. Make sure to change them according
+to your taste! 
+
+  They contain a quick terminal emulator launch with *C-c C-x C-s*, comment or uncomment blocks
+with *C-c C-x C-c*, change font size with *C-+* or *C--*,  navigate to next window with *C-ö*
+and *C-ä* and so on. The /run-python/ keybinding is set on global mode. If you want to use /elpy/'s
+standard one while on python mode, you can do it by typing *C-c C-z*. I've also created an easy
+command to kill buffers, and prevent emacs from asking you for confirmation. Just type *C-c C-x C-k*
+to do so.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c C-x C-e") '(lambda () (interactive) (load "~/.emacs.d/init.el")))
+  (global-set-key (kbd "C-c C-x C-s")
+		  '(lambda () (interactive)
+		     (split-window-sensibly)
+		     (other-window 1)
+		     (ansi-term "/usr/bin/zsh")))
+
+  ;; (add-hook 'shell-mode-hook (lambda () (company-mode -1)) 'append)
+
+  ;; C-c l has exatcly the same effect
+  ;; (global-set-key (kbd "C-c C-x C-c") 'comment-or-uncomment-region)	
+
+  (global-set-key (kbd "<C-tab>") '(lambda () (interactive) (insert "\t")))
+
+  (global-set-key (kbd "C-c C-x C-k") 'kill-this-buffer)
+
+  (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+  ;; M-; producces the same output calculating the tabs inbetween already
+  ;; (global-set-key (kbd "C-c C-x C-i") '(lambda () (interactive)
+  ;; 	      (insert "//")))
+
+  (global-set-key (kbd "C-ä") 'next-buffer)
+  (global-set-key (kbd "C-ö") 'previous-buffer)
+
+  (global-set-key (kbd "C-+") '(lambda ()
+				(interactive)
+				(text-scale-increase 0.5)))
+  (global-set-key (kbd "C--") '(lambda ()
+				(interactive)
+				(text-scale-decrease 0.5)))
+#+END_SRC
+
+
+* Interesting Packages
+
+For now, this configuration contains pretty much all I need, but here I'll
+list some other packages that sound quite interesting, and I might try out
+and Install in the future. 
+
+** Try
+
+This package allows you to run a package without installing in definetively
+on your elpa folder. Run it like you would to install any package from 
+melpa but instead *M-x run RET /package-name/*.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package try
+    :ensure t
+    :defer t)
+#+END_SRC
+
+** Engine Mode
+
+   With Engine more you can search the web using any search engine you wish
+by running simple elisp functions. You can select text blocks or simply
+fill the promp. Inside the /progn/ block there are some search engines set
+to a default keybinding. To use them, say for example search with /google/
+type *C-x / g* and the term you want to search. Currently this package also
+offers an extra functionality, so you search a selected block by typing 
+*C-SPACE* wrapping it around the cursor and then using the engines' 
+keybindings. For more details check [[https://github.com/hrs/engine-mode][their github]] page.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package engine-mode
+    :ensure t
+    :config
+    (progn
+    
+      (defengine duckduckgo
+	"https://duckduckgo.com/?q=%s"
+	:keybinding "d")
+
+      (defengine github
+	"https://github.com/search?ref=simplesearch&q=%s"
+	:keybinding "h")
+
+      (defengine google
+	"http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+	:keybinding "g")
+
+      (defengine google-maps
+	"http://maps.google.com/maps?q=%s"
+	:docstring "Mappin' it up."
+	:keybinding "m")
+
+      (defengine stack-overflow
+	"https://stackoverflow.com/search?q=%s"
+	:keybinding "so")
+
+      (defengine wikipedia
+	"http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+	:keybinding "w"
+	:docstring "Searchin' the wikis.")
+
+      (defengine wiktionary
+	"https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s"
+	:keybinding "b")
+
+      (defengine youtube
+	"http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+	:keybinding "y")
+
+      (engine-mode t)))
+#+END_SRC
+
+** Benchmarking
+
+Two packages that might be usefull if you want to improve your emacs' 
+performance are [[https://github.com/jschaf/esup][esup]] and [[https://github.com/dholm/benchmark-init-el][benchmark-init]].
+
+** Rest Client
+
+If you work with NodeJS and need to test REST webservices, this package 
+allows you to run queries and display its results as XML, JSON or even
+images. Read more [[https://github.com/pashky/restclient.el][here]].
+
+** Hydra
+
+This package was written by the same developer that created /Swiper/, 
+/IVY/ and /Counsel/. He's github page can be found [[https://github.com/abo-abo][here]].
+
+** Avy
+
+Still from the same user. An enhancement to /Swiper/'s navigation capabilities.
+
+** Auto Snippet
+
+A combination of keyboard macro and yasnippets. You can create your own ones.
+
+** Neo Tree
+
+It shows a folder tree on a different buffer. Can be usefull, if you aren't able
+to navigate with projectile or IVY's built-in commands.
+
+** Ipy
+
+A minimalistic Python IDE. It looks REALLY interesting. Also from the same developer
+mentioned above.
+
+** Format All 
+
+This package is a beautifier for code in different languages. Similar to
+/prettier-js/. Read more [[https://github.com/lassik/emacs-format-all-the-code][here]].
+** External Editor
+
+You can setup your Emacs as the default editor for thunderbird. I haven't done it yet,
+but you just need to add an Add-On to Thunderbird that launches an emacs client
+each time you write a new mail and you can edit it on Org-Mode for example.
+
+** Restart Emacs
+
+[[https://github.com/emacs-tw/awesome-emacs#browser][Here]]! Restart Emacs from withing Emacs. 
+
+** Eclim
+
+To develop java projects that require an eclipse environment, this package sets 
+a server to connect emacs to an eclipse instance. Read [[https://github.com/emacs-eclim/emacs-eclim][here]].
+
+** Undo Tree
+
+Allows you to recover any past state of a buffer.
+
+** Buffer Move
+** Go To Last Change
+** General
+
+Provides a /use-package/ like interface to change keybindings. Very interesting! [[https://github.com/noctuid/general.el][Here]].
+
+** Workgroups
+
+Saves window layout with all opened buffers, their locations and sizes to be restored later.
+Several workspaces can be created.
+
+** String Infliction
+
+Switch between camelCase, underscore or uppercase quickly. See [[https://github.com/akicho8/string-inflection][here]].
+
+
+* Other references
+
+  Other references you should read to optimize this configuration to all your needs can be
+found in this list:
+*** [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]]
+*** [[http://emacs.sexy/][Emacs Sexy]]
+*** [[https://github.com/caisah/emacs.dz][Awesome Configs]]
+

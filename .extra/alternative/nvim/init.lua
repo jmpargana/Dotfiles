@@ -1,0 +1,7 @@
+require('settings')
+require('mappings')
+require('treesitter')
+require('plugins')
+require('autocompletion')
+require('nav')
+require('lsp_client')
