@@ -28,10 +28,10 @@
 
 [alias]
     s = status
-	  co = commit
-	  cm = commit -m
-	  b = branch
-	  cl = clone
+    co = commit
+    cm = commit -m
+    b = branch
+    cl = clone
     ps = push
     pl = pull
     ck = checkout -b

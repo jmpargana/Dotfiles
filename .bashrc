@@ -8,11 +8,11 @@
 [[ $- != *i* ]] && return
 
 # Launch tmux
- # if [[ $DISPLAY ]]; then
- #    if which tmux >/dev/null 2>&1; then
- #        test -z "$TMUX" && (tmux attach || tmux new-session)
- #    fi
-# fi
+if [[ $DISPLAY ]]; then
+    if which tmux >/dev/null 2>&1; then
+        test -z "$TMUX" && (tmux attach || tmux new-session)
+    fi
+fi
 
 # Use exa if available
 if type exa > /dev/null 2>&1; then
