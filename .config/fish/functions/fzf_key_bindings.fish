@@ -1,1 +1,0 @@
-/home/icm/.fzf/shell/key-bindings.fish

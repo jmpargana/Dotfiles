@@ -1,5 +1,0 @@
-Build a programming language with Lisp
-https://beautifulracket.com/
-
-Awesome Compilers
-https://github.com/aalhour/awesome-compilers
