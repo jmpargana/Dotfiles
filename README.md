@@ -61,11 +61,11 @@ In this folder are configs of programs I've stopped using, like:
 - [Awesome WM](.extra/deprecated/awesome)
 
 
-## Guides
+### Guides
 
-- [Arch Linux Installation Guide](.guides/arch-installation.md)
+- [Arch Linux Installation Guide](.extra/guides/arch-installation.md)
 
 
-## Scripts
+### Scripts
 
-- [Arch Linux Installation Script](.scripts/basic-install.sh) (incomplete)
+- [Arch Linux Installation Script](.extra/scripts/basic-install.sh) (incomplete)
