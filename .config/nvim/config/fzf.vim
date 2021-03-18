@@ -18,7 +18,7 @@ noremap <leader>u :FZFMru<CR>
 noremap <leader>fl :Lines<CR>
 noremap <leader>fc :Commands<CR>
 
-noremap <leader>fs :CocFzfList symbols<cr>
+noremap <leader>fs :<C-u>CocList -I symbols<cr>
 
 " show files recently edited
 command! FZFMru call fzf#run({

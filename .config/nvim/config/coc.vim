@@ -41,6 +41,7 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
+nmap <silent> ge :<C-u>CocList diagnostics<cr>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -139,5 +140,6 @@ let g:coc_global_extensions = [
     \'coc-sh',
     \'coc-fzf-preview',
     \'coc-emmet',
-    \'coc-tailwindcss'
+    \'coc-tailwindcss',
+    \'coc-git'
     \]

@@ -10,7 +10,7 @@ noremap <C-k> <C-W>k
 noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 noremap <C-s> <C-W>s
-noremap <C-v> <C-W>v
+" noremap <C-v> <C-W>v
 
 " resize according to direction and not pixels
 let g:vim_resize_disable_auto_mappings = 1

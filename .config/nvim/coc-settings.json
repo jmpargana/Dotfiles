@@ -7,5 +7,6 @@
   ],
   "prettier.semi": false,
   // FIXME: this will probably change
-  "prettier.singleQuote": false
+  "prettier.singleQuote": false,
+  "vetur.ignoreProjectWarning": true
 }
