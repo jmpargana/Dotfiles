@@ -1,0 +1,44 @@
+theme = "solarized-dark"
+icons = "awesome"
+
+[[block]]
+block = "pacman"
+interval = 600
+format = "{pacman} + {aur} updates"
+format_singular = "{both} update"
+critical_updates_regex = "(linux |linux-lts|linux-zen)"
+aur_command = "yay -Qua"
+hide_when_uptodate = true
+
+[[block]]
+block = "backlight"
+[block.color_overrides]
+idle_bg = "#FFC300"
+idle_fg = "#111111"
+
+[[block]]
+block = "docker"
+interval = 2
+format = "{running}/{total}"
+[block.color_overrides]
+idle_bg = "#C70039"
+idle_fg = "#111111"
+
+[[block]]
+block = "sound"
+[block.color_overrides]
+idle_bg = "#581845"
+idle_fg = "#fff"
+
+[[block]]
+block = "battery"
+interval = 10
+format= "{percentage}% {time}"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%a %d/%m %R"
+[block.color_overrides]
+idle_bg = "#0097a7"
+idle_fg = "#111111"
