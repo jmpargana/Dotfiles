@@ -2,6 +2,12 @@ theme = "solarized-dark"
 icons = "awesome"
 
 [[block]]
+block = "music"
+buttons = ["prev", "play", "next"]
+[block.color_overrides]
+info_bg = "#e0e0e0"
+
+[[block]]
 block = "pacman"
 interval = 600
 format = "{pacman} + {aur} updates"
@@ -31,6 +37,10 @@ idle_bg = "#581845"
 idle_fg = "#fff"
 
 [[block]]
+block = "bluetooth"
+mac = "1C:4D:70:1B:B3:CB"
+
+[[block]]
 block = "battery"
 interval = 10
 format= "{percentage}% {time}"
@@ -42,3 +52,9 @@ format = "%a %d/%m %R"
 [block.color_overrides]
 idle_bg = "#0097a7"
 idle_fg = "#111111"
+
+
+[[block]]
+block = "keyboard_layout"
+driver = "sway"
+format = "{layout}"

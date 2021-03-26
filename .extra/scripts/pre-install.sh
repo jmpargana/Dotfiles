@@ -30,7 +30,7 @@ timedatectl set-ntp true
 
 
 echo "### Install Arch"
-pacstrap /mnt base base-devel linux linux-firmware
+pacstrap /mnt base base-devel linux linux-firmware vim git
 
 
 

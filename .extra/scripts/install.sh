@@ -13,8 +13,8 @@
 
 
 echo "### Set Date Time"
-ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-hwlock --systohc
+ln -sf /usr/share/zoneinfo/Europe/Lisbon /etc/localtime
+hwclock --systohc
 
 
 
@@ -39,10 +39,6 @@ echo "### Generate initramfs"
 mkinitcpio -P
 
 
-
-echo "### Automatically update time"
-systemctl enable --now systemd-timesyncd.service
-hwclock -w
 
 
 echo "### Create root password"
@@ -80,14 +76,6 @@ EOF
 
 
 
-
-AUR_PACKAGES="
-    neovim-git
-    mongodb-compass
-    postman-bin
-    netextender
-    nvm"
-
 PACKAGES="
     acpi
     acpid 
@@ -112,16 +100,13 @@ PACKAGES="
     exfat-utils 
     fd 
     firefox 
-    gcc 
     gedit 
     gnome-keyring 
     go 
-    gparted 
     gufw 
     i3status-rust 
     intel-ucode 
     keepassxc 
-    less 
     lxappearance 
     mako 
     man-db 
@@ -134,12 +119,10 @@ PACKAGES="
     noto-fonts 
     openssh 
     os-prober 
-    papirus-maia-icon-theme 
     pavucontrol 
     powerline 
     powerline-fonts 
     pulseaudio-bluetooth 
-    pulseaudio-ctl 
     python-pip 
     ripgrep 
     sway 
@@ -166,27 +149,9 @@ PACKAGES="
     wget 
     wofi 
     wpa_supplicant 
-    xclip
-    yay
-    git"
+    xclip"
 
 
 echo "### Installing all pacman packages"
-yes | sudo pacman -S $PACKAGES
+sudo pacman -S $PACKAGES
 
-
-echo "### Setting up yay"
-git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd
-
-
-echo "### Installing AUR packages"
-yes | yay -S $AUR_PACKAGES
-
-
-echo "### Load Config files"
-cd /home/icm
-export HOME=/home/icm
-git init --base ~/.dotfiles
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-config remote add origin https://github.com/jmpargana/dotfiles.git
-config pull
