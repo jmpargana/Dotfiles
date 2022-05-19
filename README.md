@@ -17,10 +17,6 @@ To have the expected behaviour, install the following packages:
 ```bash
 # Use your package manager
 sudo pacman -S fzf ripgrep fd exa bat
-
-# Run this inside neovim (make sure you are running v0.5+)
-:PlugInstall
-:CocUpdateSync
 ```
 
 
@@ -46,7 +42,6 @@ and the builtin lsp.
 
 - [zshrc](.extra/alternative/zshrc)
 - [fish](.extra/alternative/fish)
-- [neovim](.extra/alternative/nvim) (completely written in lua using the builtin lsp)
 - [ranger](.extra/alternative/ranger)
 
 
